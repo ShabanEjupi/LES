@@ -13,6 +13,7 @@ import UserManagement from './pages/users/UserManagement';
 import Reports from './pages/reports/Reports';
 import Settings from './pages/settings/Settings';
 import AuditLogs from './pages/audit/AuditLogs';
+import DatabaseInit from './pages/admin/DatabaseInit';
 import './App.css';
 
 // Create custom theme for customs administration
@@ -116,6 +117,7 @@ const App: React.FC = () => {
             <Routes>
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
+              <Route path="/admin/init" element={<DatabaseInit />} />
               
               {/* Protected Routes */}
               <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

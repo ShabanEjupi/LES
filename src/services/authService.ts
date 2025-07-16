@@ -1,6 +1,6 @@
 import type { User, ApiResponse } from '../types';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/.netlify/functions';
 
 export interface LoginRequest {
   username: string;
@@ -25,66 +25,34 @@ export interface AuthResponse {
  */
 export const login = async (username: string, password: string): Promise<LoginResponse> => {
   try {
-    // Mock authentication for development
-    await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
-    
-    // Mock user credentials
-    if (username === 'admin' && password === 'admin') {
-      const mockUser: User = {
-        id: '1',
-        username: 'admin',
-        email: 'admin@customs.gov.al',
-        fullName: 'Administrator User',
-        department: 'IT_DEPARTMENT',
-        passwordHash: 'hashed_password',
-        failedLoginAttempts: 0,
-        dataAccessLevel: 'SECRET',
-        role: {
-          id: '1',
-          name: 'Administrator',
-          description: 'System administrator with full access',
-          isSystemRole: true,
-          permissions: [
-            { id: '1', name: 'Read Users', resource: 'users', action: 'read' },
-            { id: '2', name: 'Manage Users', resource: 'users', action: 'write' },
-            { id: '3', name: 'Read Documents', resource: 'documents', action: 'read' },
-            { id: '4', name: 'Manage Documents', resource: 'documents', action: 'write' },
-            { id: '5', name: 'Read Cases', resource: 'cases', action: 'read' },
-            { id: '6', name: 'Manage Cases', resource: 'cases', action: 'write' },
-            { id: '7', name: 'Read Reports', resource: 'reports', action: 'read' },
-            { id: '8', name: 'Read Audit Logs', resource: 'audit', action: 'read' },
-            { id: '9', name: 'Manage Settings', resource: 'settings', action: 'write' },
-          ],
-        },
-        permissions: [
-          { id: '1', name: 'Read Users', resource: 'users', action: 'read' },
-          { id: '2', name: 'Manage Users', resource: 'users', action: 'write' },
-          { id: '3', name: 'Read Documents', resource: 'documents', action: 'read' },
-          { id: '4', name: 'Manage Documents', resource: 'documents', action: 'write' },
-          { id: '5', name: 'Read Cases', resource: 'cases', action: 'read' },
-          { id: '6', name: 'Manage Cases', resource: 'cases', action: 'write' },
-          { id: '7', name: 'Read Reports', resource: 'reports', action: 'read' },
-          { id: '8', name: 'Read Audit Logs', resource: 'audit', action: 'read' },
-          { id: '9', name: 'Manage Settings', resource: 'settings', action: 'write' },
-        ],
-        isActive: true,
-        lastLogin: new Date(),
-        createdAt: new Date('2024-01-01'),
-        updatedAt: new Date(),
-      };
+    const response = await fetch(`${API_BASE_URL}/auth-login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username.trim(),
+        password: password
+      }),
+    });
 
-      return {
-        success: true,
-        user: mockUser,
-        token: 'mock-jwt-token-12345',
-        message: 'Login successful',
-      };
-    } else {
-      return {
-        success: false,
-        message: 'Invalid username or password',
-      };
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || `Login failed with status: ${response.status}`);
     }
+
+    const data = await response.json();
+    
+    if (!data.success) {
+      throw new Error(data.message || 'Login failed');
+    }
+
+    return {
+      success: true,
+      user: data.user,
+      token: data.token,
+      message: data.message
+    };
   } catch (error) {
     console.error('Login error:', error);
     return {
