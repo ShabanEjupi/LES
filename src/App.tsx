@@ -14,6 +14,7 @@ import Reports from './pages/reports/Reports';
 import Settings from './pages/settings/Settings';
 import AuditLogs from './pages/audit/AuditLogs';
 import DatabaseInit from './pages/admin/DatabaseInit';
+import SystemDiagnostics from './pages/admin/SystemDiagnostics';
 import './App.css';
 
 // Create custom theme for customs administration
@@ -118,6 +119,8 @@ const App: React.FC = () => {
               {/* Public Routes */}
               <Route path="/login" element={<Login />} />
               <Route path="/admin/init" element={<DatabaseInit />} />
+              <Route path="/admin/database-init" element={<DatabaseInit />} />
+              <Route path="/admin/diagnostics" element={<SystemDiagnostics />} />
               
               {/* Protected Routes */}
               <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

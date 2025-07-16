@@ -10,8 +10,20 @@ async function testDatabaseInit() {
       },
     });
 
-    const data = await response.json();
-    console.log('Response:', data);
+    console.log('Response status:', response.status);
+    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+    
+    const text = await response.text();
+    console.log('Raw response:', text);
+    
+    let data;
+    try {
+      data = JSON.parse(text);
+      console.log('Parsed response:', data);
+    } catch (e) {
+      console.log('Failed to parse JSON, raw response:', text.substring(0, 500));
+      return;
+    }
     
     if (data.success) {
       console.log('✅ Database initialized successfully!');
