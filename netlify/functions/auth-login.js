@@ -1,11 +1,11 @@
-import { sql } from './db-config.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+const { sql } = require('./db-config.js');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // JWT secret - in production, this should be a secure environment variable
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   // Set CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',

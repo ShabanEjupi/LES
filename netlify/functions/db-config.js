@@ -1,5 +1,5 @@
 // Database configuration for Neon PostgreSQL
-import { neon } from '@neondatabase/serverless';
+const { neon } = require('@neondatabase/serverless');
 
 // Get database URL from environment variables
 const getDatabaseUrl = () => {
@@ -13,10 +13,10 @@ const getDatabaseUrl = () => {
 };
 
 // Create database connection
-export const sql = neon(getDatabaseUrl());
+const sql = neon(getDatabaseUrl());
 
 // Test database connection
-export const testConnection = async () => {
+const testConnection = async () => {
   try {
     const result = await sql`SELECT NOW() as current_time`;
     console.log('Database connected successfully:', result[0].current_time);
@@ -28,7 +28,7 @@ export const testConnection = async () => {
 };
 
 // Initialize database schema
-export const initializeSchema = async () => {
+const initializeSchema = async () => {
   try {
     // Create Users table
     await sql`
@@ -173,7 +173,7 @@ export const initializeSchema = async () => {
 };
 
 // Seed initial data
-export const seedInitialData = async () => {
+const seedInitialData = async () => {
   try {
     // Insert default roles
     const adminRoleResult = await sql`
@@ -225,7 +225,7 @@ export const seedInitialData = async () => {
     }
 
     // Create default admin user (password: admin123)
-    const bcrypt = await import('bcryptjs');
+    const bcrypt = require('bcryptjs');
     const adminPasswordHash = await bcrypt.hash('admin123', 12);
     
     await sql`
@@ -251,4 +251,11 @@ export const seedInitialData = async () => {
     console.error('Failed to seed initial data:', error);
     throw error;
   }
+};
+
+module.exports = {
+  sql,
+  testConnection,
+  initializeSchema,
+  seedInitialData
 };

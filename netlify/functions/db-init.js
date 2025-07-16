@@ -1,6 +1,6 @@
-import { initializeSchema, seedInitialData, testConnection } from './db-config.js';
+const { initializeSchema, seedInitialData, testConnection } = require('./db-config.js');
 
-export const handler = async (event, context) => {
+exports.handler = async (event, context) => {
   // Set CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
