@@ -5,9 +5,7 @@ import {
   Paper,
   Typography,
   Button,
-  Alert,
   CircularProgress,
-  Card,
   CardContent,
   Chip,
   List,
@@ -40,6 +38,13 @@ const SystemDiagnostics: React.FC = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<DiagnosticResult[]>([]);
 
+  const getErrorMessage = (error: unknown): string => {
+    if (error && typeof error === 'object' && 'message' in error) {
+      return String(error.message);
+    }
+    return String(error);
+  };
+
   const runDiagnostics = async () => {
     setIsRunning(true);
     setResults([]);
@@ -66,7 +71,7 @@ const SystemDiagnostics: React.FC = () => {
         name: 'Website Connectivity',
         status: 'error',
         message: 'Cannot reach the website',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: getErrorMessage(error),
       });
     }
 
@@ -114,7 +119,7 @@ const SystemDiagnostics: React.FC = () => {
         name: 'Database Init Function',
         status: 'error',
         message: 'Cannot connect to function',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: getErrorMessage(error),
       });
     }
 
@@ -154,7 +159,7 @@ const SystemDiagnostics: React.FC = () => {
         name: 'Auth Login Function',
         status: 'error',
         message: 'Cannot connect to function',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: getErrorMessage(error),
       });
     }
 
@@ -195,7 +200,7 @@ const SystemDiagnostics: React.FC = () => {
         name: 'Admin Login Test',
         status: 'error',
         message: 'Cannot test admin login',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: getErrorMessage(error),
       });
     }
 

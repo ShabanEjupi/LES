@@ -87,32 +87,12 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Check if account is locked
-    if (user.account_locked_until && new Date() < new Date(user.account_locked_until)) {
-      return {
-        statusCode: 401,
-        headers,
-        body: JSON.stringify({
-          success: false,
-          message: 'Account is temporarily locked due to failed login attempts'
-        })
-      };
-    }
-
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
     if (!isPasswordValid) {
-      // Increment failed login attempts
-      await sql`
-        UPDATE users 
-        SET failed_login_attempts = failed_login_attempts + 1,
-            account_locked_until = CASE 
-              WHEN failed_login_attempts >= 4 THEN NOW() + INTERVAL '30 minutes'
-              ELSE account_locked_until
-            END
-        WHERE id = ${user.id}
-      `;
+      // Just log the failed attempt without locking
+      console.log(`Failed login attempt for user: ${username}`);
 
       return {
         statusCode: 401,
@@ -144,9 +124,7 @@ exports.handler = async (event, context) => {
     // Reset failed login attempts and update last login
     await sql`
       UPDATE users 
-      SET failed_login_attempts = 0,
-          account_locked_until = NULL,
-          last_login = NOW()
+      SET last_login = NOW()
       WHERE id = ${user.id}
     `;
 

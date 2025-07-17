@@ -1,352 +1,262 @@
 import React, { useState } from 'react';
-import type { ReactNode } from 'react';
-import {
-  Box,
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  Avatar,
-  Menu,
-  MenuItem,
-  Badge,
-  Tooltip,
-} from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  Cases as CasesIcon,
-  Description as DocumentIcon,
-  People as PeopleIcon,
-  Assessment as ReportsIcon,
-  Settings as SettingsIcon,
-  Security as SecurityIcon,
-  Logout as LogoutIcon,
-  Notifications as NotificationsIcon,
-  AccountCircle,
-  ChevronLeft,
-} from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { useNotifications } from '../../hooks/useNotifications';
-import type { Notification } from '../../types';
-
-const DRAWER_WIDTH = 280;
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/useAuth';
+import { getModulesWithCaseSynchronization, ModuleCategory, KOSOVO_CUSTOMS_HIERARCHY } from '../../types/KosovoCustomsModules';
+import type { SystemModule } from '../../types/KosovoCustomsModules';
+import './MainLayout.css';
 
 interface MainLayoutProps {
-  children: ReactNode;
+  children?: React.ReactNode;
 }
-
-interface MenuItem {
-  label: string;
-  icon: React.ReactNode;
-  path: string;
-  children?: MenuItem[];
-}
-
-const menuItems: MenuItem[] = [
-  {
-    label: 'Dashboard',
-    icon: <DashboardIcon />,
-    path: '/dashboard',
-  },
-  {
-    label: 'Cases',
-    icon: <CasesIcon />,
-    path: '/cases',
-    children: [
-      { label: 'All Cases', icon: <CasesIcon />, path: '/cases' },
-      { label: 'My Cases', icon: <CasesIcon />, path: '/cases/my' },
-      { label: 'New Case', icon: <CasesIcon />, path: '/cases/new' },
-    ],
-  },
-  {
-    label: 'Documents',
-    icon: <DocumentIcon />,
-    path: '/documents',
-    children: [
-      { label: 'Repository', icon: <DocumentIcon />, path: '/documents' },
-      { label: 'Templates', icon: <DocumentIcon />, path: '/documents/templates' },
-      { label: 'Upload', icon: <DocumentIcon />, path: '/documents/upload' },
-    ],
-  },
-  {
-    label: 'Users',
-    icon: <PeopleIcon />,
-    path: '/users',
-  },
-  {
-    label: 'Reports',
-    icon: <ReportsIcon />,
-    path: '/reports',
-  },
-  {
-    label: 'Audit Logs',
-    icon: <SecurityIcon />,
-    path: '/audit',
-  },
-  {
-    label: 'Settings',
-    icon: <SettingsIcon />,
-    path: '/settings',
-  },
-];
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(true);
-  const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
-  const [notificationMenuAnchor, setNotificationMenuAnchor] = useState<null | HTMLElement>(null);
-
+  const { state, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { state: authState, logout } = useAuth();
-  const { state: notificationState } = useNotifications();
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+  if (!state.user) {
+    return null;
+  }
+
+  // Get user hierarchy level based on role
+  const getUserHierarchy = (roleName: string): number => {
+    switch (roleName.toLowerCase()) {
+      case 'officer': return KOSOVO_CUSTOMS_HIERARCHY.OFFICER;
+      case 'supervisor': return KOSOVO_CUSTOMS_HIERARCHY.SUPERVISOR;
+      case 'sectorchief': return KOSOVO_CUSTOMS_HIERARCHY.SECTOR_CHIEF;
+      case 'director': return KOSOVO_CUSTOMS_HIERARCHY.DIRECTOR;
+      default: return KOSOVO_CUSTOMS_HIERARCHY.OFFICER;
+    }
   };
 
-  const handleUserMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setUserMenuAnchor(event.currentTarget);
-  };
+  const userHierarchy = getUserHierarchy(state.user.role.name);
+  const userModules = getModulesWithCaseSynchronization(
+    state.user.role.name,
+    userHierarchy,
+    state.user.customsPost
+  );
 
-  const handleUserMenuClose = () => {
-    setUserMenuAnchor(null);
-  };
+  // Group modules by category
+  const modulesByCategory = userModules.reduce((acc: Record<string, SystemModule[]>, module) => {
+    const category = module.category;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(module);
+    return acc;
+  }, {} as Record<string, SystemModule[]>);
 
-  const handleNotificationMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setNotificationMenuAnchor(event.currentTarget);
-  };
-
-  const handleNotificationMenuClose = () => {
-    setNotificationMenuAnchor(null);
-  };
-
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/login');
-    handleUserMenuClose();
   };
 
-  const isPathActive = (path: string): boolean => {
-    return location.pathname === path || location.pathname.startsWith(path + '/');
+  const handleModuleClick = (moduleRoute: string) => {
+    navigate(moduleRoute);
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case ModuleCategory.DASHBOARD: return '🏠';
+      case ModuleCategory.VIOLATIONS: return '⚠️';
+      case ModuleCategory.CASE_MANAGEMENT: return '📋';
+      case ModuleCategory.ACTIVITIES: return '📝';
+      case ModuleCategory.TASKS: return '📬';
+      case ModuleCategory.DOCUMENTS: return '📁';
+      case ModuleCategory.TRANSPORT: return '🚛';
+      case ModuleCategory.FINES: return '💰';
+      case ModuleCategory.AUDIT: return '📓';
+      case ModuleCategory.SEARCH: return '�';
+      case ModuleCategory.REPORTS: return '📊';
+      case ModuleCategory.NOTIFICATIONS: return '🔔';
+      case ModuleCategory.REGISTRY: return '📚';
+      case ModuleCategory.ADMINISTRATION: return '⚙️';
+      case ModuleCategory.USER_MANAGEMENT: return '👥';
+      case ModuleCategory.SETTINGS: return '⚙️';
+      default: return '📂';
+    }
+  };
+
+  const getCategoryName = (category: string) => {
+    switch (category) {
+      case ModuleCategory.DASHBOARD: return 'Faqja Kryesore';
+      case ModuleCategory.VIOLATIONS: return 'Kundërvajtjet';
+      case ModuleCategory.CASE_MANAGEMENT: return 'Menaxhimi i Rasteve';
+      case ModuleCategory.ACTIVITIES: return 'Aktivitetet';
+      case ModuleCategory.TASKS: return 'Detyrat';
+      case ModuleCategory.DOCUMENTS: return 'Dokumentet';
+      case ModuleCategory.TRANSPORT: return 'Transporti';
+      case ModuleCategory.FINES: return 'Gjobat Administrative';
+      case ModuleCategory.AUDIT: return 'Auditimi';
+      case ModuleCategory.SEARCH: return 'Kërkimi';
+      case ModuleCategory.REPORTS: return 'Raportet';
+      case ModuleCategory.NOTIFICATIONS: return 'Njoftimet';
+      case ModuleCategory.REGISTRY: return 'Regjistrat';
+      case ModuleCategory.ADMINISTRATION: return 'Administrata';
+      case ModuleCategory.USER_MANAGEMENT: return 'Menaxhimi i Përdoruesve';
+      case ModuleCategory.SETTINGS: return 'Cilësimet';
+      default: return category;
+    }
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      {/* App Bar */}
-      <AppBar
-        position="fixed"
-        sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          transition: (theme) =>
-            theme.transitions.create(['width', 'margin'], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="toggle drawer"
-            onClick={handleDrawerToggle}
-            edge="start"
-            sx={{ mr: 2 }}
-          >
-            {isDrawerOpen ? <ChevronLeft /> : <MenuIcon />}
-          </IconButton>
+    <div className="main-layout">
+      {/* Republic of Kosovo Header */}
+      <header className="main-header">
+        <div className="header-left">
+          <div className="kosovo-coat-of-arms">
+            <div className="coat-background">🇽🇰</div>
+          </div>
+          <div className="system-title">
+            <div className="republic-name">REPUBLIKA E KOSOVËS</div>
+            <div className="ministry-name">Doganat e Kosovës</div>
+            <div className="system-name">LES - Law Enforcement System</div>
+          </div>
+        </div>
+        
+        <div className="header-center">
+          <div className="current-time" id="current-time">
+            {new Date().toLocaleString('sq-AL', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </div>
+        </div>
 
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Customs Administration System
-          </Typography>
+        <div className="header-right">
+          <div className="user-info">
+            <div className="user-details">
+              <span className="user-name">{state.user.fullName}</span>
+              <span className="user-role">{state.user.role.name}</span>
+              <span className="user-department">{state.user.department}</span>
+              {state.user.customsPost && (
+                <span className="customs-post">{state.user.customsPost}</span>
+              )}
+            </div>
+            <div className="user-actions">
+              <button className="classic-button classic-button-small" onClick={() => navigate('/profile')}>
+                👤 Profili
+              </button>
+              <button className="classic-button classic-button-small" onClick={handleLogout}>
+                🚪 Dil
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-          {/* Notifications */}
-          <Tooltip title="Notifications">
-            <IconButton color="inherit" onClick={handleNotificationMenuOpen}>
-              <Badge badgeContent={notificationState.unreadCount} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Tooltip>
+      {/* Main Content Area */}
+      <div className="main-content">
+        {/* Sidebar Navigation */}
+        <aside className={`main-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
+          <div className="sidebar-header">
+            <button 
+              className="sidebar-toggle"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            >
+              {sidebarCollapsed ? '▶️' : '◀️'}
+            </button>
+            {!sidebarCollapsed && <span>Modulet e Sistemit</span>}
+          </div>
 
-          {/* User Menu */}
-          <Tooltip title="Account">
-            <IconButton color="inherit" onClick={handleUserMenuOpen}>
-              <Avatar
-                sx={{ width: 32, height: 32 }}
-                src={authState.user?.fullName}
-              >
-                <AccountCircle />
-              </Avatar>
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
-      </AppBar>
-
-      {/* Drawer */}
-      <Drawer
-        variant="persistent"
-        anchor="left"
-        open={isDrawerOpen}
-        sx={{
-          width: isDrawerOpen ? DRAWER_WIDTH : 0,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: DRAWER_WIDTH,
-            boxSizing: 'border-box',
-            transition: (theme) =>
-              theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-              }),
-          },
-        }}
-      >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto', mt: 1 }}>
-          {/* User Info */}
-          <Box sx={{ p: 2, textAlign: 'center' }}>
-            <Avatar sx={{ width: 64, height: 64, mx: 'auto', mb: 1 }}>
-              <AccountCircle sx={{ fontSize: 40 }} />
-            </Avatar>
-            <Typography variant="subtitle1" fontWeight={600}>
-              {authState.user?.fullName || 'Unknown User'}
-            </Typography>
-            <Typography variant="caption" color="textSecondary">
-              {authState.user?.role?.name || 'No Role'}
-            </Typography>
-          </Box>
-
-          <Divider />
-
-          {/* Navigation Menu */}
-          <List sx={{ px: 1, py: 2 }}>
-            {menuItems.map((item) => (
-              <ListItem key={item.path} disablePadding sx={{ mb: 0.5 }}>
-                <ListItemButton
-                  onClick={() => navigate(item.path)}
-                  selected={isPathActive(item.path)}
-                  sx={{
-                    borderRadius: 2,
-                    mx: 1,
-                    '&.Mui-selected': {
-                      backgroundColor: 'primary.main',
-                      color: 'primary.contrastText',
-                      '&:hover': {
-                        backgroundColor: 'primary.dark',
-                      },
-                      '& .MuiListItemIcon-root': {
-                        color: 'inherit',
-                      },
-                    },
-                  }}
+          <div className="sidebar-content">
+            {Object.entries(modulesByCategory).map(([category, modules]) => (
+              <div key={category} className="module-category">
+                <div 
+                  className={`category-header ${selectedCategory === category ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(selectedCategory === category ? '' : category)}
                 >
-                  <ListItemIcon sx={{ minWidth: 40 }}>
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.label} />
-                </ListItemButton>
-              </ListItem>
+                  <span className="category-icon">{getCategoryIcon(category)}</span>
+                  {!sidebarCollapsed && (
+                    <>
+                      <span className="category-name">{getCategoryName(category)}</span>
+                      <span className="category-count">({modules.length})</span>
+                      <span className="expand-icon">{selectedCategory === category ? '▼' : '▶'}</span>
+                    </>
+                  )}
+                </div>
+                
+                {!sidebarCollapsed && selectedCategory === category && (
+                  <div className="module-list">
+                    {modules.map(module => (
+                      <div
+                        key={module.id}
+                        className={`module-item ${location.pathname === module.route ? 'active' : ''}`}
+                        onClick={() => handleModuleClick(module.route)}
+                        title={module.description}
+                      >
+                        <span className="module-icon">{module.icon}</span>
+                        <span className="module-name">{module.nameAlbanian}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
-          </List>
-        </Box>
-      </Drawer>
+          </div>
 
-      {/* Main Content */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          width: { sm: `calc(100% - ${isDrawerOpen ? DRAWER_WIDTH : 0}px)` },
-          ml: { sm: `${isDrawerOpen ? DRAWER_WIDTH : 0}px` },
-          transition: (theme) =>
-            theme.transitions.create(['margin', 'width'], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
-        }}
-      >
-        <Toolbar />
-        {children}
-      </Box>
-
-      {/* User Menu */}
-      <Menu
-        anchorEl={userMenuAnchor}
-        open={Boolean(userMenuAnchor)}
-        onClose={handleUserMenuClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-      >
-        <MenuItem onClick={() => navigate('/settings')}>
-          <ListItemIcon>
-            <SettingsIcon fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <LogoutIcon fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Menu>
-
-      {/* Notification Menu */}
-      <Menu
-        anchorEl={notificationMenuAnchor}
-        open={Boolean(notificationMenuAnchor)}
-        onClose={handleNotificationMenuClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        PaperProps={{
-          sx: { width: 320, maxHeight: 400 },
-        }}
-      >
-        <Box sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            Notifications
-          </Typography>
-          {notificationState.notifications.length === 0 ? (
-            <Typography variant="body2" color="textSecondary">
-              No new notifications
-            </Typography>
-          ) : (
-            notificationState.notifications.slice(0, 5).map((notification: Notification) => (
-              <Box key={notification.id} sx={{ py: 1, borderBottom: '1px solid', borderColor: 'divider' }}>
-                <Typography variant="body2" fontWeight={notification.isRead ? 400 : 600}>
-                  {notification.title}
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {notification.message}
-                </Typography>
-              </Box>
-            ))
+          {/* Quick Stats */}
+          {!sidebarCollapsed && (
+            <div className="sidebar-footer">
+              <div className="quick-stats">
+                <div className="stat-item">
+                  <span className="stat-label">Rastet Aktive:</span>
+                  <span className="stat-value">12</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Detyrat:</span>
+                  <span className="stat-value">5</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Njoftimet:</span>
+                  <span className="stat-value">3</span>
+                </div>
+              </div>
+            </div>
           )}
-        </Box>
-      </Menu>
-    </Box>
+        </aside>
+
+        {/* Main Content */}
+        <main className="content-area">
+          {/* Breadcrumb Navigation */}
+          <nav className="breadcrumb">
+            <span className="breadcrumb-item">🏠 Kryesore</span>
+            <span className="breadcrumb-separator">›</span>
+            <span className="breadcrumb-item active">
+              {userModules.find((m: SystemModule) => m.route === location.pathname)?.nameAlbanian || 'Dashboard'}
+            </span>
+          </nav>
+
+          {/* Page Content */}
+          <div className="page-content">
+            {children || <Outlet />}
+          </div>
+        </main>
+      </div>
+
+      {/* Status Bar */}
+      <footer className="status-bar">
+        <div className="status-left">
+          <span className="system-status">🟢 Sistemi Aktiv</span>
+          <span className="connection-status">🔗 E lidhur</span>
+          <span className="data-access">📊 Qasje: {state.user.dataAccessLevel}</span>
+        </div>
+        <div className="status-center">
+          <span className="case-count">Rastet e Hapura: 12</span>
+          <span className="active-users">Përdorues Aktiv: 24</span>
+        </div>
+        <div className="status-right">
+          <span className="server-time">Ora Server: {new Date().toLocaleTimeString('sq-AL')}</span>
+          <span className="version">LES v1.0</span>
+        </div>
+      </footer>
+    </div>
   );
 };
 

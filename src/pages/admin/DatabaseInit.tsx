@@ -21,6 +21,13 @@ const DatabaseInit: React.FC = () => {
     message: string;
   } | null>(null);
 
+  const getErrorMessage = (error: unknown): string => {
+    if (error && typeof error === 'object' && 'message' in error) {
+      return String(error.message);
+    }
+    return String(error);
+  };
+
   const handleInitializeDatabase = async () => {
     setIsInitializing(true);
     setInitResult(null);
@@ -35,11 +42,11 @@ const DatabaseInit: React.FC = () => {
 
       const data = await response.json();
       setInitResult(data);
-    } catch (error: unknown) {
+    } catch (error) {
       console.error('Database initialization error:', error);
       setInitResult({
         success: false,
-        message: error instanceof Error ? error.message : 'Failed to initialize database'
+        message: getErrorMessage(error)
       });
     } finally {
       setIsInitializing(false);

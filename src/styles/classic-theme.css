@@ -1,0 +1,992 @@
+/* LES - Albanian Customs Administration System - Classic Windows Theme */
+/* Authentic Windows 98/XP styling with Albanian government branding */
+/* This file contains the CSS variables and styles for the classic theme */
+/* Albanian Government Colors and Classic Windows Theme Variables */
+/* This file is part of the LES project, which is licensed under the GNU General Public License v3.0 */
+
+:root {
+  /* Albanian Government Official Colors */
+  --albanian-red: #e41e20;
+  --albanian-black: #000000;
+  --government-blue: #003d82;
+  --customs-navy: #1e3a8a;
+  --customs-gold: #ffd700;
+  --eagle-brown: #8b4513;
+  
+  /* Classic Windows 98/XP Colors */
+  --classic-silver: #c0c0c0;
+  --classic-light-gray: #f0f0f0;
+  --classic-gray: #808080;
+  --classic-dark-gray: #404040;
+  --classic-white: #ffffff;
+  --classic-black: #000000;
+  --classic-blue: #0000ff;
+  --classic-navy: #000080;
+  --classic-teal: #008080;
+  
+  /* Windows Control Colors */
+  --window-background: #f0f0f0;
+  --window-border: #404040;
+  --window-titlebar: linear-gradient(to right, #0054e3, #0099ff);
+  --window-titlebar-inactive: linear-gradient(to right, #7a7a7a, #c0c0c0);
+  --button-face: #f0f0f0;
+  --button-shadow: #808080;
+  --button-dark-shadow: #404040;
+  --button-light: #ffffff;
+  --button-highlight: #ffffff;
+  
+  /* System Colors */
+  --system-menu: #f0f0f0;
+  --system-menu-text: #000000;
+  --system-highlight: #316ac5;
+  --system-highlight-text: #ffffff;
+  --system-disabled-text: #808080;
+  --system-3d-face: #f0f0f0;
+  --system-3d-shadow: #808080;
+  --system-3d-dark-shadow: #404040;
+  --system-3d-light: #ffffff;
+  
+  /* Status Colors with Albanian Customs Context */
+  --status-active: #008000;      /* Green - Active cases */
+  --status-pending: #ff8000;     /* Orange - Pending review */
+  --status-closed: #800000;      /* Dark red - Closed cases */
+  --status-urgent: #ff0000;      /* Red - Urgent violations */
+  --status-warning: #ffff00;     /* Yellow - Warnings */
+  --status-info: #0080ff;        /* Blue - Information */
+  
+  /* Classic Form Controls */
+  --input-background: #ffffff;
+  --input-border: #808080;
+  --input-border-focus: #000080;
+  --input-text: #000000;
+  --dropdown-background: #ffffff;
+  --dropdown-arrow: #000000;
+  
+  /* Typography - Classic Windows Fonts */
+  --system-font: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --caption-font: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --menu-font: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --message-font: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --status-font: 'MS Sans Serif', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
+  /* Measurements */
+  --border-width: 1px;
+  --button-border-width: 2px;
+  --window-border-width: 2px;
+  --scrollbar-width: 16px;
+  --menu-item-height: 20px;
+  --titlebar-height: 18px;
+  --toolbar-height: 28px;
+  
+  /* Classic spacing */
+  --padding-xs: 2px;
+  --padding-sm: 4px;
+  --padding-md: 8px;
+  --padding-lg: 12px;
+  --margin-xs: 2px;
+  --margin-sm: 4px;
+  --margin-md: 8px;
+  --margin-lg: 12px;
+  
+  /* Legacy variables for compatibility */
+  --classic-background: var(--window-background);
+  --classic-window-bg: var(--classic-white);
+  --classic-header-bg: #e1ecf4;
+  --classic-border: #8a8a8a;
+  --classic-border-light: var(--classic-silver);
+  --classic-text: var(--classic-black);
+  --classic-text-secondary: #333333;
+  --classic-button-bg: #e1e1e1;
+  --classic-button-hover: #d4edda;
+  --classic-active: #0066cc;
+  --classic-shadow: rgba(0, 0, 0, 0.25);
+  --status-success: #27ae60;
+  --status-danger: #dc3545;
+  --form-padding: 12px;
+  --form-border-radius: 2px;
+  --input-height: 28px;
+  --button-height: 28px;
+  --header-font: var(--system-font);
+  --body-font: var(--system-font);
+}
+
+/* Global Styles - Classic Windows Base */
+* {
+  box-sizing: border-box;
+}
+/* Reset */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--system-font);
+  font-size: 11px;
+  background-color: var(--window-background);
+  color: var(--classic-black);
+  line-height: 1.2;
+}
+/* Root Element */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Main Application Container */
+.classic-windows-theme {
+  min-height: 100vh;
+  background-color: var(--window-background) !important;
+  font-family: var(--system-font);
+  font-size: 11px;
+}
+/* Classic Windows Theme Specific Styles */
+.classic-windows-theme * {
+  font-family: var(--system-font) !important;
+  font-size: 12px;
+}
+
+/* Albanian Customs Administration Header */
+.les-header {
+  background: linear-gradient(to bottom, var(--government-blue), var(--customs-navy));
+  color: white;
+  padding: var(--padding-md);
+  border-bottom: 3px solid var(--albanian-red);
+  font-family: var(--system-font);
+  font-weight: bold;
+}
+/* Albanian Customs Logo and Title */
+.les-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--margin-md);
+}
+/* Albanian Customs Coat of Arms */
+.les-coat-of-arms {
+  width: 32px;
+  height: 32px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23e41e20"/><text x="50" y="55" text-anchor="middle" fill="white" font-size="20" font-weight="bold">AL</text></svg>') no-repeat center;
+  background-size: contain;
+}
+/* Albanian Customs Title */
+.les-title {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+/* Albanian Customs Subtitle */
+.les-subtitle {
+  font-size: 10px;
+  color: #e0e0e0;
+  margin-top: 2px;
+}
+
+/* Albanian Government Branding */
+.albanian-header {
+  background: linear-gradient(135deg, var(--government-blue) 0%, var(--customs-navy) 100%);
+  color: white;
+  padding: 8px 16px;
+  font-weight: bold;
+  border-bottom: 2px solid var(--albanian-red);
+}
+/* Albanian Government Accent Color */
+.albanian-accent {
+  color: var(--albanian-red) !important;
+}
+/* Albanian Government Badge */
+.government-badge {
+  background: var(--government-blue);
+  color: white;
+  padding: 4px 8px;
+  border-radius: var(--form-border-radius);
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* Albanian Government Status Indicators */
+.status-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border: 1px solid var(--classic-black);
+  font-family: var(--system-font);
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  min-width: 60px;
+  text-align: center;
+}
+/* Status Badge Colors */
+.status-badge.active {
+  background: var(--status-active);
+  color: white;
+}
+/* Status Badge Colors */
+.status-badge.pending {
+  background: var(--status-pending);
+  color: var(--classic-black);
+}
+/* Status Badge Colors */
+.status-badge.closed {
+  background: var(--status-closed);
+  color: white;
+}
+/* Status Badge Colors */
+.status-badge.urgent {
+  background: var(--status-urgent);
+  color: white;
+  animation: blink 1s infinite;
+}
+/* Status Badge Colors */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.5; }
+}
+
+/* Albanian Customs Case Management Specific */
+.violation-severity-high {
+  color: var(--status-urgent);
+  font-weight: bold;
+}
+/* Albanian Customs Case Management Specific */
+.violation-severity-medium {
+  color: var(--status-warning);
+  font-weight: bold;
+}
+/* Albanian Customs Case Management Specific */
+.violation-severity-low {
+  color: var(--status-info);
+}
+/* Albanian Customs Case Management Specific */
+.customs-officer-badge {
+  background: var(--customs-gold);
+  color: var(--classic-black);
+  padding: 2px 6px;
+  border: 1px solid var(--classic-black);
+  font-weight: bold;
+  font-size: 10px;
+}
+/* Albanian Customs Case Management Specific */
+.document-stamp {
+  border: 2px solid var(--albanian-red);
+  color: var(--albanian-red);
+  padding: 4px 8px;
+  font-weight: bold;
+  text-align: center;
+  background: white;
+  font-family: var(--system-font);
+  font-size: 12px;
+  transform: rotate(-15deg);
+  position: relative;
+}
+
+/* Classic Windows Button */
+.classic-button {
+  display: inline-block;
+  padding: var(--padding-xs) var(--padding-md);
+  min-height: 23px;
+  min-width: 75px;
+  background: var(--button-face);
+  border: 2px outset var(--button-face);
+  font-family: var(--system-font);
+  font-size: 11px;
+  color: var(--classic-black);
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.2;
+  white-space: nowrap;
+  user-select: none;
+  outline: none;
+}
+/* Classic Button Hover State */
+.classic-button:hover {
+  background: #f8f8f8;
+}
+/* Classic Button Active State */
+.classic-button:active,
+.classic-button.pressed {
+  border: 2px inset var(--button-face);
+  background: #e8e8e8;
+}
+/* Classic Button Disabled State */
+.classic-button:disabled {
+  color: var(--system-disabled-text);
+  background: var(--button-face);
+  border: 2px outset var(--button-face);
+  cursor: default;
+}
+/* Classic Button Small Variant */
+.classic-button.default {
+  border: 2px outset var(--classic-black);
+  font-weight: bold;
+}
+
+/* Material-UI Component Overrides for Classic Look */
+
+/* AppBar - Albanian Government Header */
+.classic-windows-theme .MuiAppBar-root {
+  background: linear-gradient(135deg, var(--government-blue) 0%, var(--customs-navy) 100%) !important;
+  border-bottom: 1px solid var(--classic-border) !important;
+  box-shadow: 0 2px 4px var(--classic-shadow) !important;
+  height: 48px !important;
+}
+/* AppBar Title */
+.classic-windows-theme .MuiToolbar-root {
+  min-height: 48px !important;
+  padding: 0 12px !important;
+}
+
+/* Classic Buttons */
+.classic-windows-theme .MuiButton-root {
+  background: var(--classic-button-bg) !important;
+  border: 1px outset var(--classic-border-light) !important;
+  border-radius: var(--form-border-radius) !important;
+  padding: 6px 16px !important;
+  color: var(--classic-text) !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+  min-height: var(--button-height) !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+}
+/* Classic Buttons Hover State */
+.classic-windows-theme .MuiButton-root:hover {
+  background: var(--classic-button-hover) !important;
+  border: 1px outset var(--classic-border-light) !important;
+}
+/* Classic Buttons Active State */
+.classic-windows-theme .MuiButton-root:active {
+  border: 1px inset var(--classic-border-light) !important;
+  background: var(--classic-button-bg) !important;
+}
+/* Classic Buttons Disabled State */
+.classic-windows-theme .MuiButton-contained {
+  background: var(--classic-active) !important;
+  color: white !important;
+}
+/* Classic Buttons Primary Color */
+.classic-windows-theme .MuiButton-contained.MuiButton-colorError {
+  background: var(--status-danger) !important;
+  color: white !important;
+}
+
+/* Classic Form Controls */
+.classic-windows-theme .MuiTextField-root .MuiInputBase-root {
+  background: white !important;
+  border: 2px inset var(--classic-border) !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+}
+/* Classic Form Controls Focus State */
+.classic-windows-theme .MuiTextField-root .MuiInputBase-input {
+  padding: 4px 8px !important;
+  font-size: 12px !important;
+  height: calc(var(--input-height) - 16px) !important;
+}
+/* Classic Form Controls Hover State */
+.classic-windows-theme .MuiTextField-root .MuiInputBase-root:focus-within {
+  outline: 1px dotted var(--classic-active) !important;
+  outline-offset: -1px !important;
+}
+
+/* Classic Cards */
+.classic-windows-theme .MuiCard-root {
+  background: var(--classic-window-bg) !important;
+  border: 2px outset var(--classic-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 4px var(--classic-shadow) !important;
+  margin: 8px !important;
+}
+/* Classic Card Content */
+.classic-windows-theme .MuiCardContent-root {
+  padding: var(--form-padding) !important;
+  border: 1px inset var(--classic-border-light);
+  margin: 4px;
+}
+
+/* Classic Typography */
+.classic-windows-theme .MuiTypography-h1 {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: var(--classic-text) !important;
+}
+/* Classic Typography */
+.classic-windows-theme .MuiTypography-h2 {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: var(--classic-text) !important;
+}
+/* Classic Typography */
+.classic-windows-theme .MuiTypography-h3 {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color: var(--classic-text) !important;
+}
+/* Classic Typography */
+.classic-windows-theme .MuiTypography-h4,
+.classic-windows-theme .MuiTypography-h5,
+.classic-windows-theme .MuiTypography-h6 {
+  font-size: 13px !important;
+  font-weight: bold !important;
+  color: var(--classic-text) !important;
+}
+/* Classic Typography */
+.classic-windows-theme .MuiTypography-body1,
+.classic-windows-theme .MuiTypography-body2 {
+  font-size: 12px !important;
+  color: var(--classic-text) !important;
+}
+
+/* Classic Tables/Data Grids */
+.classic-table {
+  border: 1px solid var(--classic-border) !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: white !important;
+  font-size: 12px !important;
+}
+/* Classic Table Header */
+.classic-table th {
+  background: linear-gradient(to bottom, #ffffff 0%, var(--classic-header-bg) 100%) !important;
+  border-bottom: 1px solid var(--classic-border) !important;
+  border-right: 1px solid var(--classic-border-light) !important;
+  padding: 8px !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+  color: var(--classic-text) !important;
+  text-align: left !important;
+}
+/* Classic Table Body */
+.classic-table td {
+  border-bottom: 1px solid var(--classic-border-light) !important;
+  border-right: 1px solid var(--classic-border-light) !important;
+  padding: 6px 8px !important;
+  font-size: 12px !important;
+  color: var(--classic-text) !important;
+}
+/* Classic Table Row Hover Effect */
+.classic-table tr:hover {
+  background: #f0f8ff !important;
+}
+/* Classic Table Zebra Striping */
+.classic-table tr:nth-child(even) {
+  background: #f9f9f9 !important;
+}
+
+/* Classic Chips/Status Indicators */
+.classic-windows-theme .MuiChip-root {
+  border-radius: var(--form-border-radius) !important;
+  font-size: 11px !important;
+  height: 24px !important;
+  border: 1px outset var(--classic-border-light) !important;
+}
+/* Classic Chips/Status Indicators Success */
+.classic-windows-theme .MuiChip-colorSuccess {
+  background: var(--status-success) !important;
+  color: white !important;
+}
+/* Classic Chips/Status Indicators Warning */
+.classic-windows-theme .MuiChip-colorWarning {
+  background: var(--status-warning) !important;
+  color: white !important;
+}
+/* Classic Chips/Status Indicators Error */
+.classic-windows-theme .MuiChip-colorError {
+  background: var(--status-danger) !important;
+  color: white !important;
+}
+/* Classic Chips/Status Indicators Info */
+.classic-windows-theme .MuiChip-colorInfo {
+  background: var(--status-info) !important;
+  color: white !important;
+}
+
+/* Classic Paper/Dialogs */
+.classic-windows-theme .MuiPaper-root {
+  background: var(--classic-window-bg) !important;
+  border: 2px outset var(--classic-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 4px var(--classic-shadow) !important;
+}
+
+/* Classic Icons */
+.classic-windows-theme .MuiSvgIcon-root {
+  font-size: 16px !important;
+}
+
+/* Print-specific styles for Albanian official documents */
+@media print {
+  .classic-windows-theme {
+    background: white;
+    color: black;
+  }
+/* Hide interactive elements */
+  .classic-button,
+  .classic-toolbar,
+  .classic-menubar {
+    display: none;
+  }
+/* Ensure text is legible */
+  .document-stamp {
+    border-color: black;
+    color: black;
+  }
+}
+
+/* =================== VIOLATION MANAGEMENT STYLES =================== */
+
+/* Statistics Cards */
+.classic-stat-card {
+  background: var(--classic-white) !important;
+  border: 1px solid var(--classic-border) !important;
+  border-radius: 0 !important;
+  box-shadow: inset 1px 1px 0 var(--highlight-light), inset -1px -1px 0 var(--shadow-dark) !important;
+  transition: all 0.1s ease !important;
+}
+/* Statistics Cards Hover Effect */
+.classic-stat-card:hover {
+  background: var(--classic-button-hover) !important;
+  transform: translateY(-1px);
+}
+/* Statistics Card Header */
+.classic-stat-number {
+  font-family: var(--system-font) !important;
+  font-weight: bold !important;
+  font-size: 1.8rem !important;
+  color: var(--status-active) !important;
+  margin-bottom: 4px !important;
+}
+/* Statistics Card Description */
+.classic-stat-label {
+  font-family: var(--system-font) !important;
+  font-size: 0.875rem !important;
+  color: var(--classic-text-secondary) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Violation List Table */
+.classic-table-container {
+  border: 1px solid var(--classic-border) !important;
+  border-radius: 0 !important;
+  background: var(--classic-white) !important;
+}
+/* Violation List Table Header */
+.classic-table {
+  font-family: var(--system-font) !important;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+/* Violation List Table Header */
+.classic-table-head {
+  background: var(--header-background) !important;
+}
+/* Violation List Table Header Cells */
+.classic-table-head .MuiTableCell-root {
+  background: var(--header-background) !important;
+  color: var(--header-text) !important;
+  font-weight: bold !important;
+  font-family: var(--system-font) !important;
+  font-size: 0.875rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--classic-border) !important;
+  border-right: 1px solid var(--classic-border) !important;
+  padding: 8px 12px !important;
+}
+/* Violation List Table Body */
+.classic-table-row {
+  background: var(--classic-white) !important;
+  border-bottom: 1px solid var(--classic-border-light) !important;
+}
+/* Violation List Table Row Hover Effect */
+.classic-table-row:hover {
+  background: var(--classic-button-hover) !important;
+}
+/* Violation List Table Cells */
+.classic-table-row .MuiTableCell-root {
+  font-family: var(--system-font) !important;
+  font-size: 0.875rem !important;
+  border-right: 1px solid var(--classic-border-light) !important;
+  padding: 6px 12px !important;
+  color: var(--classic-text) !important;
+}
+/* Violation List Table Cells Primary */
+.classic-cell-primary {
+  font-weight: 600 !important;
+  color: var(--classic-active) !important;
+}
+
+.classic-cell-secondary {
+  color: var(--classic-text-secondary) !important;
+  font-style: italic;
+}
+
+/* Status and Severity Chips */
+.classic-chip {
+  font-family: var(--system-font) !important;
+  font-size: 0.75rem !important;
+  font-weight: bold !important;
+  border-radius: 0 !important;
+  border: 1px solid !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 80px;
+  height: 24px !important;
+}
+
+.MuiChip-colorSuccess {
+  background-color: var(--status-success) !important;
+  color: white !important;
+  border-color: var(--status-success) !important;
+}
+
+.MuiChip-colorWarning {
+  background-color: var(--status-warning) !important;
+  color: var(--classic-black) !important;
+  border-color: var(--status-warning) !important;
+}
+
+.MuiChip-colorError {
+  background-color: var(--status-danger) !important;
+  color: white !important;
+  border-color: var(--status-danger) !important;
+}
+
+.MuiChip-colorInfo {
+  background-color: var(--status-info) !important;
+  color: white !important;
+  border-color: var(--status-info) !important;
+}
+
+.MuiChip-colorDefault {
+  background-color: var(--classic-silver) !important;
+  color: var(--classic-black) !important;
+  border-color: var(--classic-border) !important;
+}
+
+/* Action Buttons */
+.classic-action-button {
+  background: var(--classic-button-bg) !important;
+  border: 1px solid var(--classic-border) !important;
+  border-radius: 0 !important;
+  color: var(--classic-text) !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  margin: 0 1px !important;
+}
+
+.classic-action-button:hover {
+  background: var(--classic-button-hover) !important;
+  border-color: var(--classic-active) !important;
+}
+
+.classic-action-primary {
+  background: var(--status-active) !important;
+  color: white !important;
+  border-color: var(--status-active) !important;
+}
+
+.classic-action-primary:hover {
+  background: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+}
+
+/* Form Controls in Filters */
+.classic-textfield .MuiOutlinedInput-root {
+  background: var(--input-background) !important;
+  font-family: var(--system-font) !important;
+  border-radius: 0 !important;
+}
+
+.classic-textfield .MuiOutlinedInput-notchedOutline {
+  border: 1px solid var(--input-border) !important;
+  border-radius: 0 !important;
+}
+
+.classic-textfield .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--input-border-focus) !important;
+}
+
+.classic-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--input-border-focus) !important;
+  border-width: 2px !important;
+}
+
+.classic-select .MuiOutlinedInput-root {
+  background: var(--dropdown-background) !important;
+  font-family: var(--system-font) !important;
+  border-radius: 0 !important;
+}
+
+.classic-select .MuiOutlinedInput-notchedOutline {
+  border: 1px solid var(--input-border) !important;
+  border-radius: 0 !important;
+}
+
+.classic-select .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--input-border-focus) !important;
+}
+
+.classic-select .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--input-border-focus) !important;
+  border-width: 2px !important;
+}
+
+/* Page Header */
+.page-header {
+  background: var(--classic-header-bg) !important;
+  border: 1px solid var(--classic-border) !important;
+  border-radius: 0 !important;
+  margin-bottom: 16px !important;
+}
+
+.page-header .MuiCardHeader-title {
+  font-family: var(--system-font) !important;
+  font-weight: bold !important;
+  color: var(--classic-text) !important;
+}
+
+/* Alert Messages */
+.classic-alert {
+  border-radius: 0 !important;
+  font-family: var(--system-font) !important;
+  border: 1px solid !important;
+}
+
+.classic-alert.MuiAlert-standardInfo {
+  background-color: #e6f3ff !important;
+  border-color: var(--status-info) !important;
+  color: var(--classic-text) !important;
+}
+
+/* Loading States */
+.MuiCircularProgress-root {
+  color: var(--status-active) !important;
+}
+
+/* User Management Styles */
+.permissions-section {
+  margin-bottom: 24px;
+}
+/* Permissions Section */
+.permissions-section h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: var(--classic-text);
+  border-bottom: 1px solid var(--system-3d-shadow);
+  padding-bottom: 4px;
+}
+
+/* Permissions Grid */
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background-color: var(--window-background);
+  border: 1px inset var(--system-3d-shadow);
+}
+/* Permission Item */
+.classic-checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 2px;
+  transition: background-color 0.1s;
+}
+/* Checkbox */
+.classic-checkbox-container:hover {
+  background-color: var(--system-highlight);
+  color: var(--system-highlight-text);
+}
+/* Checkmark */
+.classic-checkmark {
+  width: 13px;
+  height: 13px;
+  border: 1px inset var(--system-3d-shadow);
+  background-color: var(--button-face);
+  display: inline-block;
+  position: relative;
+}
+/* Checkmark Icon */
+.classic-checkbox-container input[type="checkbox"] {
+  display: none;
+}
+/* Checkmark After */
+.classic-checkbox-container input[type="checkbox"]:checked + .classic-checkmark::after {
+  content: '✓';
+  position: absolute;
+  left: 1px;
+  top: -2px;
+  font-size: 10px;
+  color: var(--classic-text);
+  font-weight: bold;
+}
+/* Classic Steps Component */
+.steps-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: var(--system-3d-face);
+  border: 1px inset var(--system-3d-shadow);
+}
+/* Step Item */
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+/* Step Connector */
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: -50%;
+  width: 100%;
+  height: 2px;
+  background-color: var(--system-3d-shadow);
+  z-index: 1;
+}
+/* Step Active */
+.step.completed:not(:last-child)::after {
+  background-color: var(--status-active);
+}
+/* Step Number */
+.step-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--system-3d-shadow);
+  color: var(--system-highlight-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  z-index: 2;
+  position: relative;
+}
+/* Step Active */
+.step.active .step-number {
+  background-color: var(--system-highlight);
+}
+/* Step Completed */
+.step.completed .step-number {
+  background-color: var(--status-active);
+}
+/* Step Title */
+.step-title {
+  font-size: 11px;
+  text-align: center;
+  color: var(--classic-text);
+  max-width: 80px;
+}
+/* Step Active */
+.step.active .step-title {
+  font-weight: bold;
+  color: var(--system-highlight);
+}
+/* Step Completed */
+.step-content {
+  min-height: 400px;
+  padding: 16px;
+  border: 1px inset var(--system-3d-shadow);
+  background-color: var(--window-background);
+}
+/* Confirmation Summary */
+.confirmation-summary {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px inset var(--system-3d-shadow);
+  background-color: var(--window-background);
+}
+/* Confirmation Summary Title */
+.confirmation-summary h3 {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: var(--classic-text);
+}
+/* Confirmation Summary List */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+/* Summary Section */
+.summary-section {
+  padding: 12px;
+  border: 1px outset var(--system-3d-shadow);
+  background-color: var(--button-face);
+}
+/* Summary Section Title */
+.summary-section h4 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--classic-text);
+  border-bottom: 1px solid var(--system-3d-shadow);
+  padding-bottom: 4px;
+}
+/* Summary Section Content */
+.summary-section p {
+  font-size: 11px;
+  margin-bottom: 4px;
+  color: var(--classic-text);
+}
+
+/* Classic Dropdown Enhancement */
+.classic-dropdown {
+  background-color: var(--button-face);
+  border: 1px inset var(--system-3d-shadow);
+  padding: 2px 20px 2px 4px;
+  font-family: var(--system-font);
+  font-size: 11px;
+  color: var(--classic-text);
+  width: 100%;
+  box-sizing: border-box;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23000000' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  background-size: 12px;
+  appearance: none;
+}
+/* Classic Dropdown Focus and Disabled States */
+.classic-dropdown:focus {
+  outline: 1px dotted var(--classic-text);
+  outline-offset: -2px;
+}
+/* Classic Dropdown Hover and Active States */
+.classic-dropdown:disabled {
+  background-color: var(--system-3d-face);
+  color: var(--system-disabled-text);
+}
+
+/* Enhanced Classic Button for Primary Actions */
+.classic-button-primary {
+  background: linear-gradient(to bottom, #4a90e2 0%, #316ac5 100%);
+  color: var(--system-highlight-text);
+  font-weight: bold;
+  border: 2px outset #4a90e2;
+}
+/* Classic Button Primary Hover and Active States */
+.classic-button-primary:hover {
+  background: linear-gradient(to bottom, #5ba0f2 0%, #4170d5 100%);
+}
+/* Classic Button Primary Active State */
+.classic-button-primary:active {
+  border: 2px inset #316ac5;
+  background: linear-gradient(to bottom, #316ac5 0%, #4a90e2 100%);
+}
+/* Classic Button Primary Disabled State */
+.classic-button-primary:disabled {
+  background: var(--system-3d-face);
+  color: var(--system-disabled-text);
+  border: 2px outset var(--system-3d-face);
+}

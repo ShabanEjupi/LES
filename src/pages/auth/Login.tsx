@@ -1,239 +1,235 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import {
-  Box,
-  CardContent,
-  TextField,
-  Button,
-  Typography,
-  Alert,
-  IconButton,
-  InputAdornment,
-  Divider,
-  Container,
-  Paper,
-} from '@mui/material';
-import {
-  Visibility,
-  VisibilityOff,
-  Security,
-  AccountBalance,
-} from '@mui/icons-material';
-import { useAuth } from '../../hooks/useAuth';
-import { useNotifications } from '../../hooks/useNotifications';
+import React, { useState } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>('');
   
-  const { state, login, clearError } = useAuth();
-  const { showError } = useNotifications();
-  const navigate = useNavigate();
+  const { state, login } = useAuth();
   const location = useLocation();
+  
+  // Get redirect path from location state or default to dashboard
+  const from = (location.state as { from?: { pathname?: string } })?.from?.pathname || '/dashboard';
 
   // Redirect if already authenticated
-  useEffect(() => {
-    if (state.isAuthenticated) {
-      const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
-    }
-  }, [state.isAuthenticated, navigate, location]);
-
-  // Clear errors when component unmounts
-  useEffect(() => {
-    return () => {
-      clearError();
-    };
-  }, [clearError]);
+  if (state.isAuthenticated) {
+    return <Navigate to={from} replace />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!username.trim() || !password.trim()) {
-      showError('Please enter both username and password');
+      setError('Ju lutem plotësoni të gjitha fushat.');
       return;
     }
 
+    setError('');
     setIsLoading(true);
+
     try {
-      await login(username.trim(), password);
-      // Navigation will be handled by the useEffect above
-    } catch (error) {
-      console.error('Login failed:', error);
-      // Error will be shown by the auth context
+      await login(username, password);
+    } catch (err) {
+      setError('Përdoruesi ose fjalëkalimi i gabuar. Ju lutem provoni sërish.');
+      console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+  // Demo credentials info
+  const demoCredentials = [
+    { role: 'Administrator', username: 'admin', password: 'admin123' },
+    { role: 'Oficer Doganor', username: 'oficer', password: 'oficer123' },
+    { role: 'Supervisor', username: 'supervisor', password: 'super123' },
+    { role: 'Përdorues', username: 'user', password: 'user123' }
+  ];
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 50%, #e3f2fd 100%)',
-        padding: 2,
-      }}
-    >
-      <Container maxWidth="sm">
-        <Paper
-          elevation={24}
-          sx={{
-            borderRadius: 3,
-            overflow: 'hidden',
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-          }}
-        >
-          {/* Header */}
-          <Box
-            sx={{
-              background: 'linear-gradient(135deg, #1976d2, #1565c0)',
-              color: 'white',
-              p: 4,
-              textAlign: 'center',
-            }}
-          >
-            <AccountBalance sx={{ fontSize: 48, mb: 2 }} />
-            <Typography variant="h4" fontWeight={600} gutterBottom>
-              Customs Administration
-            </Typography>
-            <Typography variant="h6" sx={{ opacity: 0.9 }}>
-              Document Management System
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.8, mt: 1 }}>
-              Sistema e Menaxhimit të Dokumenteve Doganore
-            </Typography>
-          </Box>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #003d82 0%, #1e3a8a 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      fontFamily: 'var(--system-font)'
+    }}>
+      <div className="classic-window" style={{ 
+        width: '100%', 
+        maxWidth: '450px',
+        boxShadow: '4px 4px 12px rgba(0, 0, 0, 0.3)'
+      }}>
+        {/* Republic of Kosova Government Header */}
+        <div style={{
+          background: 'linear-gradient(135deg, #003d82 0%, #1e3a8a 100%)',
+          color: 'white',
+          padding: '16px',
+          textAlign: 'center',
+          borderBottom: '3px solid #e41e20'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '8px' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              background: '#ffd700',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#003d82',
+              fontWeight: 'bold',
+              fontSize: '16px'
+            }}>
+              🇽🇰
+            </div>
+            <div>
+              <div style={{ fontSize: '16px', fontWeight: 'bold', lineHeight: '1.2' }}>
+                REPUBLIKA E KOSOVËS
+              </div>
+              <div style={{ fontSize: '12px', lineHeight: '1.2' }}>
+                Drejtoria e Përgjithshme e Doganave
+              </div>
+            </div>
+          </div>
+          <div style={{ fontSize: '18px', fontWeight: 'bold', color: '#ffd700' }}>
+            Sistemi LES
+          </div>
+          <div style={{ fontSize: '12px', opacity: 0.9 }}>
+            Law Enforcement System
+          </div>
+        </div>
 
-          <CardContent sx={{ p: 4 }}>
-            {/* Error Alert */}
-            {state.error && (
-              <Alert 
-                severity="error" 
-                sx={{ mb: 3 }}
-                onClose={clearError}
-              >
-                {state.error}
-              </Alert>
+        <div className="classic-window-header">
+          🔐 Identifikimi në Sistem
+        </div>
+
+        <div className="classic-window-content">
+          <form onSubmit={handleSubmit}>
+            {error && (
+              <div style={{
+                background: '#ffe6e6',
+                border: '1px solid #ffcccc',
+                color: '#d8000c',
+                padding: '8px 12px',
+                marginBottom: '16px',
+                fontSize: '11px',
+                borderRadius: '2px'
+              }}>
+                ⚠️ {error}
+              </div>
             )}
 
-            {/* Login Form */}
-            <form onSubmit={handleSubmit}>
-              <Box sx={{ mb: 3 }}>
-                <TextField
-                  fullWidth
-                  label="Username / Emri i përdoruesit"
-                  variant="outlined"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  disabled={isLoading}
-                  autoComplete="username"
-                  autoFocus
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 2,
-                    },
-                  }}
-                />
-              </Box>
-
-              <Box sx={{ mb: 3 }}>
-                <TextField
-                  fullWidth
-                  label="Password / Fjalëkalimi"
-                  type={showPassword ? 'text' : 'password'}
-                  variant="outlined"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
-                  autoComplete="current-password"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={handleTogglePassword}
-                          edge="end"
-                          disabled={isLoading}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 2,
-                    },
-                  }}
-                />
-              </Box>
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                size="large"
+            <div className="classic-form-row">
+              <label className="classic-label">👤 Përdoruesi:</label>
+              <input
+                type="text"
+                className="classic-textbox"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Emri i përdoruesit"
                 disabled={isLoading}
-                startIcon={<Security />}
-                sx={{
-                  mt: 2,
-                  mb: 3,
-                  py: 1.5,
-                  borderRadius: 2,
-                  fontSize: '1.1rem',
-                  fontWeight: 600,
-                  background: 'linear-gradient(135deg, #1976d2, #1565c0)',
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #1565c0, #0d47a1)',
-                  },
-                }}
+                maxLength={50}
+                style={{ fontSize: '12px' }}
+              />
+            </div>
+
+            <div className="classic-form-row">
+              <label className="classic-label">🔑 Fjalëkalimi:</label>
+              <input
+                type="password"
+                className="classic-textbox"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Fjalëkalimi"
+                disabled={isLoading}
+                maxLength={100}
+                style={{ fontSize: '12px' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', marginTop: '20px' }}>
+              <button 
+                type="submit" 
+                className="classic-button classic-button-primary"
+                disabled={isLoading || !username.trim() || !password.trim()}
+                style={{ flex: 1 }}
               >
-                {isLoading ? 'Signing In...' : 'Sign In / Hyr'}
-              </Button>
-            </form>
+                {isLoading ? '🔄 Duke u identifikuar...' : '🚪 Hyr në Sistem'}
+              </button>
+              <button 
+                type="button" 
+                className="classic-button"
+                onClick={() => {
+                  setUsername('');
+                  setPassword('');
+                  setError('');
+                }}
+                disabled={isLoading}
+              >
+                🗑️ Pastro
+              </button>
+            </div>
+          </form>
 
-            <Divider sx={{ my: 3 }} />
+          {/* Security Notice */}
+          <div style={{
+            marginTop: '20px',
+            padding: '12px',
+            background: '#f8f9fa',
+            border: '1px inset #c0c0c0',
+            fontSize: '10px',
+            color: '#666'
+          }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>ℹ️ Njoftim Sigurie:</div>
+            <ul style={{ margin: 0, paddingLeft: '16px' }}>
+              <li>Sistemi regjistron të gjitha tentatvat e qasjes</li>
+              <li>Përdorni vetëm kredenciale të autorizuara</li>
+              <li>Mos ndani informacionet tuaja të qasjes</li>
+              <li>Mbyllni seancën pas punës</li>
+            </ul>
+          </div>
 
-            {/* System Information */}
-            <Box sx={{ textAlign: 'center' }}>
-              <Typography variant="body2" color="textSecondary" gutterBottom>
-                Secure Customs Administration Portal
-              </Typography>
-              <Typography variant="caption" color="textSecondary">
-                v1.0.0 - Developed for Albanian Customs Authority
-              </Typography>
-            </Box>
+          {/* Demo Credentials */}
+          <div style={{
+            marginTop: '16px',
+            padding: '12px',
+            background: '#e8f4fd',
+            border: '1px inset #c0c0c0',
+            fontSize: '10px'
+          }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '8px' }}>🧪 Kredenciale Demo:</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px' }}>
+              {demoCredentials.map((cred, index) => (
+                <div key={index} style={{ cursor: 'pointer', padding: '4px', background: 'white', border: '1px solid #ddd' }}
+                     onClick={() => {
+                       setUsername(cred.username);
+                       setPassword(cred.password);
+                     }}>
+                  <strong>{cred.role}</strong><br/>
+                  {cred.username} / {cred.password}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-            {/* Demo Credentials (remove in production) */}
-            {import.meta.env.DEV && (
-              <Box sx={{ mt: 3, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
-                <Typography variant="caption" color="textSecondary" display="block" gutterBottom>
-                  Demo Credentials:
-                </Typography>
-                <Typography variant="caption" display="block">
-                  Admin: admin / admin123
-                </Typography>
-                <Typography variant="caption" display="block">
-                  Inspector: inspector / inspector123
-                </Typography>
-                <Typography variant="caption" display="block">
-                  Clerk: clerk / clerk123
-                </Typography>
-              </Box>
-            )}
-          </CardContent>
-        </Paper>
-      </Container>
-    </Box>
+        {/* Footer */}
+        <div style={{
+          background: '#f0f0f0',
+          padding: '8px',
+          textAlign: 'center',
+          fontSize: '9px',
+          color: '#666',
+          borderTop: '1px solid #c0c0c0'
+        }}>
+          LES v1.0 © 2024 Drejtoria e Përgjithshme e Doganave | Republika e Kosovës
+        </div>
+      </div>
+    </div>
   );
 };
 

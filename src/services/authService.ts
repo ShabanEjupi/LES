@@ -25,7 +25,13 @@ export interface AuthResponse {
  */
 export const login = async (username: string, password: string): Promise<LoginResponse> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth-login`, {
+    console.log('Attempting login for username:', username);
+    
+    // Use real endpoint for authentication
+    const endpoint = `${API_BASE_URL}/auth-login`;
+    console.log('API URL:', endpoint);
+
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,12 +42,22 @@ export const login = async (username: string, password: string): Promise<LoginRe
       }),
     });
 
+    console.log('Login response status:', response.status);
+    console.log('Login response headers:', Object.fromEntries(response.headers.entries()));
+
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || `Login failed with status: ${response.status}`);
+      let errorMessage = `Login failed with status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch (parseError) {
+        console.error('Failed to parse error response:', parseError);
+      }
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
+    console.log('Login response data:', { ...data, token: data.token ? '[REDACTED]' : undefined });
     
     if (!data.success) {
       throw new Error(data.message || 'Login failed');
@@ -55,6 +71,15 @@ export const login = async (username: string, password: string): Promise<LoginRe
     };
   } catch (error) {
     console.error('Login error:', error);
+    
+    // Handle network errors more gracefully
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      return {
+        success: false,
+        message: 'Network error: Unable to connect to the server. Please check your connection and try again.',
+      };
+    }
+    
     return {
       success: false,
       message: error instanceof Error ? error.message : 'Login failed',
@@ -80,13 +105,47 @@ export const logout = async (): Promise<void> => {
  */
 export const verifyToken = async (token: string): Promise<boolean> => {
   try {
-    // Mock token verification for development
-    await new Promise(resolve => setTimeout(resolve, 200)); // Simulate network delay
+    console.log('🔐 Token verification - token length:', token.length);
     
-    // For development, consider all tokens valid if they exist
-    return token === 'mock-jwt-token-12345';
+    // Check if token exists and has basic structure
+    if (!token || token.trim() === '') {
+      console.log('❌ Token is empty');
+      return false;
+    }
+    
+    // Basic JWT structure check (should have 3 parts separated by dots)
+    const parts = token.split('.');
+    console.log('🔍 Token parts count:', parts.length);
+    
+    if (parts.length !== 3) {
+      console.log('❌ Invalid JWT structure');
+      return false;
+    }
+    
+    try {
+      // Decode the payload to check expiration
+      const payload = JSON.parse(atob(parts[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+      
+      console.log('📅 Token payload:', { 
+        exp: payload.exp, 
+        currentTime, 
+        isExpired: payload.exp && payload.exp < currentTime 
+      });
+      
+      if (payload.exp && payload.exp < currentTime) {
+        console.log('❌ Token has expired');
+        return false;
+      }
+      
+      console.log('✅ Token appears valid');
+      return true;
+    } catch (decodeError) {
+      console.error('❌ Error decoding token:', decodeError);
+      return false;
+    }
   } catch (error) {
-    console.error('Token verification error:', error);
+    console.error('❌ Token verification error:', error);
     return false;
   }
 };
