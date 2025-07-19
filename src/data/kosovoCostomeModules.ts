@@ -34,6 +34,7 @@ export interface KosovoModule {
   relatedModules?: string[];
   workflows?: string[];
   reports?: string[];
+  route?: string;
   active: boolean;
 }
 
@@ -1529,6 +1530,9 @@ export const allKosovoModules: KosovoModule[] = [
   ...searchModules,
   ...notificationModules
 ];
+
+// Import the complete 800+ modules system
+export { COMPLETE_KOSOVO_CUSTOMS_MODULES } from './Complete800ModulesSystem';
 
 // Module categories for organization
 export const moduleCategories = {

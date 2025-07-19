@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../contexts/auth/AuthContext';
 import { ClassicCard } from '../common/ClassicCard';
 import { ClassicButton } from '../common/ClassicButton';
@@ -24,7 +24,7 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
   const [sortBy, setSortBy] = useState<'name' | 'priority' | 'category'>('category');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  const allModules = [...allKosovoModules, ...allExtendedModules];
+  const allModules = useMemo(() => [...allKosovoModules, ...allExtendedModules], []);
 
   useEffect(() => {
     let modules = allModules.filter(module => module.active);
@@ -83,7 +83,7 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
     });
 
     setFilteredModules(modules);
-  }, [searchTerm, selectedCategory, sortBy, state.user]);
+  }, [searchTerm, selectedCategory, sortBy, state.user, allModules]);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -139,14 +139,14 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
         <div className="modules-controls">
           <div className="view-controls">
             <ClassicButton
-              variant={viewMode === 'grid' ? 'primary' : 'default'}
+              variant={'default'}
               onClick={() => setViewMode('grid')}
               size="small"
             >
               Grid View
             </ClassicButton>
             <ClassicButton
-              variant={viewMode === 'list' ? 'primary' : 'default'}
+              variant={'primary'}
               onClick={() => setViewMode('list')}
               size="small"
             >
@@ -247,14 +247,14 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
       <div className="modules-controls">
         <div className="view-controls">
           <ClassicButton
-            variant={viewMode === 'grid' ? 'primary' : 'default'}
+            variant={'primary'}
             onClick={() => setViewMode('grid')}
             size="small"
           >
             Grid View
           </ClassicButton>
           <ClassicButton
-            variant={viewMode === 'list' ? 'primary' : 'default'}
+            variant={'default'}
             onClick={() => setViewMode('list')}
             size="small"
           >
@@ -322,11 +322,14 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
             
             <div className="modules-grid-container">
               {modules.map((module) => (
-                <ClassicCard 
+                <div 
                   key={module.id}
-                  className="module-card"
+                  className="module-card-wrapper"
                   onClick={() => handleModuleClick(module)}
                 >
+                  <ClassicCard 
+                    className="module-card"
+                  >
                   <div className="module-header">
                     <span className="module-icon">{module.icon}</span>
                     <div className="module-badges">
@@ -364,7 +367,7 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
                       variant="primary" 
                       size="small"
                       onClick={(e) => {
-                        e.stopPropagation();
+                        e?.stopPropagation();
                         handleModuleClick(module);
                       }}
                     >
@@ -372,6 +375,7 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
                     </ClassicButton>
                   </div>
                 </ClassicCard>
+                </div>
               ))}
             </div>
           </div>

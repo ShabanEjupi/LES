@@ -3,8 +3,8 @@ import { useAuth } from '../../contexts/auth/AuthContext';
 import { ClassicCard } from '../common/ClassicCard';
 import { ClassicButton } from '../common/ClassicButton';
 import ModulesGrid from '../common/ModulesGrid';
-import { allKosovoModules } from '../../data/kosovoCostomeModules';
-import { allExtendedModules } from '../../data/extendedKosovoModules';
+// import { allKosovoModules } from '../../data/kosovoCostomeModules';
+// import { allExtendedModules } from '../../data/extendedKosovoModules';
 import type { KosovoModule, ModuleField } from '../../data/kosovoCostomeModules';
 import '../../styles/classic-theme.css';
 
@@ -29,8 +29,8 @@ const DynamicModuleForm: React.FC = () => {
     status: string;
   }>>([]);
 
-  // Combine all modules
-  const allModules = [...allKosovoModules, ...allExtendedModules];
+  // Combine all modules for future use
+  // const allModules = [...allKosovoModules, ...allExtendedModules];
 
   useEffect(() => {
     // Load saved entries from localStorage

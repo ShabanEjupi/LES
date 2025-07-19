@@ -1,16 +1,18 @@
 {
-  "name": "les",
+  "name": "kosovo-customs-les",
   "private": true,
-  "version": "1.0.0",
+  "version": "2025.1.0",
+  "description": "Law Enforcement System - Republic of Kosovo Customs Administration 2025",
+  "author": "Republic of Kosovo - Customs Administration",
+  "license": "MIT",
   "type": "module",
-  "workspaces": [
-    "."
-  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf dist node_modules/.vite",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
