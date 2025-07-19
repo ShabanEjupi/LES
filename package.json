@@ -1,8 +1,11 @@
 {
   "name": "les",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "."
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -36,8 +39,7 @@
     "yup": "^1.6.1",
     "@neondatabase/serverless": "^0.10.1",
     "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "neondatabase": "^1.0.0"
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

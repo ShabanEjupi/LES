@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/auth/AuthContext';
 import { ClassicCard } from '../common/ClassicCard';
 import { ClassicButton } from '../common/ClassicButton';
 
@@ -220,8 +220,7 @@ const ComprehensiveDataEntry: React.FC = () => {
         { name: 'reportFormat', label: 'Formati', type: 'select', required: true },
         { name: 'includeCharts', label: 'Përfshi Grafikë', type: 'select' }
       ]
-    }
-  ];,
+    },
     {
       id: 'cases',
       name: 'Rastet',

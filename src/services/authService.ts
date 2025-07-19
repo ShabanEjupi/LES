@@ -27,62 +27,73 @@ export const login = async (username: string, password: string): Promise<LoginRe
   try {
     console.log('Attempting login for username:', username);
     
-    // Use real endpoint for authentication
-    const endpoint = `${API_BASE_URL}/auth-login`;
-    console.log('API URL:', endpoint);
-
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username.trim(),
-        password: password
-      }),
-    });
-
-    console.log('Login response status:', response.status);
-    console.log('Login response headers:', Object.fromEntries(response.headers.entries()));
-
-    if (!response.ok) {
-      let errorMessage = `Login failed with status: ${response.status}`;
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.message || errorMessage;
-      } catch (parseError) {
-        console.error('Failed to parse error response:', parseError);
-      }
-      throw new Error(errorMessage);
-    }
-
-    const data = await response.json();
-    console.log('Login response data:', { ...data, token: data.token ? '[REDACTED]' : undefined });
+    // Mock authentication for development - always return success with demo users
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
     
-    if (!data.success) {
-      throw new Error(data.message || 'Login failed');
+    // Demo users for testing
+    const demoUsers = {
+      'admin': { password: 'admin123', role: 'ADMIN', name: 'Administrator' },
+      'director': { password: 'director123', role: 'DIRECTOR', name: 'Drejtori i Përgjithshëm' },
+      'chief': { password: 'chief123', role: 'SECTOR_CHIEF', name: 'Kreu i Sektorit' },
+      'officer': { password: 'officer123', role: 'OFFICER', name: 'Oficer Doganor' },
+      'test': { password: 'test', role: 'OFFICER', name: 'Test User' }
+    };
+    
+    const user = demoUsers[username.toLowerCase() as keyof typeof demoUsers];
+    
+    if (!user || user.password !== password) {
+      return {
+        success: false,
+        message: 'Emri i përdoruesit ose fjalëkalimi është i gabuar',
+      };
     }
+    
+    const userData = {
+      id: Date.now().toString(),
+      username: username,
+      email: `${username}@dogana.rks-gov.net`,
+      fullName: user.name,
+      role: {
+        id: user.role,
+        name: user.role,
+        description: user.role === 'ADMIN' ? 'System Administrator' : 
+                    user.role === 'DIRECTOR' ? 'General Director' :
+                    user.role === 'SECTOR_CHIEF' ? 'Sector Chief' : 'Customs Officer',
+        permissions: [],
+        isSystemRole: true,
+        kosovoLegalBasis: 'Law No. 05/L-037 on Customs Code of Kosovo'
+      },
+      department: 'CUSTOMS_PROCEDURES' as const,
+      customsPost: 'Prishtinë Airport',
+      officerBadgeNumber: `KS-${Date.now().toString().slice(-6)}`,
+      permissions: [],
+      isActive: true,
+      lastLogin: new Date(),
+      passwordHash: 'mock-hash', // In real app, this would be properly hashed
+      failedLoginAttempts: 0,
+      dataAccessLevel: user.role === 'ADMIN' || user.role === 'DIRECTOR' ? 'SECRET' as const :
+                      user.role === 'SECTOR_CHIEF' ? 'CONFIDENTIAL' as const : 'INTERNAL' as const,
+      hierarchyLevel: user.role === 'OFFICER' ? 1 :
+                     user.role === 'SECTOR_CHIEF' ? 3 :
+                     user.role === 'DIRECTOR' ? 4 : 4, // ADMIN = 4
+      sectorId: 'SEC001',
+      teamId: 'TEAM001',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
 
     return {
       success: true,
-      user: data.user,
-      token: data.token,
-      message: data.message
+      user: userData,
+      token: `mock-token-${Date.now()}`,
+      message: 'Kyçja u krye me sukses'
     };
   } catch (error) {
     console.error('Login error:', error);
     
-    // Handle network errors more gracefully
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      return {
-        success: false,
-        message: 'Network error: Unable to connect to the server. Please check your connection and try again.',
-      };
-    }
-    
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Login failed',
+      message: error instanceof Error ? error.message : 'Gabim gjatë kyçjes',
     };
   }
 };
