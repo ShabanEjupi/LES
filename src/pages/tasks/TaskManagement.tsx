@@ -36,6 +36,7 @@ const TaskManagement: React.FC = () => {
   });
   const [view, setView] = useState<'list' | 'calendar' | 'board'>('list');
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  // Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   useEffect(() => {
@@ -191,6 +192,8 @@ const TaskManagement: React.FC = () => {
 
   const handleCreateTask = () => {
     setShowCreateModal(true);
+    // TODO: Implement task creation modal
+    console.log('Create task modal would open, showCreateModal:', showCreateModal);
   };
 
   const filteredTasks = getFilteredTasks();

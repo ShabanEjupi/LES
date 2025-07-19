@@ -7,7 +7,6 @@ import * as authService from '../services/authService';
 interface AuthProviderProps {
   children: ReactNode;
 }
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -62,7 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       dispatch({ type: 'AUTH_START' });
       
       const response = await authService.login(username, password);
-      
+      // O
       if (response.success && response.user) {
         // Store token and user info
         if (response.token) {

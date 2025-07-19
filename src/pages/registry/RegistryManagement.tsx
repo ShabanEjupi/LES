@@ -1,0 +1,38 @@
+import React from 'react';
+import { Box, Paper, Typography, Button } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+
+const RegistryManagement: React.FC = () => {
+  return (
+    <Box className="classic-container">
+      <Paper className="classic-paper">
+        <Box className="classic-header">
+          <Typography variant="h5" component="h1" className="classic-title">
+            Menaxhimi i Regjistrave
+          </Typography>
+          <Typography variant="body2" className="classic-subtitle">
+            Administrimi i sistemit të regjistrave të doganave
+          </Typography>
+        </Box>
+
+        <Box className="classic-toolbar">
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            className="classic-button classic-button-primary"
+          >
+            Regjistër i Ri
+          </Button>
+        </Box>
+
+        <Box textAlign="center" py={4}>
+          <Typography variant="body1" color="text.secondary">
+            Moduli i menaxhimit të regjistrave në zhvillim e sipër...
+          </Typography>
+        </Box>
+      </Paper>
+    </Box>
+  );
+};
+
+export default RegistryManagement;

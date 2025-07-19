@@ -1,0 +1,70 @@
+/* Classic Card Styles for LES System */
+.classic-card {
+  border: 2px outset #c0c0c0;
+  background: #f0f0f0;
+  padding: 16px;
+  margin: 16px 0;
+  border-radius: 0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.classic-card--elevated {
+  border: 2px outset #a0a0a0;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.classic-card-header {
+  border-bottom: 1px solid #c0c0c0;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.classic-card-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.classic-card-content {
+  color: #000000;
+  line-height: 1.4;
+}
+
+/* Panel Style Variation */
+.classic-panel {
+  border: 2px inset #c0c0c0;
+  background: #f8f8f8;
+  padding: 12px;
+  margin: 8px 0;
+}
+
+.classic-panel-header {
+  background: linear-gradient(to bottom, #e0e0e0 0%, #d0d0d0 100%);
+  border: 1px outset #c0c0c0;
+  padding: 4px 8px;
+  margin: -12px -12px 12px -12px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* Group Box Style */
+.classic-groupbox {
+  border: 2px groove #c0c0c0;
+  padding: 16px;
+  margin: 12px 0;
+  position: relative;
+}
+
+.classic-groupbox-legend {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  background: #f0f0f0;
+  padding: 0 4px;
+  font-weight: bold;
+  font-size: 11px;
+  color: #000000;
+}

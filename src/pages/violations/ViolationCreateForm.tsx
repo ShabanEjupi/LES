@@ -104,7 +104,7 @@ const ViolationCreateForm: React.FC = () => {
     'Dokumenta të skaduara': ['Licenca e skaduar', 'Sigurim i skaduar', 'Regjistrimi i skaduar']
   };
 
-  const handleInputChange = (section: keyof ViolationFormData, field: string, value: any) => {
+  const handleInputChange = (section: keyof ViolationFormData, field: string, value: string | number | boolean | Date) => {
     setFormData(prev => ({
       ...prev,
       [section]: typeof prev[section] === 'object' && !Array.isArray(prev[section])
@@ -113,6 +113,8 @@ const ViolationCreateForm: React.FC = () => {
     }));
   };
 
+  // Array change handlers (not currently used in UI but kept for future use)
+  /*
   const handleArrayChange = (arrayName: 'witnesses' | 'documents' | 'evidence', index: number, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -133,6 +135,7 @@ const ViolationCreateForm: React.FC = () => {
       [arrayName]: prev[arrayName].filter((_, i) => i !== index)
     }));
   };
+  */
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,7 +198,7 @@ const ViolationCreateForm: React.FC = () => {
           <select
             className="classic-dropdown"
             value={formData.priority}
-            onChange={(e) => handleInputChange('priority', '', e.target.value as any)}
+            onChange={(e) => handleInputChange('priority', '', e.target.value as 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL')}
             style={{ fontSize: '11px' }}
           >
             <option value="LOW">I ulët</option>

@@ -1157,7 +1157,7 @@ export const COMPREHENSIVE_SYSTEM_MODULES: SystemModule[] = [
 /**
  * Get modules for user based on hierarchical access control
  */
-export function getModulesForUser(userRole: string, department?: string, customsPost?: string): SystemModule[] {
+export function getModulesForUser(userRole: string): SystemModule[] {
   const roleHierarchy: Record<string, number> = {
     'officer': 1,           // Oficer Doganor
     'supervisor': 2,        // Mbikëqyrës  

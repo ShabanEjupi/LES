@@ -17,6 +17,9 @@ export interface User {
   failedLoginAttempts: number;
   accountLockedUntil?: Date;
   dataAccessLevel: DataAccessLevel; // GDPR compliance levels
+  hierarchyLevel: number; // 1-Officer, 2-Supervisor, 3-SectorChief, 4-Director
+  sectorId?: string; // Sector assignment
+  teamId?: string; // Team assignment
   createdAt: Date;
   updatedAt: Date;
 }

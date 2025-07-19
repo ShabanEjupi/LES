@@ -39,7 +39,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   );
 
   // Group modules by category
-  const modulesByCategory = userModules.reduce((acc: Record<string, SystemModule[]>, module) => {
+  const modulesByCategory = userModules.reduce((acc: Record<string, SystemModule[]>, module: SystemModule) => {
     const category = module.category;
     if (!acc[category]) {
       acc[category] = [];
@@ -166,7 +166,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           </div>
 
           <div className="sidebar-content">
-            {Object.entries(modulesByCategory).map(([category, modules]) => (
+            {Object.entries(modulesByCategory).map(([category, modules]: [string, SystemModule[]]) => (
               <div key={category} className="module-category">
                 <div 
                   className={`category-header ${selectedCategory === category ? 'active' : ''}`}
@@ -184,7 +184,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 
                 {!sidebarCollapsed && selectedCategory === category && (
                   <div className="module-list">
-                    {modules.map(module => (
+                    {modules.map((module: SystemModule) => (
                       <div
                         key={module.id}
                         className={`module-item ${location.pathname === module.route ? 'active' : ''}`}

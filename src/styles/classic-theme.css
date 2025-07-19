@@ -613,7 +613,7 @@ html, body {
   font-weight: 600 !important;
   color: var(--classic-active) !important;
 }
-
+/* Violation List Table Cells Secondary */
 .classic-cell-secondary {
   color: var(--classic-text-secondary) !important;
   font-style: italic;
@@ -631,31 +631,31 @@ html, body {
   min-width: 80px;
   height: 24px !important;
 }
-
+/* Status and Severity Chips Success */
 .MuiChip-colorSuccess {
   background-color: var(--status-success) !important;
   color: white !important;
   border-color: var(--status-success) !important;
 }
-
+/* Status and Severity Chips Warning */
 .MuiChip-colorWarning {
   background-color: var(--status-warning) !important;
   color: var(--classic-black) !important;
   border-color: var(--status-warning) !important;
 }
-
+/* Status and Severity Chips Error */
 .MuiChip-colorError {
   background-color: var(--status-danger) !important;
   color: white !important;
   border-color: var(--status-danger) !important;
 }
-
+/* Status and Severity Chips Info */
 .MuiChip-colorInfo {
   background-color: var(--status-info) !important;
   color: white !important;
   border-color: var(--status-info) !important;
 }
-
+/* Default Chip Style */
 .MuiChip-colorDefault {
   background-color: var(--classic-silver) !important;
   color: var(--classic-black) !important;
@@ -677,13 +677,13 @@ html, body {
   background: var(--classic-button-hover) !important;
   border-color: var(--classic-active) !important;
 }
-
+/* Action Primary Button */
 .classic-action-primary {
   background: var(--status-active) !important;
   color: white !important;
   border-color: var(--status-active) !important;
 }
-
+/* Action Primary Button Hover */
 .classic-action-primary:hover {
   background: var(--primary-dark) !important;
   border-color: var(--primary-dark) !important;
@@ -695,7 +695,7 @@ html, body {
   font-family: var(--system-font) !important;
   border-radius: 0 !important;
 }
-
+/* Text Field Notched Outline */
 .classic-textfield .MuiOutlinedInput-notchedOutline {
   border: 1px solid var(--input-border) !important;
   border-radius: 0 !important;

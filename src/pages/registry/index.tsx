@@ -1,0 +1,10 @@
+export { default as AdministrativeRegistry } from './AdministrativeRegistry';
+export { default as ProtocolBook } from './ProtocolBook';
+export { default as RegistryManagement } from './RegistryManagement';
+export { default as CaseRegistry } from './CaseRegistry';
+export { default as DocumentRegistry } from './DocumentRegistry';
+export { default as ViolationRegistry } from './ViolationRegistry';
+export { default as UserRegistry } from './UserRegistry';
+export { default as CustomsRegistry } from './CustomsRegistry';
+export { default as EvidenceRegistry } from './EvidenceRegistry';
+export { default as ActivityRegistry } from './ActivityRegistry';
