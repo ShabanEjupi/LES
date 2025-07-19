@@ -26,6 +26,7 @@ import AdministrativeFines from './pages/fines/AdministrativeFines';
 import Settings from './pages/settings/Settings';
 import DatabaseInit from './pages/admin/DatabaseInit';
 import SystemDiagnostics from './pages/admin/SystemDiagnostics';
+import ComprehensiveDataEntry from './components/forms/ComprehensiveDataEntry';
 
 import './styles/classic-theme.css';
 
@@ -140,6 +141,15 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/data-entry" 
+                element={
+                  <ProtectedRoute>
+                    <ComprehensiveDataEntry />
                   </ProtectedRoute>
                 } 
               />

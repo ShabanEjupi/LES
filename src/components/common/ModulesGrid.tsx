@@ -103,6 +103,22 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({ onModuleClick }) => {
         >
           🏢 Të gjitha ({userModules.length})
         </button>
+        <button 
+          className="quick-entry-btn"
+          onClick={() => navigate('/data-entry')}
+          style={{
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontSize: '12px'
+          }}
+        >
+          ⚡ Hyrje e Shpejtë e të Dhënave
+        </button>
         {Object.keys(modulesByCategory).map(category => (
           <button
             key={category}
