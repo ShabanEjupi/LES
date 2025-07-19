@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/useAuth';
+import { useAuth } from '../../contexts';
 import { getModulesWithCaseSynchronization, ModuleCategory, KOSOVO_CUSTOMS_HIERARCHY } from '../../types/KosovoCustomsModules';
 import type { SystemModule } from '../../types/KosovoCustomsModules';
 import './MainLayout.css';

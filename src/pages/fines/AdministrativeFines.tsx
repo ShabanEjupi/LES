@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/useAuth';
+import { useAuth } from '../../contexts';
 
 interface AdministrativeFine {
   id: string;

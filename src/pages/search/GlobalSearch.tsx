@@ -98,7 +98,8 @@ const GlobalSearch: React.FC = () => {
       setQuickResults([]);
       setShowResults(false);
     }
-  }, [searchQuery, selectedCategory]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, selectedCategory]); // performQuickSearch is stable callback, no need to include
 
   const performQuickSearch = useCallback(async () => {
     setIsSearching(true);
