@@ -9,6 +9,7 @@ import { ClassicCard } from '../common/ClassicCard';
 import { ClassicButton } from '../common/ClassicButton';
 import type { KosovoModule, ModuleField } from '../../data/kosovoCostomeModules';
 import '../../styles/classic-theme.css';
+import './UserDataInputSystem.css';
 
 interface UserDataEntry {
   id: string;
@@ -54,7 +55,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
   };
 
   // Handle form field changes
-  const handleFieldChange = (fieldId: string, value: any) => {
+  const handleFieldChange = (fieldId: string, value: string | number | boolean | string[]) => {
     setFormData(prev => ({
       ...prev,
       [fieldId]: value
@@ -109,7 +110,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
           <input
             type="text"
             id={field.id}
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             className="classic-input"
             required={field.required}
@@ -122,7 +123,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
           <input
             type="number"
             id={field.id}
-            value={value}
+            value={Number(value) || ''}
             onChange={(e) => handleFieldChange(field.id, parseFloat(e.target.value))}
             className="classic-input"
             required={field.required}
@@ -135,7 +136,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
           <input
             type="date"
             id={field.id}
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             className="classic-input"
             required={field.required}
@@ -146,7 +147,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
         return (
           <select
             id={field.id}
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             className="classic-select"
             required={field.required}
@@ -185,7 +186,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
         return (
           <textarea
             id={field.id}
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             className="classic-textarea"
             required={field.required}
@@ -218,7 +219,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
               type="number"
               id={field.id}
               step="0.01"
-              value={value}
+              value={Number(value) || ''}
               onChange={(e) => handleFieldChange(field.id, parseFloat(e.target.value))}
               className="classic-input"
               required={field.required}
@@ -233,7 +234,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
           <input
             type="text"
             id={field.id}
-            value={value}
+            value={String(value)}
             onChange={(e) => handleFieldChange(field.id, e.target.value)}
             className="classic-input"
             required={field.required}
@@ -276,7 +277,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
                 </div>
               </div>
               <div className="entry-actions">
-                <ClassicButton size="small" variant="secondary">
+                <ClassicButton size="small" variant="default">
                   Shiko Detajet
                 </ClassicButton>
                 <ClassicButton size="small" variant="danger">
@@ -300,19 +301,19 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
 
         <div className="navigation-tabs">
           <ClassicButton
-            variant={activeSection === 'input' ? 'primary' : 'secondary'}
+            variant={activeSection === 'input' ? 'primary' : 'default'}
             onClick={() => setActiveSection('input')}
           >
             📝 Fut te Dhena
           </ClassicButton>
           <ClassicButton
-            variant={activeSection === 'view' ? 'primary' : 'secondary'}
+            variant={activeSection === 'view' ? 'primary' : 'default'}
             onClick={() => setActiveSection('view')}
           >
             👁️ Shiko te Dhenat
           </ClassicButton>
           <ClassicButton
-            variant={activeSection === 'manage' ? 'primary' : 'secondary'}
+            variant={activeSection === 'manage' ? 'primary' : 'default'}
             onClick={() => setActiveSection('manage')}
           >
             ⚙️ Menaxho
@@ -360,7 +361,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
                     </ClassicButton>
                     <ClassicButton 
                       type="button" 
-                      variant="secondary"
+                      variant="default"
                       onClick={() => setFormData({})}
                     >
                       🗑️ Pastro Formen
@@ -400,7 +401,7 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
               <ClassicButton variant="primary">
                 📊 Eksporto te Dhenat
               </ClassicButton>
-              <ClassicButton variant="secondary">
+              <ClassicButton variant="default">
                 📥 Importo te Dhena
               </ClassicButton>
               <ClassicButton variant="danger">
@@ -410,177 +411,6 @@ const UserDataInputSystem: React.FC<UserDataInputProps> = ({
           </div>
         )}
       </ClassicCard>
-
-      <style jsx>{`
-        .user-data-input-system {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 20px;
-        }
-
-        .system-header {
-          text-align: center;
-          margin-bottom: 30px;
-          border-bottom: 2px solid #1e40af;
-          padding-bottom: 20px;
-        }
-
-        .navigation-tabs {
-          display: flex;
-          gap: 10px;
-          margin-bottom: 30px;
-          justify-content: center;
-        }
-
-        .module-info {
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          border-radius: 8px;
-          padding: 20px;
-          margin-bottom: 20px;
-        }
-
-        .module-meta {
-          display: flex;
-          gap: 15px;
-          margin-top: 10px;
-          font-size: 14px;
-        }
-
-        .form-fields {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 20px;
-          margin-bottom: 30px;
-        }
-
-        .form-field {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .field-label {
-          font-weight: 600;
-          margin-bottom: 5px;
-          color: #374151;
-        }
-
-        .required {
-          color: #ef4444;
-          margin-left: 3px;
-        }
-
-        .currency-input {
-          position: relative;
-        }
-
-        .currency-symbol {
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #6b7280;
-        }
-
-        .entries-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-          gap: 20px;
-        }
-
-        .entry-card {
-          border: 1px solid #e5e7eb;
-        }
-
-        .entry-header {
-          display: flex;
-          justify-content: between;
-          align-items: center;
-          margin-bottom: 15px;
-        }
-
-        .status-badge {
-          padding: 4px 8px;
-          border-radius: 4px;
-          font-size: 12px;
-          font-weight: 600;
-          text-transform: uppercase;
-        }
-
-        .status-submitted {
-          background: #fef3c7;
-          color: #d97706;
-        }
-
-        .status-approved {
-          background: #d1fae5;
-          color: #059669;
-        }
-
-        .status-rejected {
-          background: #fee2e2;
-          color: #dc2626;
-        }
-
-        .data-preview {
-          max-height: 200px;
-          overflow-y: auto;
-          border: 1px solid #e5e7eb;
-          border-radius: 4px;
-          padding: 10px;
-        }
-
-        .data-item {
-          display: flex;
-          gap: 10px;
-          margin-bottom: 5px;
-          font-size: 14px;
-        }
-
-        .data-key {
-          font-weight: 600;
-          color: #374151;
-        }
-
-        .data-value {
-          color: #6b7280;
-        }
-
-        .entry-actions {
-          display: flex;
-          gap: 10px;
-          margin-top: 15px;
-        }
-
-        .stats {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 20px;
-          margin-bottom: 30px;
-        }
-
-        .stat-card {
-          background: #f8fafc;
-          border: 1px solid #e2e8f0;
-          border-radius: 8px;
-          padding: 20px;
-          text-align: center;
-        }
-
-        .stat-number {
-          display: block;
-          font-size: 2em;
-          font-weight: bold;
-          color: #1e40af;
-          margin-top: 10px;
-        }
-
-        .management-actions {
-          display: flex;
-          gap: 15px;
-          justify-content: center;
-        }
-      `}</style>
     </div>
   );
 };
