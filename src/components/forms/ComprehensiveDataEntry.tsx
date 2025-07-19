@@ -70,6 +70,169 @@ const ComprehensiveDataEntry: React.FC = () => {
         { name: 'primaryOfficer', label: 'Oficeri Kryesor', type: 'select', required: true },
         { name: 'department', label: 'Departamenti', type: 'select', required: true },
         { name: 'estimatedDuration', label: 'Kohëzgjatja e Parashikuar', type: 'number' },
+        { name: 'relatedViolations', label: 'Kundërvajtjet e Lidhura', type: 'text' }
+      ]
+    },
+    {
+      id: 'activities',
+      name: 'Aktivitetet',
+      icon: '📝',
+      description: 'Krijimi i aktiviteteve dhe detyrave',
+      fields: [
+        { name: 'activityType', label: 'Lloji i Aktivitetit', type: 'select', required: true },
+        { name: 'activityTitle', label: 'Titulli i Aktivitetit', type: 'text', required: true },
+        { name: 'dueDate', label: 'Data e Përfundimit', type: 'date', required: true },
+        { name: 'assignedTeam', label: 'Ekipi i Caktuar', type: 'text' },
+        { name: 'requiredResources', label: 'Resurset e Nevojshme', type: 'textarea' },
+        { name: 'expectedOutcome', label: 'Rezultati i Pritur', type: 'textarea' }
+      ]
+    },
+    {
+      id: 'vehicles',
+      name: 'Mjetet e Transportit',
+      icon: '🚛',
+      description: 'Regjistrimi i mjeteve të transportit',
+      fields: [
+        { name: 'plateNumber', label: 'Numri i Targës', type: 'text', required: true },
+        { name: 'vehicleType', label: 'Lloji i Mjetit', type: 'select', required: true },
+        { name: 'make', label: 'Marka', type: 'text' },
+        { name: 'model', label: 'Modeli', type: 'text' },
+        { name: 'year', label: 'Viti i Prodhimit', type: 'number' },
+        { name: 'driverName', label: 'Emri i Shoferit', type: 'text' },
+        { name: 'driverLicense', label: 'Nr. i Licencës', type: 'text' },
+        { name: 'capacity', label: 'Kapaciteti', type: 'number' }
+      ]
+    },
+    {
+      id: 'penalties',
+      name: 'Gjobat Administrative',
+      icon: '💰',
+      description: 'Shqiptimi i gjobave administrative',
+      fields: [
+        { name: 'penaltyType', label: 'Lloji i Gjobës', type: 'select', required: true },
+        { name: 'amount', label: 'Shuma (EUR)', type: 'number', required: true },
+        { name: 'reason', label: 'Arsyeja', type: 'textarea', required: true },
+        { name: 'violationRef', label: 'Referenca e Kundërvajtjes', type: 'text' },
+        { name: 'paymentDeadline', label: 'Afati i Pagesës', type: 'date' },
+        { name: 'legalBasis', label: 'Baza Ligjore', type: 'text' }
+      ]
+    },
+    {
+      id: 'documents',
+      name: 'Dokumentat',
+      icon: '📄',
+      description: 'Menaxhimi i dokumentave',
+      fields: [
+        { name: 'documentType', label: 'Lloji i Dokumentit', type: 'select', required: true },
+        { name: 'documentNumber', label: 'Numri i Dokumentit', type: 'text', required: true },
+        { name: 'issueDate', label: 'Data e Lëshimit', type: 'date' },
+        { name: 'validUntil', label: 'Vlen deri më', type: 'date' },
+        { name: 'issuedBy', label: 'Lëshuar nga', type: 'text' },
+        { name: 'purpose', label: 'Qëllimi', type: 'textarea' }
+      ]
+    },
+    {
+      id: 'confiscated-goods',
+      name: 'Artikujt e Konfiskuar',
+      icon: '📦',
+      description: 'Menaxhimi i mallrave të konfiskuara',
+      fields: [
+        { name: 'goodsType', label: 'Lloji i Mallit', type: 'select', required: true },
+        { name: 'description', label: 'Përshkrimi', type: 'textarea', required: true },
+        { name: 'quantity', label: 'Sasia', type: 'number', required: true },
+        { name: 'unit', label: 'Njësia Matëse', type: 'select', required: true },
+        { name: 'estimatedValue', label: 'Vlera e Vlerësuar', type: 'number' },
+        { name: 'confiscationDate', label: 'Data e Konfiskimit', type: 'date', required: true },
+        { name: 'storageLocation', label: 'Vendi i Ruajtjes', type: 'text' },
+        { name: 'condition', label: 'Gjendja', type: 'select' }
+      ]
+    },
+    {
+      id: 'audit-diary',
+      name: 'Ditari i Auditimit',
+      icon: '📓',
+      description: 'Regjistrimi i aktiviteteve të auditimit',
+      fields: [
+        { name: 'auditType', label: 'Lloji i Auditimit', type: 'select', required: true },
+        { name: 'auditDate', label: 'Data e Auditimit', type: 'date', required: true },
+        { name: 'auditor', label: 'Auditues', type: 'text', required: true },
+        { name: 'department', label: 'Departamenti i Audituar', type: 'select', required: true },
+        { name: 'findings', label: 'Gjetjet', type: 'textarea' },
+        { name: 'recommendations', label: 'Rekomandimet', type: 'textarea' },
+        { name: 'followUpDate', label: 'Data e Ndjekjes', type: 'date' }
+      ]
+    },
+    {
+      id: 'protocol-book',
+      name: 'Libri i Protokollit',
+      icon: '📚',
+      description: 'Regjistrat e Zyrës Administrative',
+      fields: [
+        { name: 'protocolNumber', label: 'Numri i Protokollit', type: 'text', required: true },
+        { name: 'entryDate', label: 'Data e Hyrjes', type: 'date', required: true },
+        { name: 'documentType', label: 'Lloji i Dokumentit', type: 'select', required: true },
+        { name: 'sender', label: 'Dërguesi', type: 'text', required: true },
+        { name: 'receiver', label: 'Marrësi', type: 'text', required: true },
+        { name: 'subject', label: 'Lënda', type: 'text', required: true },
+        { name: 'notes', label: 'Shënime', type: 'textarea' }
+      ]
+    },
+    {
+      id: 'notifications',
+      name: 'Njoftimet',
+      icon: '🔔',
+      description: 'Sistemi i njoftimeve',
+      fields: [
+        { name: 'notificationType', label: 'Lloji i Njoftimit', type: 'select', required: true },
+        { name: 'title', label: 'Titulli', type: 'text', required: true },
+        { name: 'message', label: 'Mesazhi', type: 'textarea', required: true },
+        { name: 'priority', label: 'Prioriteti', type: 'select', required: true },
+        { name: 'targetDepartment', label: 'Departamenti i Synuar', type: 'select' },
+        { name: 'expiryDate', label: 'Data e Skadimit', type: 'date' }
+      ]
+    },
+    {
+      id: 'task-management',
+      name: 'Kutia Postare e Detyrave',
+      icon: '📬',
+      description: 'Menaxhimi i detyrave dhe porosive',
+      fields: [
+        { name: 'taskType', label: 'Lloji i Detyrës', type: 'select', required: true },
+        { name: 'taskTitle', label: 'Titulli i Detyrës', type: 'text', required: true },
+        { name: 'description', label: 'Përshkrimi', type: 'textarea', required: true },
+        { name: 'assignedTo', label: 'I caktuar', type: 'select', required: true },
+        { name: 'deadline', label: 'Afati', type: 'date', required: true },
+        { name: 'priority', label: 'Prioriteti', type: 'select', required: true },
+        { name: 'relatedCase', label: 'Rasti i Lidhur', type: 'text' }
+      ]
+    },
+    {
+      id: 'reports',
+      name: 'Raportet',
+      icon: '📊',
+      description: 'Gjenerimi i raporteve të ndryshme',
+      fields: [
+        { name: 'reportType', label: 'Lloji i Raportit', type: 'select', required: true },
+        { name: 'reportTitle', label: 'Titulli i Raportit', type: 'text', required: true },
+        { name: 'dateFrom', label: 'Nga Data', type: 'date', required: true },
+        { name: 'dateTo', label: 'Deri në Datë', type: 'date', required: true },
+        { name: 'department', label: 'Departamenti', type: 'select' },
+        { name: 'reportFormat', label: 'Formati', type: 'select', required: true },
+        { name: 'includeCharts', label: 'Përfshi Grafikë', type: 'select' }
+      ]
+    }
+  ];,
+    {
+      id: 'cases',
+      name: 'Rastet',
+      icon: '📋',
+      description: 'Hapja dhe menaxhimi i rasteve',
+      fields: [
+        { name: 'caseType', label: 'Lloji i Rastit', type: 'select', required: true },
+        { name: 'caseTitle', label: 'Titulli i Rastit', type: 'text', required: true },
+        { name: 'primaryOfficer', label: 'Oficeri Kryesor', type: 'select', required: true },
+        { name: 'department', label: 'Departamenti', type: 'select', required: true },
+        { name: 'estimatedDuration', label: 'Kohëzgjatja e Parashikuar', type: 'number' },
         { name: 'relatedViolations', label: 'Kundërvajtjet e Lidhura', type: 'multiselect' }
       ]
     },
