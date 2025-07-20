@@ -990,3 +990,26 @@ html, body {
   color: var(--system-disabled-text);
   border: 2px outset var(--system-3d-face);
 }
+
+/* Fine Creation Specific Styles */
+.fine-summary-card {
+  margin-top: 20px;
+}
+
+.fine-summary {
+  padding: 15px;
+  background: var(--window-background);
+  border: 1px inset var(--system-3d-face);
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 11px;
+}
+
+.fine-summary p {
+  margin: 5px 0;
+  padding: 2px 0;
+}
+
+.fine-summary strong {
+  color: var(--government-blue);
+  font-weight: bold;
+}

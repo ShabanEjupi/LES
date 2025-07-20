@@ -2,12 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import ModulesGrid from '../components/common/ModulesGrid';
-import type { KosovoModule } from '../data/kosovoCostomeModules';
+import type { SystemModule } from '../types/KosovoCustomsModules';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleModuleSelect = (module: KosovoModule) => {
+  const handleModuleSelect = (module: SystemModule) => {
     // Navigate to the module route
     if (module.route) {
       navigate(module.route);

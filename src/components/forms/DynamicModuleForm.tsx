@@ -5,6 +5,7 @@ import { ClassicButton } from '../common/ClassicButton';
 import ModulesGrid from '../common/ModulesGrid';
 // import { allKosovoModules } from '../../data/kosovoCostomeModules';
 // import { allExtendedModules } from '../../data/extendedKosovoModules';
+import type { SystemModule } from '../../types/KosovoCustomsModules';
 import type { KosovoModule, ModuleField } from '../../data/kosovoCostomeModules';
 import '../../styles/classic-theme.css';
 
@@ -40,8 +41,24 @@ const DynamicModuleForm: React.FC = () => {
     }
   }, []);
 
-  const handleModuleSelect = (module: KosovoModule) => {
-    setSelectedModule(module);
+  const handleModuleSelect = (module: SystemModule) => {
+    // Convert SystemModule to KosovoModule format for form compatibility
+    const adaptedModule: KosovoModule = {
+      id: module.id,
+      name: module.nameAlbanian,
+      nameEn: module.name,
+      category: module.category,
+      icon: module.icon,
+      description: module.description,
+      priority: 'MEDIUM' as const, // Default priority
+      department: 'OPERATIONS', // Default department
+      requiredRole: (module.requiredRoles?.[0] as 'OFFICER' | 'SECTOR_CHIEF' | 'ADMIN' | 'DIRECTOR') || 'OFFICER',
+      fields: [], // No fields for now - would need to be mapped from actual module data
+      active: module.isActive,
+      route: module.route
+    };
+    
+    setSelectedModule(adaptedModule);
     setShowModuleGrid(false);
     setFormData({});
     setErrors({});

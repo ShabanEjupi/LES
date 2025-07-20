@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../../styles/classic-theme.css';
+import '../../styles/classic-theme.css';
 
 interface Activity {
   id: string;

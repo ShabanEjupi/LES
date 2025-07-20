@@ -54,26 +54,42 @@ const ViolationCreate: React.FC = () => {
   ];
 
   const violationTypes = [
-    'Kundërvajtje Mandatore',
-    'Kundërvajtje e rregullt',
-    'Kundërvajtje Administrative',
-    'Kundërvajtje Penale',
-    'Kundërvajtje Disciplinore'
+    'Kontrabandë e mallrave',
+    'Gabim në deklarimin doganor',
+    'Dokumenta të falsifikuara',
+    'Mosdeklarim i mallrave',
+    'Shkelje të procedurave doganore',
+    'Transportim ilegal i mallrave',
+    'Evazion fiskal doganor',
+    'Import/eksport i mallrave të ndaluara',
+    'Gabim në vlerësimin doganor',
+    'Shkelje të kuotave të importit',
+    'Mosrespektim i procedurave të tranzitit',
+    'Dokumentacion i pamjaftueshëm',
+    'Mallra pa licencë importi',
+    'Korrupsion në procedurat doganore'
   ];
 
   const departments = [
-    { value: 'BORDER_MANAGEMENT', label: 'Menaxhimi i Kufijve' },
-    { value: 'CUSTOMS_CONTROL', label: 'Kontrolli Doganor' },
-    { value: 'INVESTIGATION', label: 'Hetimi' },
-    { value: 'LEGAL_AFFAIRS', label: 'Çështjet Juridike' },
-    { value: 'ADMINISTRATION', label: 'Administrata' }
+    { value: 'BORDER_MANAGEMENT', label: 'Menaxhimi i Kufijve dhe Pikave Kufitare' },
+    { value: 'CUSTOMS_CONTROL', label: 'Kontrolli Doganor dhe Inspektimi' },
+    { value: 'INVESTIGATION', label: 'Hetimi i Kundërvajtjeve Doganore' },
+    { value: 'LEGAL_AFFAIRS', label: 'Çështjet Juridike dhe Compliance' },
+    { value: 'RISK_ASSESSMENT', label: 'Vlerësimi i Rrezikut dhe Inteligjenca' },
+    { value: 'AIRPORT_CUSTOMS', label: 'Dogana e Aeroportit - Prishtinë' },
+    { value: 'CARGO_INSPECTION', label: 'Inspektimi i Mallrave dhe Kargo' },
+    { value: 'ADMINISTRATION', label: 'Administrata e Përgjithshme' }
   ];
 
   const officers = [
-    { value: 'inspector01', label: 'Inspector Doganor 1' },
-    { value: 'inspector02', label: 'Inspector Doganor 2' },
-    { value: 'supervisor01', label: 'Supervizor 1' },
-    { value: 'manager01', label: 'Menaxher Departamenti' }
+    { value: 'agron.berisha', label: 'Agron Berisha - Inspektor i Lartë Doganor' },
+    { value: 'fatmire.krasniqi', label: 'Fatmire Krasniqi - Hetues i Specializuar' },
+    { value: 'mentor.gashi', label: 'Mentor Gashi - Supervizor Operacional' },
+    { value: 'blerta.jashari', label: 'Blerta Jashari - Menaxhere e Rasteve' },
+    { value: 'driton.musliu', label: 'Driton Musliu - Inspektor Kufitar' },
+    { value: 'besarta.hoxha', label: 'Besarta Hoxha - Analiste e Rrezikut' },
+    { value: 'flamur.kadriu', label: 'Flamur Kadriu - Koordinator Hetimesh' },
+    { value: 'valdrina.sylaj', label: 'Valdrina Sylaj - Ekspert Juridik' }
   ];
 
   const handleInputChange = (field: string, value: string | number | boolean) => {

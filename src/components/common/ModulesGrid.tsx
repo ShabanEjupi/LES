@@ -1,33 +1,79 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useAuth } from '../../contexts/auth/AuthContext';
-import { ClassicCard } from '../common/ClassicCard';
-import { ClassicButton } from '../common/ClassicButton';
-import { allKosovoModules, moduleCategories } from '../../data/kosovoCostomeModules';
-import { allExtendedModules } from '../../data/extendedKosovoModules';
-import type { KosovoModule } from '../../data/kosovoCostomeModules';
-import '../../styles/classic-theme.css';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { useAuth } from '../../contexts';
+import { COMPLETE_KOSOVO_CUSTOMS_MODULES } from '../../data/Complete800ModulesSystem';
+import type { SystemModule } from '../../types/KosovoCustomsModules';
+import { ClassicButton } from './ClassicButton';
+import './ModulesGrid.css';
 
 interface ModulesGridProps {
-  searchTerm?: string;
+  onModuleSelect?: (module: SystemModule) => void;
   categoryFilter?: string;
-  onModuleSelect: (module: KosovoModule) => void;
+  showInactive?: boolean;
+}
+
+// Extended module interface for display
+interface ExtendedModule extends SystemModule {
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+  department: string;
 }
 
 const ModulesGrid: React.FC<ModulesGridProps> = ({ 
-  searchTerm = '', 
-  categoryFilter = '', 
-  onModuleSelect 
+  onModuleSelect, 
+  categoryFilter, 
+  showInactive = false 
 }) => {
   const { state } = useAuth();
-  const [filteredModules, setFilteredModules] = useState<KosovoModule[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(categoryFilter);
-  const [sortBy, setSortBy] = useState<'name' | 'priority' | 'category'>('category');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
+  const [sortBy, setSortBy] = useState<'name' | 'category' | 'priority'>('category');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredModules, setFilteredModules] = useState<ExtendedModule[]>([]);
 
-  const allModules = useMemo(() => [...allKosovoModules, ...allExtendedModules], []);
+  // Get all modules
+  const allModules = useMemo(() => COMPLETE_KOSOVO_CUSTOMS_MODULES, []);
+
+  const getPriorityFromCategory = useCallback((category: string): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' => {
+    const priorityMap: { [key: string]: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' } = {
+      'VIOLATIONS': 'HIGH',
+      'CASE_MANAGEMENT': 'HIGH',
+      'AUDIT': 'HIGH',
+      'SECURITY': 'CRITICAL',
+      'TASKS': 'MEDIUM',
+      'ACTIVITIES': 'MEDIUM',
+      'DOCUMENTS': 'MEDIUM',
+      'REPORTS': 'LOW',
+      'ADMINISTRATION': 'LOW'
+    };
+    return priorityMap[category] || 'MEDIUM';
+  }, []);
+
+  const getDepartmentFromCategory = useCallback((category: string): string => {
+    const departmentMap: { [key: string]: string } = {
+      'VIOLATIONS': 'CUSTOMS_CONTROL',
+      'CASE_MANAGEMENT': 'INVESTIGATION', 
+      'AUDIT': 'INTERNAL_AUDIT',
+      'TASKS': 'OPERATIONS',
+      'ACTIVITIES': 'OPERATIONS',
+      'DOCUMENTS': 'ADMINISTRATION',
+      'TRANSPORT': 'CUSTOMS_CONTROL',
+      'REPORTS': 'ADMINISTRATION',
+      'NOTIFICATIONS': 'INFORMATION_SYSTEMS',
+      'USER_MANAGEMENT': 'HUMAN_RESOURCES',
+      'ADMINISTRATION': 'ADMINISTRATION'
+    };
+    return departmentMap[category] || 'OPERATIONS';
+  }, []);
+
+  // Extend modules with priority and department for display
+  const getExtendedModules = useCallback((): ExtendedModule[] => {
+    return allModules.map(module => ({
+      ...module,
+      priority: getPriorityFromCategory(module.category),
+      department: getDepartmentFromCategory(module.category)
+    }));
+  }, [allModules, getPriorityFromCategory, getDepartmentFromCategory]);
 
   useEffect(() => {
-    let modules = allModules.filter(module => module.active);
+    let modules = getExtendedModules().filter(module => module.isActive || showInactive);
 
     // Filter by user role
     if (state.user?.role) {
@@ -36,7 +82,7 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
         : state.user.role.name || 'OFFICER';
       const userRole = userRoleString.toUpperCase();
       modules = modules.filter(module => {
-        const requiredRole = module.requiredRole;
+        const requiredRole = module.requiredRoles?.[0] || 'OFFICER';
         // Role hierarchy: OFFICER < SECTOR_CHIEF < ADMIN < DIRECTOR
         const roleHierarchy = {
           'OFFICER': 1,
@@ -46,44 +92,50 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
         };
         
         const userLevel = roleHierarchy[userRole as keyof typeof roleHierarchy] || 1;
-        const requiredLevel = roleHierarchy[requiredRole] || 1;
+        const requiredLevel = roleHierarchy[requiredRole as keyof typeof roleHierarchy] || 1;
         
         return userLevel >= requiredLevel;
       });
     }
 
-    // Filter by search term
-    if (searchTerm) {
-      modules = modules.filter(module =>
-        module.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        module.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        module.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+    // Filter by category
+    if (categoryFilter) {
+      modules = modules.filter(module => module.category === categoryFilter);
     }
 
-    // Filter by category
-    if (selectedCategory) {
-      modules = modules.filter(module => module.category === selectedCategory);
+    // Filter by search term
+    if (searchTerm) {
+      modules = modules.filter(module => 
+        module.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        module.nameAlbanian.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        module.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     // Sort modules
     modules.sort((a, b) => {
       switch (sortBy) {
         case 'name':
-          return a.name.localeCompare(b.name);
-        case 'priority': {
-          const priorityOrder = { 'CRITICAL': 4, 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
-          return priorityOrder[b.priority] - priorityOrder[a.priority];
-        }
+          return a.nameAlbanian.localeCompare(b.nameAlbanian);
         case 'category':
           return a.category.localeCompare(b.category);
+        case 'priority': {
+          const priorityOrder = { 'CRITICAL': 4, 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
+          return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
+        }
         default:
-          return 0;
+          return a.sortOrder - b.sortOrder;
       }
     });
 
     setFilteredModules(modules);
-  }, [searchTerm, selectedCategory, sortBy, state.user, allModules]);
+  }, [getExtendedModules, state.user, categoryFilter, searchTerm, sortBy, showInactive]);
+
+  const handleModuleClick = (module: SystemModule) => {
+    if (onModuleSelect) {
+      onModuleSelect(module);
+    }
+  };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -95,58 +147,51 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
     }
   };
 
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      violations: '#dc3545',
-      cases: '#007bff',
-      activities: '#28a745',
-      vehicles: '#fd7e14',
-      goods: '#6f42c1',
-      penalties: '#e83e8c',
-      administration: '#20c997',
-      audit: '#6c757d',
-      search: '#17a2b8',
-      notifications: '#ffc107',
-      documents: '#795548',
-      personnel: '#9c27b0',
-      training: '#ff5722',
-      risk: '#f44336',
-      technology: '#607d8b',
-      border: '#4caf50',
-      clearance: '#2196f3',
-      intelligence: '#9e9e9e',
-      laboratory: '#ff9800'
+  const getCategoryIcon = (category: string) => {
+    const categoryIcons: { [key: string]: string } = {
+      'DASHBOARD': '🏠',
+      'VIOLATIONS': '⚠️',
+      'CASE_MANAGEMENT': '📋',
+      'ACTIVITIES': '📝',
+      'TASKS': '📬',
+      'TRANSPORT': '🚛',
+      'DOCUMENTS': '📄',
+      'NOTIFICATIONS': '🔔',
+      'ADMINISTRATION': '⚙️',
+      'REPORTS': '📊',
+      'USER_MANAGEMENT': '👥',
+      'AUDIT': '🔍',
+      'SECURITY': '🔒',
+      'SYSTEM': '💻'
     };
-    return colors[category as keyof typeof colors] || '#6c757d';
+    return categoryIcons[category] || '📌';
   };
-
-  const handleModuleClick = (module: KosovoModule) => {
-    onModuleSelect(module);
-  };
-
-  const groupedModules = filteredModules.reduce((groups, module) => {
-    const category = module.category;
-    if (!groups[category]) {
-      groups[category] = [];
-    }
-    groups[category].push(module);
-    return groups;
-  }, {} as Record<string, KosovoModule[]>);
 
   if (viewMode === 'list') {
     return (
-      <div className="modules-list">
+      <div className="modules-grid">
         <div className="modules-controls">
+          <div className="search-controls">
+            <input
+              type="text"
+              placeholder="Kërkoni module..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="classic-textbox"
+              style={{ width: '200px', fontSize: '11px' }}
+            />
+          </div>
+
           <div className="view-controls">
             <ClassicButton
-              variant={'default'}
+              variant="primary"
               onClick={() => setViewMode('grid')}
               size="small"
             >
               Grid View
             </ClassicButton>
             <ClassicButton
-              variant={'primary'}
+              variant="default"
               onClick={() => setViewMode('list')}
               size="small"
             >
@@ -155,76 +200,99 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
           </div>
           
           <div className="sort-controls">
-            <label>Sort by:</label>
+            <label style={{ fontSize: '11px' }}>Sort by:</label>
             <select 
               value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value as 'name' | 'priority' | 'category')}
-              className="classic-select"
+              onChange={(e) => setSortBy(e.target.value as 'name' | 'category' | 'priority')}
+              className="classic-dropdown"
+              style={{ fontSize: '11px' }}
             >
               <option value="category">Category</option>
               <option value="name">Name</option>
               <option value="priority">Priority</option>
             </select>
           </div>
-
-          <div className="category-filter">
-            <label>Category:</label>
-            <select 
-              value={selectedCategory} 
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="classic-select"
-            >
-              <option value="">All Categories</option>
-              {Object.entries(moduleCategories).map(([key, label]) => (
-                <option key={key} value={key}>{label}</option>
-              ))}
-            </select>
-          </div>
         </div>
 
-        <div className="modules-table">
-          <table className="classic-table">
-            <thead>
+        <div className="modules-stats" style={{ 
+          padding: '8px', 
+          background: '#f0f0f0', 
+          border: '1px inset #c0c0c0',
+          fontSize: '11px',
+          marginBottom: '8px'
+        }}>
+          <span>📊 Modulet Aktive: <strong>{filteredModules.filter(m => m.isActive).length}</strong></span>
+          <span style={{ marginLeft: '20px' }}>🔧 Total në Sistem: <strong>{allModules.length}</strong></span>
+          <span style={{ marginLeft: '20px' }}>👤 Qasje për: <strong>{state.user?.role?.name || 'N/A'}</strong></span>
+        </div>
+
+        <div style={{ 
+          border: '1px inset #c0c0c0', 
+          background: 'white',
+          maxHeight: '600px',
+          overflow: 'auto'
+        }}>
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse',
+            fontSize: '11px'
+          }}>
+            <thead style={{ 
+              background: '#c0c0c0', 
+              position: 'sticky', 
+              top: 0 
+            }}>
               <tr>
-                <th>Module</th>
-                <th>Category</th>
-                <th>Priority</th>
-                <th>Department</th>
-                <th>Required Role</th>
-                <th>Actions</th>
+                <th style={{ padding: '8px', border: '1px solid #808080', textAlign: 'left' }}>Module</th>
+                <th style={{ padding: '8px', border: '1px solid #808080', textAlign: 'left' }}>Category</th>
+                <th style={{ padding: '8px', border: '1px solid #808080', textAlign: 'left' }}>Priority</th>
+                <th style={{ padding: '8px', border: '1px solid #808080', textAlign: 'left' }}>Department</th>
+                <th style={{ padding: '8px', border: '1px solid #808080', textAlign: 'left' }}>Required Role</th>
+                <th style={{ padding: '8px', border: '1px solid #808080', textAlign: 'left' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredModules.map((module) => (
-                <tr key={module.id}>
-                  <td>
-                    <div className="module-info">
-                      <span className="module-icon">{module.icon}</span>
-                      <div>
-                        <div className="module-name">{module.name}</div>
-                        <div className="module-name-en">{module.nameEn}</div>
-                      </div>
+              {filteredModules.map((module, index) => (
+                <tr 
+                  key={module.id}
+                  style={{ 
+                    backgroundColor: index % 2 === 0 ? 'white' : '#f8f8f8',
+                    cursor: 'pointer'
+                  }}
+                  onDoubleClick={() => handleModuleClick(module)}
+                >
+                  <td style={{ padding: '8px', border: '1px solid #c0c0c0' }}>
+                    <div style={{ fontWeight: 'bold' }}>
+                      {getCategoryIcon(module.category)} {module.nameAlbanian}
+                    </div>
+                    <div style={{ fontSize: '10px', color: '#666', marginTop: '2px' }}>
+                      {module.name}
+                    </div>
+                    <div style={{ fontSize: '9px', color: '#999', marginTop: '2px' }}>
+                      {module.description.substring(0, 60)}...
                     </div>
                   </td>
-                  <td>
-                    <span 
-                      className="category-badge"
-                      style={{ backgroundColor: getCategoryColor(module.category) }}
-                    >
-                      {moduleCategories[module.category as keyof typeof moduleCategories] || module.category}
-                    </span>
+                  <td style={{ padding: '8px', border: '1px solid #c0c0c0' }}>
+                    {module.category}
                   </td>
-                  <td>
-                    <span 
-                      className="priority-badge"
-                      style={{ backgroundColor: getPriorityColor(module.priority) }}
-                    >
+                  <td style={{ padding: '8px', border: '1px solid #c0c0c0' }}>
+                    <span style={{ 
+                      padding: '2px 6px', 
+                      borderRadius: '3px',
+                      backgroundColor: getPriorityColor(module.priority),
+                      color: 'white',
+                      fontSize: '10px'
+                    }}>
                       {module.priority}
                     </span>
                   </td>
-                  <td>{module.department}</td>
-                  <td>{module.requiredRole}</td>
-                  <td>
+                  <td style={{ padding: '8px', border: '1px solid #c0c0c0' }}>
+                    {module.department}
+                  </td>
+                  <td style={{ padding: '8px', border: '1px solid #c0c0c0' }}>
+                    {module.requiredRoles?.[0] || 'OFFICER'}
+                  </td>
+                  <td style={{ padding: '8px', border: '1px solid #c0c0c0' }}>
                     <ClassicButton
                       variant="primary"
                       size="small"
@@ -247,14 +315,14 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
       <div className="modules-controls">
         <div className="view-controls">
           <ClassicButton
-            variant={'primary'}
+            variant="primary"
             onClick={() => setViewMode('grid')}
             size="small"
           >
             Grid View
           </ClassicButton>
           <ClassicButton
-            variant={'default'}
+            variant="default"
             onClick={() => setViewMode('list')}
             size="small"
           >
@@ -266,121 +334,33 @@ const ModulesGrid: React.FC<ModulesGridProps> = ({
           <label>Sort by:</label>
           <select 
             value={sortBy} 
-            onChange={(e) => setSortBy(e.target.value as 'name' | 'priority' | 'category')}
-            className="classic-select"
+            onChange={(e) => setSortBy(e.target.value as 'name' | 'category' | 'priority')}
           >
             <option value="category">Category</option>
             <option value="name">Name</option>
             <option value="priority">Priority</option>
           </select>
         </div>
+      </div>
 
-        <div className="category-filter">
-          <label>Category:</label>
-          <select 
-            value={selectedCategory} 
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="classic-select"
+      <div className="modules-grid-container">
+        {filteredModules.map((module) => (
+          <div 
+            key={module.id} 
+            className="module-card"
+            onClick={() => handleModuleClick(module)}
           >
-            <option value="">All Categories</option>
-            {Object.entries(moduleCategories).map(([key, label]) => (
-              <option key={key} value={key}>{label}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="modules-stats">
-        <div className="stat-item">
-          <span className="stat-label">Total Modules:</span>
-          <span className="stat-value">{allModules.length}</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-label">Available to You:</span>
-          <span className="stat-value">{filteredModules.length}</span>
-        </div>
-        <div className="stat-item">
-          <span className="stat-label">Categories:</span>
-          <span className="stat-value">{Object.keys(groupedModules).length}</span>
-        </div>
-      </div>
-
-      {Object.keys(groupedModules).length === 0 ? (
-        <div className="no-modules">
-          <p>No modules found matching your criteria.</p>
-        </div>
-      ) : (
-        Object.entries(groupedModules).map(([category, modules]) => (
-          <div key={category} className="category-section">
-            <h3 
-              className="category-title"
-              style={{ borderLeftColor: getCategoryColor(category) }}
-            >
-              {moduleCategories[category as keyof typeof moduleCategories] || category}
-              <span className="module-count">({modules.length})</span>
-            </h3>
-            
-            <div className="modules-grid-container">
-              {modules.map((module) => (
-                <div 
-                  key={module.id}
-                  className="module-card-wrapper"
-                  onClick={() => handleModuleClick(module)}
-                >
-                  <ClassicCard 
-                    className="module-card"
-                  >
-                  <div className="module-header">
-                    <span className="module-icon">{module.icon}</span>
-                    <div className="module-badges">
-                      <span 
-                        className="priority-badge"
-                        style={{ backgroundColor: getPriorityColor(module.priority) }}
-                      >
-                        {module.priority}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <div className="module-content">
-                    <h4 className="module-name">{module.name}</h4>
-                    <p className="module-name-en">{module.nameEn}</p>
-                    <p className="module-description">{module.description}</p>
-                    
-                    <div className="module-meta">
-                      <div className="meta-item">
-                        <strong>Department:</strong> {module.department}
-                      </div>
-                      <div className="meta-item">
-                        <strong>Required Role:</strong> {module.requiredRole}
-                      </div>
-                      {module.fields && (
-                        <div className="meta-item">
-                          <strong>Fields:</strong> {module.fields.length}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="module-footer">
-                    <ClassicButton 
-                      variant="primary" 
-                      size="small"
-                      onClick={(e) => {
-                        e?.stopPropagation();
-                        handleModuleClick(module);
-                      }}
-                    >
-                      Open Module
-                    </ClassicButton>
-                  </div>
-                </ClassicCard>
-                </div>
-              ))}
+            <div className="module-icon">{getCategoryIcon(module.category)}</div>
+            <div className="module-title">{module.nameAlbanian}</div>
+            <div className="module-description">{module.description}</div>
+            <div className="module-priority" style={{ 
+              backgroundColor: getPriorityColor(module.priority) 
+            }}>
+              {module.priority}
             </div>
           </div>
-        ))
-      )}
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import '../../../styles/classic-theme.css';
+import "../../styles/classic-theme.css";
 
 interface Vehicle {
   id: string;
