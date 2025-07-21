@@ -10,6 +10,7 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 
 // Pages
 import Login from './pages/auth/Login';
+import Homepage from './pages/Homepage';
 import Dashboard from './pages/Dashboard';
 import ViolationManagement from './pages/violations/ViolationManagement';
 import ViolationsList from './pages/violations/ViolationsList';
@@ -60,6 +61,7 @@ const App: React.FC = () => {
           <Router>
             <Routes>
               {/* Public Routes */}
+              <Route path="/" element={<Homepage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/admin/db-init" element={<DatabaseInit />} />
               <Route path="/admin/diagnostics" element={<SystemDiagnostics />} />
