@@ -113,6 +113,15 @@ const App: React.FC = () => {
               />
 
               <Route 
+                path="/create" 
+                element={
+                  <ProtectedRoute>
+                    <ViolationCreateForm />
+                  </ProtectedRoute>
+                } 
+              />
+
+              <Route 
                 path="/tasks" 
                 element={
                   <ProtectedRoute>

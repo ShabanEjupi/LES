@@ -8,6 +8,57 @@
   color: #000000;
 }
 
+/* Minimal layout for admin routes without authentication */
+.main-layout-minimal {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #000000;
+}
+
+.admin-header {
+  background: linear-gradient(to bottom, #003d82 0%, #1e3a8a 100%);
+  color: white;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admin-header .system-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.admin-header .republic-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.admin-header .ministry-name {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 4px;
+}
+
+.admin-header .system-name {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* Kosovo Government Header */
 .main-header {
   display: flex;

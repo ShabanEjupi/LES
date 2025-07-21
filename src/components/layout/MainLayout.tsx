@@ -16,8 +16,35 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  if (!state.user) {
-    return null;
+  // Allow access to admin routes without authentication
+  const isAdminRoute = location.pathname.startsWith('/admin/');
+  
+  if (!state.user && !isAdminRoute) {
+    return (
+      <div className="main-layout-minimal">
+        {children}
+      </div>
+    );
+  }
+
+  // For admin routes without user, show minimal layout
+  if (!state.user && isAdminRoute) {
+    return (
+      <div className="main-layout-minimal">
+        <header className="admin-header">
+          <div className="header-left">
+            <div className="system-title">
+              <div className="republic-name">REPUBLIKA E KOSOVËS</div>
+              <div className="ministry-name">Doganat e Kosovës</div>
+              <div className="system-name">LES - Law Enforcement System (Admin)</div>
+            </div>
+          </div>
+        </header>
+        <main className="admin-content">
+          {children}
+        </main>
+      </div>
+    );
   }
 
   // Get user hierarchy level based on role
@@ -31,12 +58,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     }
   };
 
-  const userHierarchy = getUserHierarchy(state.user.role.name);
-  const userModules = getModulesWithCaseSynchronization(
+  // Only calculate user data if user exists
+  const userHierarchy = state.user ? getUserHierarchy(state.user.role.name) : KOSOVO_CUSTOMS_HIERARCHY.OFFICER;
+  const userModules = state.user ? getModulesWithCaseSynchronization(
     state.user.role.name,
     userHierarchy,
     state.user.customsPost
-  );
+  ) : [];
 
   // Group modules by category
   const modulesByCategory = userModules.reduce((acc: Record<string, SystemModule[]>, module: SystemModule) => {
@@ -132,10 +160,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <div className="header-right">
           <div className="user-info">
             <div className="user-details">
-              <span className="user-name">{state.user.fullName}</span>
-              <span className="user-role">{state.user.role.name}</span>
-              <span className="user-department">{state.user.department}</span>
-              {state.user.customsPost && (
+              <span className="user-name">{state.user?.fullName || 'Guest'}</span>
+              <span className="user-role">{state.user?.role?.name || 'No Role'}</span>
+              <span className="user-department">{state.user?.department || 'No Department'}</span>
+              {state.user?.customsPost && (
                 <span className="customs-post">{state.user.customsPost}</span>
               )}
             </div>
@@ -245,7 +273,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <div className="status-left">
           <span className="system-status">🟢 Sistemi Aktiv</span>
           <span className="connection-status">🔗 E lidhur</span>
-          <span className="data-access">📊 Qasje: {state.user.dataAccessLevel}</span>
+          <span className="data-access">📊 Qasje: {state.user?.dataAccessLevel || 'Guest'}</span>
         </div>
         <div className="status-center">
           <span className="case-count">Rastet e Hapura: 12</span>
