@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Box, IconButton } from '@mui/material';
 import { Menu as MenuIcon, Logout as LogoutIcon, Settings as SettingsIcon } from '@mui/icons-material';
 import { useAuth } from '../../contexts';
-import ClassicButton from '../classic/ClassicButton';
+import { ClassicButton } from '../common/ClassicButton';
 import './Header.css';
 
 interface HeaderProps {

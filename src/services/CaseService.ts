@@ -94,6 +94,7 @@ export class CaseService {
             description: 'Rasti u krijua nga raportimi i oficerit doganor',
             performedBy: 'SUP001',
             performedAt: new Date('2025-01-15T08:30:00'),
+            timestamp: new Date('2025-01-15T08:30:00'),
             metadata: { customsPost: 'Dogana Merdarë' }
           }
         ],
@@ -167,11 +168,13 @@ export class CaseService {
             description: 'Rasti u krijua nga kontrolli i auditimit',
             performedBy: 'SC001',
             performedAt: new Date('2025-01-18T10:15:00'),
+            timestamp: new Date('2025-01-18T10:15:00'),
             metadata: { customsPost: 'Dogana Prishtinë' }
           }
         ],
         workflow: {
           currentStep: 'INVESTIGATION',
+          isCompleted: false,
           steps: [
             { 
               id: 'step-1',
@@ -240,16 +243,49 @@ export class CaseService {
             description: 'Rasti u krijua nga inspektimi i mallrave',
             performedBy: 'OFF003',
             performedAt: new Date('2025-01-20T14:45:00'),
+            timestamp: new Date('2025-01-20T14:45:00'),
             metadata: { customsPost: 'Dogana Gjilan' }
           }
         ],
         workflow: {
           currentStep: 'REVIEW',
+          isCompleted: false,
           steps: [
-            { name: 'CREATED', status: 'COMPLETED', completedAt: new Date('2025-01-20T14:45:00') },
-            { name: 'INVESTIGATION', status: 'COMPLETED', completedAt: new Date('2025-01-22T16:30:00') },
-            { name: 'REVIEW', status: 'IN_PROGRESS', startedAt: new Date('2025-01-22T17:00:00') },
-            { name: 'DECISION', status: 'PENDING' }
+            { 
+              id: 'step-1', 
+              name: 'CREATED', 
+              description: 'Case creation step',
+              status: 'COMPLETED', 
+              completedAt: new Date('2025-01-20T14:45:00'),
+              requiredDocuments: [],
+              nextSteps: ['step-2']
+            },
+            { 
+              id: 'step-2', 
+              name: 'INVESTIGATION', 
+              description: 'Investigation phase',
+              status: 'COMPLETED', 
+              completedAt: new Date('2025-01-22T16:30:00'),
+              requiredDocuments: [],
+              nextSteps: ['step-3']
+            },
+            { 
+              id: 'step-3', 
+              name: 'REVIEW', 
+              description: 'Review phase',
+              status: 'IN_PROGRESS', 
+              startedAt: new Date('2025-01-22T17:00:00'),
+              requiredDocuments: [],
+              nextSteps: ['step-4']
+            },
+            { 
+              id: 'step-4', 
+              name: 'DECISION', 
+              description: 'Decision phase',
+              status: 'PENDING',
+              requiredDocuments: [],
+              nextSteps: []
+            }
           ],
           lastUpdated: new Date('2025-01-22T17:00:00')
         },
@@ -350,14 +386,19 @@ export class CaseService {
         id: this.generateId(),
         name: caseData.reportedParty.name,
         registrationNumber: caseData.reportedParty.registrationNumber,
+        taxNumber: caseData.reportedParty.registrationNumber || '',
+        contactPerson: '',
+        email: caseData.reportedParty.contactInfo || '',
+        phone: '',
         address: {
           street: caseData.reportedParty.address,
           city: '',
-          zipCode: '',
+          state: '',
+          postalCode: '',
           country: 'Kosovo'
         },
         contactInfo: {
-          email: caseData.reportedParty.contactInfo,
+          email: caseData.reportedParty.contactInfo || '',
           phone: '',
           website: ''
         },
@@ -372,16 +413,47 @@ export class CaseService {
           description: 'Rasti u krijua',
           performedBy: createdBy,
           performedAt: new Date(),
+          timestamp: new Date(),
           metadata: { customsPost: caseData.customsPost }
         }
       ],
       workflow: {
         currentStep: 'CREATED',
+        isCompleted: false,
         steps: [
-          { name: 'CREATED', status: 'COMPLETED', completedAt: new Date() },
-          { name: 'INVESTIGATION', status: 'PENDING' },
-          { name: 'REVIEW', status: 'PENDING' },
-          { name: 'DECISION', status: 'PENDING' }
+          { 
+            id: 'step-1',
+            name: 'CREATED', 
+            description: 'Case created',
+            status: 'COMPLETED', 
+            completedAt: new Date(),
+            requiredDocuments: [],
+            nextSteps: ['step-2']
+          },
+          { 
+            id: 'step-2',
+            name: 'INVESTIGATION', 
+            description: 'Investigation phase',
+            status: 'PENDING',
+            requiredDocuments: [],
+            nextSteps: ['step-3']
+          },
+          { 
+            id: 'step-3',
+            name: 'REVIEW', 
+            description: 'Review phase',
+            status: 'PENDING',
+            requiredDocuments: [],
+            nextSteps: ['step-4']
+          },
+          { 
+            id: 'step-4',
+            name: 'DECISION', 
+            description: 'Decision phase',
+            status: 'PENDING',
+            requiredDocuments: [],
+            nextSteps: []
+          }
         ],
         lastUpdated: new Date()
       },
@@ -451,6 +523,7 @@ export class CaseService {
       description: `Statusi u ndryshua në: ${newStatus}${notes ? ` - ${notes}` : ''}`,
       performedBy: userId,
       performedAt: new Date(),
+      timestamp: new Date(),
       metadata: { oldStatus: caseData.status, newStatus, notes }
     });
 
@@ -485,6 +558,7 @@ export class CaseService {
       description: `Rasti u ricaktua nga ${oldAssignee} tek ${newAssigneeId}${reason ? ` - ${reason}` : ''}`,
       performedBy: reassignedBy,
       performedAt: new Date(),
+      timestamp: new Date(),
       metadata: { oldAssignee, newAssignee: newAssigneeId, reason }
     });
 
