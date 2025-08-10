@@ -386,19 +386,14 @@ export class CaseService {
         id: this.generateId(),
         name: caseData.reportedParty.name,
         registrationNumber: caseData.reportedParty.registrationNumber,
-        taxNumber: caseData.reportedParty.registrationNumber || '',
-        contactPerson: '',
-        email: caseData.reportedParty.contactInfo || '',
-        phone: '',
         address: {
           street: caseData.reportedParty.address,
           city: '',
-          state: '',
-          postalCode: '',
+          zipCode: '',
           country: 'Kosovo'
         },
         contactInfo: {
-          email: caseData.reportedParty.contactInfo || '',
+          email: caseData.reportedParty.contactInfo,
           phone: '',
           website: ''
         },
@@ -523,7 +518,6 @@ export class CaseService {
       description: `Statusi u ndryshua në: ${newStatus}${notes ? ` - ${notes}` : ''}`,
       performedBy: userId,
       performedAt: new Date(),
-      timestamp: new Date(),
       metadata: { oldStatus: caseData.status, newStatus, notes }
     });
 
@@ -558,7 +552,6 @@ export class CaseService {
       description: `Rasti u ricaktua nga ${oldAssignee} tek ${newAssigneeId}${reason ? ` - ${reason}` : ''}`,
       performedBy: reassignedBy,
       performedAt: new Date(),
-      timestamp: new Date(),
       metadata: { oldAssignee, newAssignee: newAssigneeId, reason }
     });
 
