@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
-import { ClassicButton } from '../../components/common/ClassicButton';
-import { ClassicCard } from '../../components/common/ClassicCard';
+import { useAuth } from '../../contexts';
 import '../../styles/classic-theme.css';
 
 interface AdministrativeFine {
@@ -9,7 +7,7 @@ interface AdministrativeFine {
   violationId: string;
   subjectType: 'INDIVIDUAL' | 'COMPANY';
   subjectName: string;
-  subjectIdentifier: string; // Personal ID or Company Registration
+  subjectIdentifier: string;
   violationType: string;
   fineAmount: number;
   currency: 'EUR' | 'USD' | 'ALL';
@@ -27,6 +25,7 @@ interface AdministrativeFine {
 }
 
 const FineCreation: React.FC = () => {
+  const { state } = useAuth();
   const [fine, setFine] = useState<Partial<AdministrativeFine>>({
     violationId: '',
     subjectType: 'INDIVIDUAL',
@@ -37,7 +36,7 @@ const FineCreation: React.FC = () => {
     currency: 'EUR',
     description: '',
     legalBasis: '',
-    issuedBy: 'Current Officer',
+    issuedBy: state.user?.fullName || 'Current Officer',
     issuedDate: new Date().toISOString().split('T')[0],
     dueDate: '',
     status: 'ISSUED',
@@ -45,27 +44,25 @@ const FineCreation: React.FC = () => {
   });
 
   const violationTypes = [
-    { value: 'CONTRABAND', label: 'Kontrabandë / Contraband', baseAmount: 5000 },
-    { value: 'DOCUMENTATION_MISSING', label: 'Dokumente të Mangëta / Missing Documentation', baseAmount: 500 },
-    { value: 'FALSE_DECLARATION', label: 'Deklarim i Rremë / False Declaration', baseAmount: 2000 },
-    { value: 'DUTY_EVASION', label: 'Shmangje Takse / Duty Evasion', baseAmount: 3000 },
-    { value: 'PROHIBITED_GOODS', label: 'Mallra të Ndaluara / Prohibited Goods', baseAmount: 8000 },
-    { value: 'INCORRECT_CLASSIFICATION', label: 'Klasifikim i Gabuar / Incorrect Classification', baseAmount: 1000 },
-    { value: 'UNDERVALUATION', label: 'Nënvlerësim / Undervaluation', baseAmount: 1500 },
-    { value: 'UNAUTHORIZED_TRANSPORT', label: 'Transport i Paautorizuar / Unauthorized Transport', baseAmount: 2500 },
-    { value: 'REGULATION_VIOLATION', label: 'Shkelje Rregulloreje / Regulation Violation', baseAmount: 800 },
-    { value: 'PROCEDURE_VIOLATION', label: 'Shkelje Procedure / Procedure Violation', baseAmount: 600 }
+    { value: 'CONTRABAND', label: 'Kontrabandë / Contraband', code: 'KV-273', baseAmount: 5000 },
+    { value: 'FALSE_DECLARATION', label: 'Deklarim i Rremë / False Declaration', code: 'KV-274', baseAmount: 2000 },
+    { value: 'DUTY_EVASION', label: 'Shmangje Takse / Duty Evasion', code: 'KV-275', baseAmount: 3000 },
+    { value: 'PROHIBITED_GOODS', label: 'Mallra të Ndaluara / Prohibited Goods', code: 'KV-276', baseAmount: 8000 },
+    { value: 'DOCUMENTATION_MISSING', label: 'Dokumente të Mangëta / Missing Documentation', code: 'KV-277', baseAmount: 500 },
+    { value: 'MISCLASSIFICATION', label: 'Klasifikim i Gabuar / Misclassification', code: 'KV-278', baseAmount: 1000 },
+    { value: 'UNDERVALUATION', label: 'Nënvlerësim / Undervaluation', code: 'KV-279', baseAmount: 1500 }
   ];
 
   const legalBases = [
-    'Ligji Nr. 102/2014 për Kodin Doganor të Republikës së Shqipërisë',
+    'Neni 273, Kodi Doganor i Republikës së Shqipërisë',
+    'Neni 274, Kodi Doganor i Republikës së Shqipërisë', 
+    'Neni 275, Kodi Doganor i Republikës së Shqipërisë',
+    'Neni 276, Kodi Doganor i Republikës së Shqipërisë',
+    'Neni 277, Kodi Doganor i Republikës së Shqipërisë',
+    'Neni 278, Kodi Doganor i Republikës së Shqipërisë',
+    'Neni 279, Kodi Doganor i Republikës së Shqipërisë',
     'Vendim i KM Nr. 508/2015 për Procedurat Doganore',
-    'Udhëzim Nr. 12/2018 për Gjobat Administrative në Dogana',
-    'Rregullore BE Nr. 952/2013 (Kodi Doganor i Bashkimit)',
-    'Ligji Nr. 61/2012 për Pjesëmarrjen e Shqipërisë në Treg të Përbashkët',
-    'Vendim i KM Nr. 875/2016 për Mallrat e Ndaluara',
-    'Udhëzim Nr. 8/2019 për Vlerësimin Doganor',
-    'Ligji Nr. 9920/2008 për Procedurat Tatimore'
+    'Udhëzim Nr. 12/2018 për Gjobat Administrative në Dogana'
   ];
 
   const officers = [
@@ -81,11 +78,16 @@ const FineCreation: React.FC = () => {
 
   const handleViolationTypeChange = (violationType: string) => {
     const selectedViolation = violationTypes.find(vt => vt.value === violationType);
-    setFine({
-      ...fine,
-      violationType,
-      fineAmount: selectedViolation?.baseAmount || 0
-    });
+    if (selectedViolation) {
+      setFine({
+        ...fine,
+        violationType,
+        fineAmount: selectedViolation.baseAmount,
+        legalBasis: selectedViolation.code.startsWith('KV-') ? 
+          legalBases.find(lb => lb.includes(selectedViolation.code.replace('KV-', 'Neni '))) || legalBases[0]
+          : legalBases[0]
+      });
+    }
   };
 
   const calculateDueDate = () => {
@@ -97,14 +99,13 @@ const FineCreation: React.FC = () => {
 
   const handleSubmit = () => {
     // Auto-calculate due date if not set
-    if (!fine.dueDate) {
-      setFine({
-        ...fine,
-        dueDate: calculateDueDate()
-      });
-    }
+    const finalFine = {
+      ...fine,
+      id: `AF-${Date.now()}`,
+      dueDate: fine.dueDate || calculateDueDate()
+    };
     
-    console.log('Creating administrative fine:', fine);
+    console.log('Creating administrative fine:', finalFine);
     alert('Gjoba administrative u krijua me sukses! / Administrative fine created successfully!');
   };
 
@@ -119,7 +120,7 @@ const FineCreation: React.FC = () => {
       currency: 'EUR',
       description: '',
       legalBasis: '',
-      issuedBy: 'Current Officer',
+      issuedBy: state.user?.fullName || 'Current Officer',
       issuedDate: new Date().toISOString().split('T')[0],
       dueDate: '',
       status: 'ISSUED',
@@ -127,308 +128,352 @@ const FineCreation: React.FC = () => {
     });
   };
 
+  const handleUseCalculationEngine = () => {
+    // Navigate to calculation engine
+    alert('Duke ju drejtuar në Motorin e Llogaritjes së Gjobave...');
+  };
+
   return (
-    <Box className="classic-container">
-      <div className="classic-header">
-        <Typography variant="h4" className="classic-title">
-          💶 Krijimi i Gjobës Administrative
-        </Typography>
-        <Typography variant="subtitle1" className="classic-subtitle">
-          Sistemi për krijimin dhe lëshimin e gjobave administrative për shkelje doganore
-        </Typography>
+    <div className="classic-window" style={{ margin: '20px', maxWidth: '100%' }}>
+      <div className="classic-window-header">
+        💶 Krijimi i Gjobës Administrative - Administrative Fine Creation
       </div>
 
-      <ClassicCard>
-        <div className="classic-form-grid">
-          {/* Violation Information */}
-          <div className="classic-form-section">
-            <Typography variant="h6" className="classic-section-title">
-              📋 Informacioni i Shkeljës
-            </Typography>
+      <div className="classic-window-content">
+        {/* Header Controls */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          marginBottom: '16px',
+          padding: '12px',
+          background: '#f0f0f0',
+          border: '1px inset #c0c0c0'
+        }}>
+          <div style={{ fontSize: '12px', fontWeight: 'bold' }}>
+            💶 Sistemi për Krijimin dhe Lëshimin e Gjobave Administrative
           </div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button 
+              className="classic-button"
+              onClick={handleUseCalculationEngine}
+              style={{ fontSize: '11px' }}
+            >
+              🧮 Motori i Llogaritjes
+            </button>
+            <button className="classic-button" style={{ fontSize: '11px' }}>
+              📋 Shabllonet
+            </button>
+            <button className="classic-button" style={{ fontSize: '11px' }}>
+              📊 Historiku
+            </button>
+          </div>
+        </div>
 
-          <div className="classic-form-row">
-            <div className="classic-form-field">
-              <TextField
-                fullWidth
-                label="ID e Kundërvajtjes / Violation ID"
-                value={fine.violationId}
-                onChange={(e) => setFine({...fine, violationId: e.target.value})}
-                className="classic-textfield"
-                variant="outlined"
-                required
-              />
+        {/* Subject Information Section */}
+        <div style={{ 
+          background: '#f8f8f8', 
+          border: '1px inset #c0c0c0', 
+          padding: '16px', 
+          marginBottom: '16px' 
+        }}>
+          <h4 style={{ margin: '0 0 16px 0', fontSize: '12px' }}>👤 Informata mbi Subjektin:</h4>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+            gap: '16px',
+            marginBottom: '16px'
+          }}>
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Lloji i subjektit:</label>
+              <select
+                className="classic-dropdown"
+                value={fine.subjectType}
+                onChange={(e) => setFine({...fine, subjectType: e.target.value as 'INDIVIDUAL' | 'COMPANY'})}
+                style={{ fontSize: '11px' }}
+              >
+                <option value="INDIVIDUAL">Person Fizik / Individual</option>
+                <option value="COMPANY">Person Juridik / Company</option>
+              </select>
             </div>
 
-            <div className="classic-form-field">
-              <FormControl fullWidth className="classic-form-control">
-                <InputLabel>Lloji i Shkeljës / Violation Type</InputLabel>
-                <Select
-                  value={fine.violationType}
-                  onChange={(e) => handleViolationTypeChange(e.target.value)}
-                  className="classic-select"
-                >
-                  {violationTypes.map(type => (
-                    <MenuItem key={type.value} value={type.value}>
-                      {type.label} - {type.baseAmount} EUR
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-          </div>
-
-          {/* Subject Information */}
-          <div className="classic-form-section">
-            <Typography variant="h6" className="classic-section-title">
-              👤 Informacioni i Subjektit
-            </Typography>
-          </div>
-
-          <div className="classic-form-row">
-            <div className="classic-form-field">
-              <FormControl fullWidth className="classic-form-control">
-                <InputLabel>Lloji i Subjektit / Subject Type</InputLabel>
-                <Select
-                  value={fine.subjectType}
-                  onChange={(e) => setFine({...fine, subjectType: e.target.value as 'INDIVIDUAL' | 'COMPANY'})}
-                  className="classic-select"
-                >
-                  <MenuItem value="INDIVIDUAL">👤 Person Fizik / Individual</MenuItem>
-                  <MenuItem value="COMPANY">🏢 Kompani / Company</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-
-            <div className="classic-form-field">
-              <TextField
-                fullWidth
-                label={fine.subjectType === 'INDIVIDUAL' ? 'Emri i Plotë / Full Name' : 'Emri i Kompanisë / Company Name'}
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>
+                {fine.subjectType === 'INDIVIDUAL' ? 'Emri i plotë:' : 'Emri i kompanisë:'}
+              </label>
+              <input
+                type="text"
+                className="classic-textbox"
                 value={fine.subjectName}
                 onChange={(e) => setFine({...fine, subjectName: e.target.value})}
-                className="classic-textfield"
-                variant="outlined"
-                required
+                placeholder={fine.subjectType === 'INDIVIDUAL' ? 'Agron Krasniqi' : 'ABC Company Ltd.'}
+                style={{ fontSize: '11px' }}
               />
             </div>
 
-            <div className="classic-form-field">
-              <TextField
-                fullWidth
-                label={fine.subjectType === 'INDIVIDUAL' ? 'Nr. Identitetit / ID Number' : 'Nr. Regjistrit / Registration Number'}
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>
+                {fine.subjectType === 'INDIVIDUAL' ? 'Numri personal:' : 'Numri i regjistrimit:'}
+              </label>
+              <input
+                type="text"
+                className="classic-textbox"
                 value={fine.subjectIdentifier}
                 onChange={(e) => setFine({...fine, subjectIdentifier: e.target.value})}
-                className="classic-textfield"
-                variant="outlined"
-                required
+                placeholder={fine.subjectType === 'INDIVIDUAL' ? '1234567890' : '811234567'}
+                style={{ fontSize: '11px' }}
               />
-            </div>
-          </div>
-
-          {/* Fine Details */}
-          <div className="classic-form-section">
-            <Typography variant="h6" className="classic-section-title">
-              💰 Detajet e Gjobës
-            </Typography>
-          </div>
-
-          <div className="classic-form-row">
-            <div className="classic-form-field">
-              <TextField
-                fullWidth
-                label="Shuma e Gjobës / Fine Amount"
-                type="number"
-                value={fine.fineAmount}
-                onChange={(e) => setFine({...fine, fineAmount: Number(e.target.value)})}
-                className="classic-textfield"
-                variant="outlined"
-                inputProps={{ min: 0, step: 50 }}
-              />
-            </div>
-
-            <div className="classic-form-field">
-              <FormControl fullWidth className="classic-form-control">
-                <InputLabel>Monedha / Currency</InputLabel>
-                <Select
-                  value={fine.currency}
-                  onChange={(e) => setFine({...fine, currency: e.target.value as 'EUR' | 'USD' | 'ALL'})}
-                  className="classic-select"
-                >
-                  <MenuItem value="EUR">💶 Euro (EUR)</MenuItem>
-                  <MenuItem value="USD">💵 Dollar (USD)</MenuItem>
-                  <MenuItem value="ALL">🏦 Lek (ALL)</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-
-            <div className="classic-form-field">
-              <FormControl fullWidth className="classic-form-control">
-                <InputLabel>Statusi / Status</InputLabel>
-                <Select
-                  value={fine.status}
-                  onChange={(e) => setFine({...fine, status: e.target.value as AdministrativeFine['status']})}
-                  className="classic-select"
-                >
-                  <MenuItem value="ISSUED">📄 E Lëshuar / Issued</MenuItem>
-                  <MenuItem value="PAID">✅ E Paguar / Paid</MenuItem>
-                  <MenuItem value="OVERDUE">⏰ E Vonuar / Overdue</MenuItem>
-                  <MenuItem value="CANCELLED">❌ E Anuluar / Cancelled</MenuItem>
-                  <MenuItem value="APPEALED">⚖️ E Ankimuar / Appealed</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-          </div>
-
-          <div className="classic-form-row">
-            <div className="classic-form-field-full">
-              <TextField
-                fullWidth
-                label="Përshkrimi i Shkeljës / Violation Description"
-                multiline
-                rows={3}
-                value={fine.description}
-                onChange={(e) => setFine({...fine, description: e.target.value})}
-                className="classic-textfield"
-                variant="outlined"
-                required
-              />
-            </div>
-          </div>
-
-          {/* Legal and Administrative Details */}
-          <div className="classic-form-section">
-            <Typography variant="h6" className="classic-section-title">
-              ⚖️ Informacioni Ligjor dhe Administrativ
-            </Typography>
-          </div>
-
-          <div className="classic-form-row">
-            <div className="classic-form-field-full">
-              <FormControl fullWidth className="classic-form-control">
-                <InputLabel>Baza Ligjore / Legal Basis</InputLabel>
-                <Select
-                  value={fine.legalBasis}
-                  onChange={(e) => setFine({...fine, legalBasis: e.target.value})}
-                  className="classic-select"
-                >
-                  {legalBases.map(basis => (
-                    <MenuItem key={basis} value={basis}>
-                      {basis}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-          </div>
-
-          <div className="classic-form-row">
-            <div className="classic-form-field">
-              <FormControl fullWidth className="classic-form-control">
-                <InputLabel>Lëshuar nga / Issued By</InputLabel>
-                <Select
-                  value={fine.issuedBy}
-                  onChange={(e) => setFine({...fine, issuedBy: e.target.value})}
-                  className="classic-select"
-                >
-                  {officers.map(officer => (
-                    <MenuItem key={officer} value={officer}>
-                      {officer}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
-
-            <div className="classic-form-field">
-              <TextField
-                fullWidth
-                label="Data e Lëshimit / Issue Date"
-                type="date"
-                value={fine.issuedDate}
-                onChange={(e) => setFine({...fine, issuedDate: e.target.value})}
-                className="classic-textfield"
-                variant="outlined"
-                InputLabelProps={{ shrink: true }}
-              />
-            </div>
-
-            <div className="classic-form-field">
-              <TextField
-                fullWidth
-                label="Data e Skadencës / Due Date"
-                type="date"
-                value={fine.dueDate || calculateDueDate()}
-                onChange={(e) => setFine({...fine, dueDate: e.target.value})}
-                className="classic-textfield"
-                variant="outlined"
-                InputLabelProps={{ shrink: true }}
-              />
-            </div>
-          </div>
-
-          <div className="classic-form-row">
-            <div className="classic-form-field-full">
-              <TextField
-                fullWidth
-                label="Shënime / Notes"
-                multiline
-                rows={3}
-                value={fine.notes}
-                onChange={(e) => setFine({...fine, notes: e.target.value})}
-                className="classic-textfield"
-                variant="outlined"
-                placeholder="Shënime shtesë për gjobën administrative..."
-              />
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="classic-form-row">
-            <div className="classic-button-group">
-              <ClassicButton 
-                variant="primary" 
-                onClick={handleSubmit}
-                className="classic-button-primary"
-              >
-                💶 Krijo Gjobën
-              </ClassicButton>
-              <ClassicButton 
-                variant="default"
-                onClick={handleClear}
-                className="classic-button-default"
-              >
-                🔄 Pastro Formën
-              </ClassicButton>
-              <ClassicButton 
-                variant="default"
-                onClick={() => window.history.back()}
-                className="classic-button-default"
-              >
-                ◀️ Kthehu
-              </ClassicButton>
             </div>
           </div>
         </div>
-      </ClassicCard>
 
-      {/* Summary Panel */}
-      {fine.fineAmount && fine.fineAmount > 0 && (
-        <ClassicCard className="fine-summary-card">
-          <div className="classic-form-section">
-            <Typography variant="h6" className="classic-section-title">
-              📊 Përmbledhje e Gjobës
-            </Typography>
+        {/* Violation Information Section */}
+        <div style={{ 
+          background: '#f8f8f8', 
+          border: '1px inset #c0c0c0', 
+          padding: '16px', 
+          marginBottom: '16px' 
+        }}>
+          <h4 style={{ margin: '0 0 16px 0', fontSize: '12px' }}>⚖️ Informata mbi Kundërvajtjen:</h4>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+            gap: '16px',
+            marginBottom: '16px'
+          }}>
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>ID i kundërvajtjes:</label>
+              <input
+                type="text"
+                className="classic-textbox"
+                value={fine.violationId}
+                onChange={(e) => setFine({...fine, violationId: e.target.value})}
+                placeholder="KV-2024-001"
+                style={{ fontSize: '11px' }}
+              />
+            </div>
+
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Lloji i kundërvajtjes:</label>
+              <select
+                className="classic-dropdown"
+                value={fine.violationType}
+                onChange={(e) => handleViolationTypeChange(e.target.value)}
+                style={{ fontSize: '11px' }}
+              >
+                <option value="">-- Zgjidhni llojin e kundërvajtjes --</option>
+                {violationTypes.map(vt => (
+                  <option key={vt.value} value={vt.value}>
+                    {vt.code} - {vt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Baza ligjore:</label>
+              <select
+                className="classic-dropdown"
+                value={fine.legalBasis}
+                onChange={(e) => setFine({...fine, legalBasis: e.target.value})}
+                style={{ fontSize: '11px' }}
+              >
+                <option value="">-- Zgjidhni bazën ligjore --</option>
+                {legalBases.map((lb, index) => (
+                  <option key={index} value={lb}>{lb}</option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="fine-summary">
-            <p><strong>Subjekti:</strong> {fine.subjectName || 'N/A'}</p>
-            <p><strong>Lloji i Shkeljës:</strong> {violationTypes.find(vt => vt.value === fine.violationType)?.label || 'N/A'}</p>
-            <p><strong>Shuma:</strong> {fine.fineAmount} {fine.currency}</p>
-            <p><strong>Data e Skadencës:</strong> {fine.dueDate || calculateDueDate()}</p>
-            <p><strong>Baza Ligjore:</strong> {fine.legalBasis || 'N/A'}</p>
+
+          <div className="classic-form-row" style={{ marginBottom: '16px' }}>
+            <label className="classic-label" style={{ fontSize: '11px' }}>Përshkrimi i kundërvajtjes:</label>
+            <textarea
+              className="classic-textbox"
+              value={fine.description}
+              onChange={(e) => setFine({...fine, description: e.target.value})}
+              placeholder="Përshkruani detajisht kundërvajtjen e kryer..."
+              rows={4}
+              style={{ fontSize: '11px', width: '100%', resize: 'vertical' }}
+            />
           </div>
-        </ClassicCard>
-      )}
-    </Box>
+        </div>
+
+        {/* Fine Amount Section */}
+        <div style={{ 
+          background: '#e8f4fd', 
+          border: '2px solid #003d82', 
+          padding: '16px', 
+          marginBottom: '16px' 
+        }}>
+          <h4 style={{ margin: '0 0 16px 0', fontSize: '12px', color: '#003d82' }}>💰 Informata mbi Gjobën:</h4>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+            gap: '16px',
+            marginBottom: '16px'
+          }}>
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Vlera e gjobës:</label>
+              <input
+                type="number"
+                className="classic-textbox"
+                value={fine.fineAmount}
+                onChange={(e) => setFine({...fine, fineAmount: parseFloat(e.target.value) || 0})}
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                style={{ fontSize: '11px' }}
+              />
+            </div>
+
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Monedha:</label>
+              <select
+                className="classic-dropdown"
+                value={fine.currency}
+                onChange={(e) => setFine({...fine, currency: e.target.value as 'EUR' | 'USD' | 'ALL'})}
+                style={{ fontSize: '11px' }}
+              >
+                <option value="EUR">EUR - Euro</option>
+                <option value="USD">USD - Dollarë amerikanë</option>
+                <option value="ALL">ALL - Lekë shqiptare</option>
+              </select>
+            </div>
+
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Data e lëshimit:</label>
+              <input
+                type="date"
+                className="classic-textbox"
+                value={fine.issuedDate}
+                onChange={(e) => setFine({...fine, issuedDate: e.target.value})}
+                style={{ fontSize: '11px' }}
+              />
+            </div>
+
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Afati i pagesës:</label>
+              <input
+                type="date"
+                className="classic-textbox"
+                value={fine.dueDate}
+                onChange={(e) => setFine({...fine, dueDate: e.target.value})}
+                placeholder={calculateDueDate()}
+                style={{ fontSize: '11px' }}
+              />
+            </div>
+          </div>
+
+          <div style={{ 
+            background: 'white', 
+            padding: '12px', 
+            border: '1px inset #c0c0c0',
+            textAlign: 'center',
+            fontSize: '14px'
+          }}>
+            <strong>VLERA TOTALE E GJOBËS: {fine.fineAmount?.toLocaleString()} {fine.currency}</strong>
+          </div>
+        </div>
+
+        {/* Administrative Information Section */}
+        <div style={{ 
+          background: '#f8f8f8', 
+          border: '1px inset #c0c0c0', 
+          padding: '16px', 
+          marginBottom: '16px' 
+        }}>
+          <h4 style={{ margin: '0 0 16px 0', fontSize: '12px' }}>📋 Informata Administrative:</h4>
+
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+            gap: '16px',
+            marginBottom: '16px'
+          }}>
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Lëshuar nga:</label>
+              <select
+                className="classic-dropdown"
+                value={fine.issuedBy}
+                onChange={(e) => setFine({...fine, issuedBy: e.target.value})}
+                style={{ fontSize: '11px' }}
+              >
+                <option value={state.user?.fullName || 'Current Officer'}>
+                  {state.user?.fullName} (Ti)
+                </option>
+                {officers.filter(o => o !== state.user?.fullName).map((officer, index) => (
+                  <option key={index} value={officer}>{officer}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="classic-form-row">
+              <label className="classic-label" style={{ fontSize: '11px' }}>Statusi:</label>
+              <select
+                className="classic-dropdown"
+                value={fine.status}
+                onChange={(e) => setFine({...fine, status: e.target.value as AdministrativeFine['status']})}
+                style={{ fontSize: '11px' }}
+              >
+                <option value="ISSUED">E lëshuar / Issued</option>
+                <option value="PAID">E paguar / Paid</option>
+                <option value="OVERDUE">E vonuar / Overdue</option>
+                <option value="CANCELLED">E anuluar / Cancelled</option>
+                <option value="APPEALED">Në apel / Appealed</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="classic-form-row">
+            <label className="classic-label" style={{ fontSize: '11px' }}>Shënime shtesë:</label>
+            <textarea
+              className="classic-textbox"
+              value={fine.notes}
+              onChange={(e) => setFine({...fine, notes: e.target.value})}
+              placeholder="Shënime shtesë për gjobën..."
+              rows={3}
+              style={{ fontSize: '11px', width: '100%', resize: 'vertical' }}
+            />
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'flex-end', 
+          gap: '8px',
+          padding: '16px',
+          background: '#f0f0f0',
+          border: '1px inset #c0c0c0'
+        }}>
+          <button 
+            className="classic-button"
+            onClick={handleClear}
+            style={{ fontSize: '11px' }}
+          >
+            🗑️ Pastro Formën
+          </button>
+          <button 
+            className="classic-button"
+            onClick={() => window.print()}
+            style={{ fontSize: '11px' }}
+          >
+            👁️ Parashiko
+          </button>
+          <button 
+            className="classic-button classic-button-primary"
+            onClick={handleSubmit}
+            style={{ fontSize: '11px' }}
+          >
+            💾 Krijo Gjobën
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

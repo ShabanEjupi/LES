@@ -47,7 +47,7 @@ import type {
   TemplatePriority,
   TemplateStatistics
 } from '../../types/DocumentTemplates';
-import { documentTemplateService } from '../../services/documentTemplateService';
+import { documentTemplateService } from '../../services/documentTemplateService.ts';
 import TemplateCreationDialog from '../../components/documents/TemplateCreationDialog';
 import TemplateApprovalDialog from '../../components/documents/TemplateApprovalDialog';
 import TemplatePreviewDialog from '../../components/documents/TemplatePreviewDialog';

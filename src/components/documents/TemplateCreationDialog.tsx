@@ -20,9 +20,9 @@ import {
   FormControlLabel,
   Alert,
   Tab,
-  Tabs
+  Tabs,
+  Box
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2';
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
@@ -241,8 +241,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
 
 // Basic Information Tab
   const BasicInformationTab = () => (
-    <Grid2 container spacing={3}>
-      <Grid2 xs={12} md={6}>
+    <Box container spacing={3}>
+      <Box xs={12} md={6}>
         <TextField
           fullWidth
           label="Emri i Shabllonit *"
@@ -250,8 +250,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           onChange={(e) => handleInputChange('name', e.target.value)}
           className="classic-textfield"
         />
-      </Grid2>
-      <Grid2 xs={12} md={6}>
+      </Box>
+      <Box xs={12} md={6}>
         <TextField
           fullWidth
           label="Emri në Anglisht"
@@ -259,8 +259,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           onChange={(e) => handleInputChange('nameEn', e.target.value)}
           className="classic-textfield"
         />
-      </Grid2>
-      <Grid2 xs={12}>
+      </Box>
+      <Box xs={12}>
         <TextField
           fullWidth
           multiline
@@ -270,8 +270,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           onChange={(e) => handleInputChange('description', e.target.value)}
           className="classic-textfield"
         />
-      </Grid2>
-      <Grid2 xs={12} md={4}>
+      </Box>
+      <Box xs={12} md={4}>
         <FormControl fullWidth>
           <InputLabel>Lloji i Shabllonit</InputLabel>
           <Select
@@ -292,8 +292,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
             <MenuItem value="COMPLIANCE_CERTIFICATE">Certifikata e Përputhshmërisë</MenuItem>
           </Select>
         </FormControl>
-      </Grid2>
-      <Grid2 xs={12} md={4}>
+      </Box>
+      <Box xs={12} md={4}>
         <FormControl fullWidth>
           <InputLabel>Kategoria</InputLabel>
           <Select
@@ -312,8 +312,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
             <MenuItem value="CORRESPONDENCE">Korrespondenca</MenuItem>
           </Select>
         </FormControl>
-      </Grid2>
-      <Grid2 xs={12} md={4}>
+      </Box>
+      <Box xs={12} md={4}>
         <FormControl fullWidth>
           <InputLabel>Prioriteti</InputLabel>
           <Select
@@ -329,8 +329,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
             <MenuItem value="CRITICAL">Kritike</MenuItem>
           </Select>
         </FormControl>
-      </Grid2>
-      <Grid2 xs={12} md={6}>
+      </Box>
+      <Box xs={12} md={6}>
         <TextField
           fullWidth
           label="Etiketat (ndarë me presje)"
@@ -339,8 +339,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           placeholder="kundërvajtje, doganë, raport"
           className="classic-textfield"
         />
-      </Grid2>
-      <Grid2 xs={12} md={6}>
+      </Box>
+      <Box xs={12} md={6}>
         <TextField
           fullWidth
           label="Fjalët kyçe (ndarë me presje)"
@@ -349,8 +349,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           placeholder="violation, customs, report"
           className="classic-textfield"
         />
-      </Grid2>
-      <Grid2 xs={12} md={6}>
+      </Box>
+      <Box xs={12} md={6}>
         <TextField
           fullWidth
           label="Baza Ligjore"
@@ -358,8 +358,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           onChange={(e) => handleInputChange('legalBasis', e.target.value)}
           className="classic-textfield"
         />
-      </Grid2>
-      <Grid2 xs={12} md={6}>
+      </Box>
+      <Box xs={12} md={6}>
         <FormControlLabel
           control={
             <Switch
@@ -369,8 +369,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           }
           label="Kërkon Miratim"
         />
-      </Grid2>
-    </Grid2>
+      </Box>
+    </Box>
   );
 
   // Template Content Tab

@@ -53,6 +53,7 @@ import AdvancedSearch from './pages/search/AdvancedSearch';
 
 // Documents
 import DocumentUpload from './pages/documents/DocumentUpload';
+import DocumentTemplates from './pages/documents/DocumentTemplates';
 
 import './styles/classic-theme.css';
 
@@ -129,6 +130,15 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <CaseManagement />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/documents/templates" 
+                element={
+                  <ProtectedRoute>
+                    <DocumentTemplates />
                   </ProtectedRoute>
                 } 
               />

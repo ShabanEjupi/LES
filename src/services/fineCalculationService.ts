@@ -285,6 +285,174 @@ class FineCalculationService {
         createdBy: 'admin',
         createdAt: '2024-01-01T00:00:00Z',
         version: 1
+      },
+      {
+        id: 'DUTY_EVASION_001',
+        violationType: 'DUTY_EVASION',
+        violationCode: 'KV-275',
+        violationNameAlbanian: 'Shmangje nga Taksat Doganore',
+        violationNameEnglish: 'Duty Evasion',
+        legalBasis: 'Neni 275, Kodi Doganor i Republikës së Shqipërisë',
+        baseAmount: 3000,
+        currency: 'EUR',
+        calculationType: 'PERCENTAGE',
+        percentageRate: 150,
+        minimumAmount: 2000,
+        maximumAmount: 75000,
+        multiplierFactors: {
+          firstOffense: 1.0,
+          repeatOffense: 2.2,
+          severity: { minor: 0.7, moderate: 1.0, severe: 1.4, critical: 1.9 },
+          cooperation: { full: 0.75, partial: 1.0, none: 1.4 },
+          economicImpact: { low: 0.85, medium: 1.0, high: 1.25, critical: 1.6 }
+        },
+        reductionFactors: {
+          voluntaryDisclosure: 0.35,
+          immediatePayment: 0.12,
+          firstTimeOffender: 0.22,
+          cooperativeSubject: 0.18,
+          minorTechnicalError: 0.4
+        },
+        isActive: true,
+        effectiveDate: '2024-01-01',
+        notes: 'Gjoba për shmangje nga taksat doganore',
+        createdBy: 'admin',
+        createdAt: '2024-01-01T00:00:00Z',
+        version: 1
+      },
+      {
+        id: 'PROHIBITED_GOODS_001',
+        violationType: 'PROHIBITED_GOODS',
+        violationCode: 'KV-276',
+        violationNameAlbanian: 'Mallra të Ndaluara',
+        violationNameEnglish: 'Prohibited Goods',
+        legalBasis: 'Neni 276, Kodi Doganor i Republikës së Shqipërisë',
+        baseAmount: 8000,
+        currency: 'EUR',
+        calculationType: 'FIXED',
+        minimumAmount: 5000,
+        maximumAmount: 150000,
+        multiplierFactors: {
+          firstOffense: 1.0,
+          repeatOffense: 2.5,
+          severity: { minor: 0.8, moderate: 1.0, severe: 1.6, critical: 2.2 },
+          cooperation: { full: 0.8, partial: 1.0, none: 1.6 },
+          economicImpact: { low: 0.9, medium: 1.0, high: 1.4, critical: 2.0 }
+        },
+        reductionFactors: {
+          voluntaryDisclosure: 0.25,
+          immediatePayment: 0.08,
+          firstTimeOffender: 0.18,
+          cooperativeSubject: 0.12,
+          minorTechnicalError: 0.3
+        },
+        isActive: true,
+        effectiveDate: '2024-01-01',
+        notes: 'Gjoba për mallra të ndaluara sipas ligjit',
+        createdBy: 'admin',
+        createdAt: '2024-01-01T00:00:00Z',
+        version: 1
+      },
+      {
+        id: 'DOCUMENTATION_MISSING_001',
+        violationType: 'DOCUMENTATION_MISSING',
+        violationCode: 'KV-277',
+        violationNameAlbanian: 'Dokumente të Mangëta',
+        violationNameEnglish: 'Missing Documentation',
+        legalBasis: 'Neni 277, Kodi Doganor i Republikës së Shqipërisë',
+        baseAmount: 500,
+        currency: 'EUR',
+        calculationType: 'FIXED',
+        minimumAmount: 300,
+        maximumAmount: 5000,
+        multiplierFactors: {
+          firstOffense: 1.0,
+          repeatOffense: 1.5,
+          severity: { minor: 0.6, moderate: 1.0, severe: 1.3, critical: 1.8 },
+          cooperation: { full: 0.7, partial: 1.0, none: 1.3 },
+          economicImpact: { low: 0.8, medium: 1.0, high: 1.2, critical: 1.4 }
+        },
+        reductionFactors: {
+          voluntaryDisclosure: 0.5,
+          immediatePayment: 0.15,
+          firstTimeOffender: 0.3,
+          cooperativeSubject: 0.25,
+          minorTechnicalError: 0.7
+        },
+        isActive: true,
+        effectiveDate: '2024-01-01',
+        notes: 'Gjoba për dokumente të mangëta ose të pasakta',
+        createdBy: 'admin',
+        createdAt: '2024-01-01T00:00:00Z',
+        version: 1
+      },
+      {
+        id: 'MISCLASSIFICATION_001',
+        violationType: 'MISCLASSIFICATION',
+        violationCode: 'KV-278',
+        violationNameAlbanian: 'Klasifikim i Gabuar i Mallrave',
+        violationNameEnglish: 'Goods Misclassification',
+        legalBasis: 'Neni 278, Kodi Doganor i Republikës së Shqipërisë',
+        baseAmount: 1000,
+        currency: 'EUR',
+        calculationType: 'PERCENTAGE',
+        percentageRate: 50,
+        minimumAmount: 500,
+        maximumAmount: 15000,
+        multiplierFactors: {
+          firstOffense: 1.0,
+          repeatOffense: 1.6,
+          severity: { minor: 0.7, moderate: 1.0, severe: 1.3, critical: 1.7 },
+          cooperation: { full: 0.75, partial: 1.0, none: 1.25 },
+          economicImpact: { low: 0.8, medium: 1.0, high: 1.15, critical: 1.4 }
+        },
+        reductionFactors: {
+          voluntaryDisclosure: 0.4,
+          immediatePayment: 0.12,
+          firstTimeOffender: 0.25,
+          cooperativeSubject: 0.2,
+          minorTechnicalError: 0.6
+        },
+        isActive: true,
+        effectiveDate: '2024-01-01',
+        notes: 'Gjoba për klasifikim të gabuar të mallrave në kodin doganor',
+        createdBy: 'admin',
+        createdAt: '2024-01-01T00:00:00Z',
+        version: 1
+      },
+      {
+        id: 'UNDERVALUATION_001',
+        violationType: 'UNDERVALUATION',
+        violationCode: 'KV-279',
+        violationNameAlbanian: 'Nënvlerësim i Mallrave',
+        violationNameEnglish: 'Goods Undervaluation',
+        legalBasis: 'Neni 279, Kodi Doganor i Republikës së Shqipërisë',
+        baseAmount: 1500,
+        currency: 'EUR',
+        calculationType: 'PERCENTAGE',
+        percentageRate: 80,
+        minimumAmount: 800,
+        maximumAmount: 25000,
+        multiplierFactors: {
+          firstOffense: 1.0,
+          repeatOffense: 1.8,
+          severity: { minor: 0.7, moderate: 1.0, severe: 1.4, critical: 1.8 },
+          cooperation: { full: 0.8, partial: 1.0, none: 1.3 },
+          economicImpact: { low: 0.85, medium: 1.0, high: 1.2, critical: 1.5 }
+        },
+        reductionFactors: {
+          voluntaryDisclosure: 0.35,
+          immediatePayment: 0.1,
+          firstTimeOffender: 0.2,
+          cooperativeSubject: 0.15,
+          minorTechnicalError: 0.5
+        },
+        isActive: true,
+        effectiveDate: '2024-01-01',
+        notes: 'Gjoba për nënvlerësim të qëllimshëm të mallrave',
+        createdBy: 'admin',
+        createdAt: '2024-01-01T00:00:00Z',
+        version: 1
       }
     ];
   }
@@ -292,79 +460,183 @@ class FineCalculationService {
   private getMockCalculation(input: CalculationInput, ruleId: string): CalculationResult {
     const rule = this.getMockRules().find(r => r.id === ruleId);
     if (!rule) {
-      throw new Error('Rule not found');
+      throw new Error('Rregulla nuk u gjet për ID: ' + ruleId);
     }
 
-    // Simple mock calculation
-    let amount = rule.baseAmount;
-    
+    // Step-by-step calculation with detailed breakdown
+    const breakdown: Array<{step: string; amount: number; factor: number; description: string}> = [];
+    let currentAmount = rule.baseAmount;
+
+    // Step 1: Base amount
+    breakdown.push({
+      step: '1',
+      amount: currentAmount,
+      factor: 1.0,
+      description: `Vlera bazë sipas ${rule.violationCode} - ${rule.legalBasis}`
+    });
+
+    // Step 2: Handle percentage calculation if applicable
     if (rule.calculationType === 'PERCENTAGE' && input.violationValue) {
-      amount = (input.violationValue * (rule.percentageRate || 100)) / 100;
+      const percentageAmount = (input.violationValue * (rule.percentageRate || 100)) / 100;
+      currentAmount = Math.max(percentageAmount, rule.baseAmount);
+      breakdown.push({
+        step: '2',
+        amount: currentAmount,
+        factor: (rule.percentageRate || 100) / 100,
+        description: `Llogaritje mbi bazë përqindjeje: ${input.violationValue} EUR × ${rule.percentageRate}% = ${percentageAmount.toLocaleString()} EUR`
+      });
     }
 
-    // Apply multipliers
-    if (input.isRepeatOffense) {
-      amount *= rule.multiplierFactors.repeatOffense;
-    }
-    amount *= rule.multiplierFactors.severity[input.severityLevel];
-    amount *= rule.multiplierFactors.cooperation[input.cooperationLevel];
-    amount *= rule.multiplierFactors.economicImpact[input.economicImpact];
+    let stepCounter = breakdown.length + 1;
 
-    const multipliedAmount = amount;
+    // Step 3: Apply offense type multiplier
+    const offenseMultiplier = input.isRepeatOffense ? rule.multiplierFactors.repeatOffense : rule.multiplierFactors.firstOffense;
+    currentAmount *= offenseMultiplier;
+    breakdown.push({
+      step: stepCounter.toString(),
+      amount: currentAmount,
+      factor: offenseMultiplier,
+      description: `${input.isRepeatOffense ? 'Kundërvajtje e përsëritur' : 'Kundërvajtje e parë'} (×${offenseMultiplier})`
+    });
+    stepCounter++;
 
-    // Apply reductions
+    // Step 4: Apply severity multiplier
+    const severityMultiplier = rule.multiplierFactors.severity[input.severityLevel];
+    currentAmount *= severityMultiplier;
+    const severityLabels = {
+      minor: 'E vogël',
+      moderate: 'E mesme',
+      severe: 'E rëndë',
+      critical: 'Kritike'
+    };
+    breakdown.push({
+      step: stepCounter.toString(),
+      amount: currentAmount,
+      factor: severityMultiplier,
+      description: `Shkalla e rëndesës: ${severityLabels[input.severityLevel]} (×${severityMultiplier})`
+    });
+    stepCounter++;
+
+    // Step 5: Apply cooperation multiplier
+    const cooperationMultiplier = rule.multiplierFactors.cooperation[input.cooperationLevel];
+    currentAmount *= cooperationMultiplier;
+    const cooperationLabels = {
+      full: 'I plotë',
+      partial: 'I pjesshëm',
+      none: 'Asnjë'
+    };
+    breakdown.push({
+      step: stepCounter.toString(),
+      amount: currentAmount,
+      factor: cooperationMultiplier,
+      description: `Bashkëpunimi: ${cooperationLabels[input.cooperationLevel]} (×${cooperationMultiplier})`
+    });
+    stepCounter++;
+
+    // Step 6: Apply economic impact multiplier
+    const economicMultiplier = rule.multiplierFactors.economicImpact[input.economicImpact];
+    currentAmount *= economicMultiplier;
+    const economicLabels = {
+      low: 'I ulët',
+      medium: 'I mesëm',
+      high: 'I lartë',
+      critical: 'Kritik'
+    };
+    breakdown.push({
+      step: stepCounter.toString(),
+      amount: currentAmount,
+      factor: economicMultiplier,
+      description: `Impakti ekonomik: ${economicLabels[input.economicImpact]} (×${economicMultiplier})`
+    });
+    stepCounter++;
+
+    const multipliedAmount = currentAmount;
+
+    // Step 7: Apply reduction factors
     let totalReduction = 0;
-    if (input.isVoluntaryDisclosure) totalReduction += rule.reductionFactors.voluntaryDisclosure;
-    if (input.isImmediatePayment) totalReduction += rule.reductionFactors.immediatePayment;
-    if (input.isFirstTimeOffender) totalReduction += rule.reductionFactors.firstTimeOffender;
-    if (input.isCooperativeSubject) totalReduction += rule.reductionFactors.cooperativeSubject;
-    if (input.isMinorTechnicalError) totalReduction += rule.reductionFactors.minorTechnicalError;
+    const appliedReductions: string[] = [];
 
-    totalReduction = Math.min(totalReduction, 0.7); // Max 70% reduction
-    const reducedAmount = amount * (1 - totalReduction);
+    if (input.isVoluntaryDisclosure) {
+      totalReduction += rule.reductionFactors.voluntaryDisclosure;
+      appliedReductions.push(`Zbulim vullnetar (-${(rule.reductionFactors.voluntaryDisclosure * 100).toFixed(0)}%)`);
+    }
+    if (input.isImmediatePayment) {
+      totalReduction += rule.reductionFactors.immediatePayment;
+      appliedReductions.push(`Pagesë e menjëhershme (-${(rule.reductionFactors.immediatePayment * 100).toFixed(0)}%)`);
+    }
+    if (input.isFirstTimeOffender) {
+      totalReduction += rule.reductionFactors.firstTimeOffender;
+      appliedReductions.push(`Kundërvajtës për herë të parë (-${(rule.reductionFactors.firstTimeOffender * 100).toFixed(0)}%)`);
+    }
+    if (input.isCooperativeSubject) {
+      totalReduction += rule.reductionFactors.cooperativeSubject;
+      appliedReductions.push(`Subjekt bashkëpunues (-${(rule.reductionFactors.cooperativeSubject * 100).toFixed(0)}%)`);
+    }
+    if (input.isMinorTechnicalError) {
+      totalReduction += rule.reductionFactors.minorTechnicalError;
+      appliedReductions.push(`Gabim i vogël teknik (-${(rule.reductionFactors.minorTechnicalError * 100).toFixed(0)}%)`);
+    }
 
-    // Apply limits
+    // Maximum reduction is 70%
+    const cappedReduction = Math.min(totalReduction, 0.7);
+    if (totalReduction > 0.7) {
+      appliedReductions.push(`⚠️ Reduktimi i kufizuar në 70% maksimum`);
+    }
+
+    currentAmount = currentAmount * (1 - cappedReduction);
+
+    if (cappedReduction > 0) {
+      breakdown.push({
+        step: stepCounter.toString(),
+        amount: currentAmount,
+        factor: 1 - cappedReduction,
+        description: `Aplikimi i reduktimeve: -${(cappedReduction * 100).toFixed(1)}% (${appliedReductions.join(', ')})`
+      });
+      stepCounter++;
+    }
+
+    const reducedAmount = currentAmount;
+
+    // Step 8: Apply minimum/maximum limits
     let finalAmount = reducedAmount;
+
     if (rule.minimumAmount && finalAmount < rule.minimumAmount) {
       finalAmount = rule.minimumAmount;
+      breakdown.push({
+        step: stepCounter.toString(),
+        amount: finalAmount,
+        factor: 1,
+        description: `Aplikimi i limitit minimal: ${rule.minimumAmount.toLocaleString()} EUR`
+      });
     }
+
     if (rule.maximumAmount && finalAmount > rule.maximumAmount) {
       finalAmount = rule.maximumAmount;
+      breakdown.push({
+        step: stepCounter.toString(),
+        amount: finalAmount,
+        factor: 1,
+        description: `Aplikimi i limitit maksimal: ${rule.maximumAmount.toLocaleString()} EUR`
+      });
     }
+
+    // Create applied multipliers summary
+    const appliedMultipliers = [
+      input.isRepeatOffense ? `Kundërvajtje e përsëritur (×${offenseMultiplier})` : `Kundërvajtje e parë (×${offenseMultiplier})`,
+      `Shkalla e rëndesës: ${severityLabels[input.severityLevel]} (×${severityMultiplier})`,
+      `Bashkëpunimi: ${cooperationLabels[input.cooperationLevel]} (×${cooperationMultiplier})`,
+      `Impakti ekonomik: ${economicLabels[input.economicImpact]} (×${economicMultiplier})`
+    ];
 
     return {
       baseAmount: rule.baseAmount,
-      multipliedAmount,
-      reducedAmount,
+      multipliedAmount: Math.round(multipliedAmount),
+      reducedAmount: Math.round(reducedAmount),
       finalAmount: Math.round(finalAmount),
       currency: rule.currency,
-      appliedMultipliers: [
-        input.isRepeatOffense ? 'Kundërvajtje e përsëritur' : 'Kundërvajtje e parë',
-        `Shkalla: ${input.severityLevel}`,
-        `Bashkëpunimi: ${input.cooperationLevel}`,
-        `Impakti ekonomik: ${input.economicImpact}`
-      ],
-      appliedReductions: [
-        input.isVoluntaryDisclosure ? 'Zbulim vullnetar' : '',
-        input.isImmediatePayment ? 'Pagesë e menjëhershme' : '',
-        input.isFirstTimeOffender ? 'Kundërvajtës për herë të parë' : '',
-        input.isCooperativeSubject ? 'Subjekt bashkëpunues' : '',
-        input.isMinorTechnicalError ? 'Gabim i vogël teknik' : ''
-      ].filter(Boolean),
-      calculationBreakdown: [
-        {
-          step: '1',
-          amount: rule.baseAmount,
-          factor: 1,
-          description: `Vlera bazë sipas ${rule.legalBasis}`
-        },
-        {
-          step: '2',
-          amount: finalAmount,
-          factor: 1,
-          description: 'Vlera finale pas të gjithë faktorëve'
-        }
-      ],
+      appliedMultipliers,
+      appliedReductions,
+      calculationBreakdown: breakdown,
       legalBasis: rule.legalBasis,
       recommendedAmount: Math.round(finalAmount),
       minimumAmount: rule.minimumAmount || 0,

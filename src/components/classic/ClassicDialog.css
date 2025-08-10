@@ -1,0 +1,194 @@
+/* ClassicDialog.css - Authentic Windows 98/XP Dialog Styling */
+/* Albanian Customs Administration themed classic dialogs */
+
+.classic-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  font-family: var(--system-font);
+}
+
+.classic-dialog {
+  background: var(--window-background);
+  border: 2px outset var(--classic-silver);
+  border-radius: 0;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  min-height: 100px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.classic-dialog__titlebar {
+  background: var(--window-titlebar);
+  color: white;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: bold;
+  height: var(--titlebar-height);
+  border-bottom: 1px solid var(--classic-gray);
+  cursor: move;
+}
+
+.classic-dialog__title {
+  flex: 1;
+  margin-left: 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.classic-dialog__close-button {
+  background: var(--button-face);
+  border: 1px outset var(--classic-silver);
+  width: 16px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 2px;
+  color: var(--classic-black);
+}
+
+.classic-dialog__close-button:hover {
+  background: #e0e0e0;
+}
+
+.classic-dialog__close-button:active {
+  border: 1px inset var(--classic-silver);
+  background: var(--classic-silver);
+}
+
+.classic-dialog__content {
+  flex: 1;
+  padding: 12px;
+  overflow: auto;
+  background: var(--window-background);
+  color: var(--classic-black);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.classic-dialog__actions {
+  padding: 8px 12px;
+  border-top: 1px solid var(--classic-gray);
+  background: var(--window-background);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.classic-dialog__confirm-btn,
+.classic-dialog__cancel-btn {
+  min-width: 75px;
+}
+
+/* Special Albanian Government Dialog Styling */
+.classic-dialog--government {
+  border-color: var(--government-blue);
+}
+
+.classic-dialog--government .classic-dialog__titlebar {
+  background: linear-gradient(to right, var(--government-blue), var(--customs-navy));
+}
+
+.classic-dialog--urgent {
+  border-color: var(--albanian-red);
+  border-width: 3px;
+}
+
+.classic-dialog--urgent .classic-dialog__titlebar {
+  background: linear-gradient(to right, var(--albanian-red), #c01820);
+  animation: urgent-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes urgent-pulse {
+  0% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+/* Small dialog size */
+.classic-dialog--small {
+  width: 300px;
+  height: auto;
+}
+
+/* Large dialog size */
+.classic-dialog--large {
+  width: 80vw;
+  height: 80vh;
+}
+
+/* Error dialog styling */
+.classic-dialog--error .classic-dialog__titlebar {
+  background: linear-gradient(to right, #cc0000, #990000);
+}
+
+.classic-dialog--error .classic-dialog__content {
+  background: #fff5f5;
+  border: 1px solid #ffdddd;
+}
+
+/* Success dialog styling */
+.classic-dialog--success .classic-dialog__titlebar {
+  background: linear-gradient(to right, #008000, #006000);
+}
+
+.classic-dialog--success .classic-dialog__content {
+  background: #f0fff0;
+  border: 1px solid #ddffdd;
+}
+
+/* Warning dialog styling */
+.classic-dialog--warning .classic-dialog__titlebar {
+  background: linear-gradient(to right, #ff8000, #cc6600);
+}
+
+.classic-dialog--warning .classic-dialog__content {
+  background: #fffaf0;
+  border: 1px solid #ffeecc;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .classic-dialog {
+    width: 95vw !important;
+    height: auto;
+    max-height: 95vh;
+  }
+  
+  .classic-dialog__content {
+    font-size: 12px;
+  }
+  
+  .classic-dialog__actions {
+    flex-direction: column;
+  }
+  
+  .classic-dialog__confirm-btn,
+  .classic-dialog__cancel-btn {
+    width: 100%;
+  }
+}
+
+/* Focus trap for accessibility */
+.classic-dialog-overlay:focus-within .classic-dialog {
+  outline: 2px solid var(--government-blue);
+  outline-offset: -2px;
+}

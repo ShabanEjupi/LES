@@ -159,6 +159,44 @@ const CaseDetailView: React.FC = () => {
                 <IconButton onClick={() => setEditMode(!editMode)} className="classic-edit-button">
                   <EditIcon />
                 </IconButton>
+                
+                {/* Case Management Integration Buttons */}
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  onClick={() => navigate(`/cases/related-entities/${caseData.id}`)}
+                  className="classic-button"
+                  sx={{ ml: 1 }}
+                >
+                  🔗 Entitetet
+                </Button>
+                
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  onClick={() => navigate(`/cases/access/${caseData.id}`)}
+                  className="classic-button"
+                >
+                  🔐 Qasjet
+                </Button>
+                
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  onClick={() => navigate(`/cases/additional-info/${caseData.id}`)}
+                  className="classic-button"
+                >
+                  ℹ️ Info Shtesë
+                </Button>
+                
+                <Button 
+                  variant="outlined" 
+                  size="small"
+                  onClick={() => navigate('/cases/types')}
+                  className="classic-button"
+                >
+                  📂 Llojet
+                </Button>
               </Box>
             </Box>
 
@@ -508,6 +546,72 @@ const CaseDetailView: React.FC = () => {
               </Table>
             </TableContainer>
           </TabPanel>
+        </Card>
+
+        {/* Quick Actions Section - Case Management Integration */}
+        <Card sx={{ mb: 3 }} className="classic-card">
+          <CardContent>
+            <Typography variant="h6" gutterBottom className="classic-section-title">
+              🚀 VEPRIME TË SHPEJTA - INTEGRIM I SISTEMIT
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+              <Button 
+                variant="contained" 
+                color="success"
+                onClick={() => navigate('/fines/calculation-engine')}
+                className="classic-button"
+                startIcon={<span>💰</span>}
+              >
+                Kalkuloni Gjobën
+              </Button>
+              
+              <Button 
+                variant="contained" 
+                color="warning"
+                onClick={() => navigate(`/cases/related-entities/${caseData.id}`)}
+                className="classic-button"
+                startIcon={<span>🔗</span>}
+              >
+                Menaxho Entitetet
+              </Button>
+              
+              <Button 
+                variant="outlined"
+                onClick={() => navigate(`/cases/access/${caseData.id}`)}
+                className="classic-button"
+                startIcon={<span>🔐</span>}
+              >
+                Qasjet në Rast
+              </Button>
+              
+              <Button 
+                variant="outlined"
+                onClick={() => navigate(`/cases/additional-info/${caseData.id}`)}
+                className="classic-button"
+                startIcon={<span>ℹ️</span>}
+              >
+                Info dhe Butonat
+              </Button>
+              
+              <Button 
+                variant="outlined"
+                onClick={() => navigate('/documents/templates')}
+                className="classic-button"
+                startIcon={<span>📄</span>}
+              >
+                Gjeneroni Dokument
+              </Button>
+              
+              <Button 
+                variant="outlined"
+                onClick={() => navigate('/notifications')}
+                className="classic-button"
+                startIcon={<span>📧</span>}
+              >
+                Dërgoni Njoftim
+              </Button>
+            </Box>
+          </CardContent>
         </Card>
 
         {/* Action Buttons */}
