@@ -128,7 +128,7 @@ export const moduleRegistry: ModuleDefinition[] = [
     description: 'Sistemi i njoftimeve automatike...',
     category: 'NOTIFICATIONS',
     priority: 'HIGH',
-    status: 'NOT_IMPLEMENTED',
+    status: 'IMPLEMENTED',
     route: '/notifications/automated',
     component: 'AutomatedNotifications',
     requiredRoles: ['Officer', 'Supervisor'],

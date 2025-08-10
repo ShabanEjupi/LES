@@ -27,6 +27,7 @@ import TaskManagement from './pages/tasks/TaskManagement';
 import AdministrativeFines from './pages/fines/AdministrativeFines';
 import FineCreation from './pages/fines/FineCreation';
 import FineCalculationEngine from './pages/fines/FineCalculationEngine';
+import FineCalculationDashboard from './pages/fines/FineCalculationDashboard';
 import FineCalculationRules from './pages/fines/FineCalculationRules';
 import FineCalculationHistory from './pages/fines/FineCalculationHistory';
 import Settings from './pages/settings/Settings';
@@ -54,6 +55,9 @@ import AdvancedSearch from './pages/search/AdvancedSearch';
 // Documents
 import DocumentUpload from './pages/documents/DocumentUpload';
 import DocumentTemplates from './pages/documents/DocumentTemplates';
+
+// Notifications
+import AutomatedNotifications from './pages/notifications/AutomatedNotifications';
 
 import './styles/classic-theme.css';
 
@@ -369,6 +373,24 @@ const App: React.FC = () => {
 
               {/* Administrative Fines Extended Routes */}
               <Route 
+                path="/fines" 
+                element={
+                  <ProtectedRoute>
+                    <FineCalculationDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+
+              <Route 
+                path="/fines/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <FineCalculationDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
                 path="/fines/create" 
                 element={
                   <ProtectedRoute>
@@ -465,7 +487,16 @@ const App: React.FC = () => {
                 path="/notifications" 
                 element={
                   <ProtectedRoute>
-                    <div className="page-content">Notification Center - Coming Soon</div>
+                    <AutomatedNotifications />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/notifications/automated" 
+                element={
+                  <ProtectedRoute requiredRoles={['Officer', 'Supervisor', 'Administrator']}>
+                    <AutomatedNotifications />
                   </ProtectedRoute>
                 } 
               />

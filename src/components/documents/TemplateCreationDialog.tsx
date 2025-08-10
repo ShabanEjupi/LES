@@ -20,8 +20,7 @@ import {
   FormControlLabel,
   Alert,
   Tab,
-  Tabs,
-  Box
+  Tabs
 } from '@mui/material';
 import {
   Add as AddIcon,

@@ -106,6 +106,9 @@ export interface FineCalculationHistory {
 export interface FineCalculationStatistics {
   totalCalculations: number;
   calculationsToday: number;
+  pendingApproval: number;
+  approvedCalculations: number;
+  totalFineAmount: number;
   averageAmount: number;
   mostUsedRules: Array<{
     ruleId: string;
@@ -116,4 +119,17 @@ export interface FineCalculationStatistics {
   calculationsByUser: Record<string, number>;
   totalFinesIssued: number;
   totalAmountCalculated: number;
+}
+
+export interface ViolationTemplate {
+  id: string;
+  code: string;
+  nameAlbanian: string;
+  nameEnglish: string;
+  category: string;
+  baseAmount: number;
+  description: string;
+  suggestedSeverity: 'minor' | 'moderate' | 'severe' | 'critical';
+  commonReductions: string[];
+  applicableTo: string[];
 }
