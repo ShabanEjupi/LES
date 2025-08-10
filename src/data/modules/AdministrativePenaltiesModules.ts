@@ -176,5 +176,56 @@ export const ADMINISTRATIVE_PENALTIES_MODULES: SystemModule[] = [
     sortOrder: 2,
     hierarchyLevel: 1,
     securityLevel: 'INTERNAL'
+  },
+
+  {
+    id: 'FINE_CALCULATION_ENGINE',
+    name: 'Fine Calculation Engine',
+    nameAlbanian: 'Motori i Llogaritjes së Gjobave',
+    description: 'Motor automatik per llogaritjen e gjobave administrative sipas ligjit',
+    icon: '🧮',
+    route: '/fines/calculation-engine',
+    component: 'FineCalculationEngine',
+    requiredRoles: ['Officer', 'Supervisor', 'SectorChief', 'Director'],
+    requiredPermissions: ['fines.calculate', 'fines.administrative.create'],
+    category: ModuleCategory.FINES,
+    isActive: true,
+    sortOrder: 8,
+    hierarchyLevel: 1,
+    securityLevel: 'INTERNAL'
+  },
+
+  {
+    id: 'FINE_CALCULATION_RULES',
+    name: 'Fine Calculation Rules Management',
+    nameAlbanian: 'Menaxhimi i Rregullave të Llogaritjes',
+    description: 'Menaxhimi dhe konfigurimi i rregullave për llogaritjen e gjobave',
+    icon: '📐',
+    route: '/fines/calculation-rules',
+    component: 'FineCalculationRules',
+    requiredRoles: ['SectorChief', 'Director'],
+    requiredPermissions: ['fines.rules.manage', 'system.configuration'],
+    category: ModuleCategory.FINES,
+    isActive: true,
+    sortOrder: 9,
+    hierarchyLevel: 2,
+    securityLevel: 'CONFIDENTIAL'
+  },
+
+  {
+    id: 'FINE_CALCULATION_HISTORY',
+    name: 'Fine Calculation History',
+    nameAlbanian: 'Historiku i Llogaritjeve të Gjobave',
+    description: 'Historiku dhe auditimi i llogaritjeve të gjobave të kryera',
+    icon: '📚',
+    route: '/fines/calculation-history',
+    component: 'FineCalculationHistory',
+    requiredRoles: ['Officer', 'Supervisor', 'SectorChief', 'Director'],
+    requiredPermissions: ['fines.history.view', 'audit.view'],
+    category: ModuleCategory.FINES,
+    isActive: true,
+    sortOrder: 10,
+    hierarchyLevel: 1,
+    securityLevel: 'INTERNAL'
   }
 ];

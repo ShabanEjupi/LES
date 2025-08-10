@@ -1013,3 +1013,202 @@ html, body {
   color: var(--government-blue);
   font-weight: bold;
 }
+
+/* Fine Calculation Engine Styles */
+.calculation-engine {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.calculation-result-panel {
+  background: linear-gradient(to bottom, #e8f4fd 0%, #d0e8fc 100%);
+  border: 2px solid var(--government-blue);
+  border-radius: 4px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.calculation-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 11px;
+  background: white;
+  border: 1px inset var(--classic-silver);
+}
+
+.calculation-breakdown-table thead {
+  background: var(--classic-silver);
+  font-weight: bold;
+}
+
+.calculation-breakdown-table th,
+.calculation-breakdown-table td {
+  border: 1px solid var(--classic-gray);
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.calculation-breakdown-table th {
+  background: var(--classic-silver);
+  font-weight: bold;
+  text-align: center;
+}
+
+.calculation-breakdown-table tbody tr:nth-child(even) {
+  background: #f8f8f8;
+}
+
+.calculation-breakdown-table tbody tr:hover {
+  background: #e8f4fd;
+}
+
+.calculation-factor-positive {
+  color: #008000;
+  font-weight: bold;
+}
+
+.calculation-factor-negative {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.calculation-step-description {
+  font-size: 11px;
+  color: #333;
+}
+
+.fine-amount-display {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--government-blue);
+  text-align: center;
+  padding: 8px;
+  background: white;
+  border: 2px solid var(--government-blue);
+  border-radius: 4px;
+}
+
+.calculation-input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.calculation-checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.classic-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.classic-checkbox-label:hover {
+  background: #f0f0f0;
+}
+
+.classic-checkbox {
+  width: 13px;
+  height: 13px;
+  border: 1px inset var(--classic-silver);
+  background: white;
+}
+
+.rule-info-panel {
+  background: white;
+  border: 1px inset var(--classic-silver);
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.rule-info-panel div {
+  margin: 4px 0;
+}
+
+.applied-factors-list {
+  margin: 4px 0 0 16px;
+  font-size: 10px;
+  color: #666;
+}
+
+.applied-factors-list li {
+  margin: 2px 0;
+}
+
+.calculation-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--classic-gray);
+}
+
+/* Legal basis and compliance */
+.legal-basis-info {
+  background: #f8f8f8;
+  border: 1px inset var(--classic-silver);
+  padding: 8px;
+  margin-top: 12px;
+  font-size: 10px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Statistics panel for calculation engine */
+.calculation-statistics {
+  background: var(--classic-light-gray);
+  border: 1px inset var(--classic-silver);
+  padding: 12px;
+  font-size: 11px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.calculation-statistics div {
+  line-height: 1.4;
+}
+
+.calculation-statistics strong {
+  color: var(--government-blue);
+}
+
+/* Result highlight styles */
+.calculation-result-highlight {
+  background: var(--customs-gold);
+  color: var(--government-blue);
+  padding: 8px 12px;
+  border: 2px solid var(--government-blue);
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+  margin: 8px 0;
+}
+
+/* Calculation history styles */
+.calculation-history-item {
+  background: white;
+  border: 1px solid var(--classic-gray);
+  padding: 8px;
+  margin: 4px 0;
+  font-size: 11px;
+}
+
+.calculation-history-item:hover {
+  background: #f0f0f0;
+}

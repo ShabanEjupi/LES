@@ -26,6 +26,9 @@ import AuditTrail from './pages/audit/AuditTrail';
 import TaskManagement from './pages/tasks/TaskManagement';
 import AdministrativeFines from './pages/fines/AdministrativeFines';
 import FineCreation from './pages/fines/FineCreation';
+import FineCalculationEngine from './pages/fines/FineCalculationEngine';
+import FineCalculationRules from './pages/fines/FineCalculationRules';
+import FineCalculationHistory from './pages/fines/FineCalculationHistory';
 import Settings from './pages/settings/Settings';
 import DatabaseInit from './pages/admin/DatabaseInit';
 import SystemDiagnostics from './pages/admin/SystemDiagnostics';
@@ -360,6 +363,33 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute>
                     <FineCreation />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/fines/calculation-engine" 
+                element={
+                  <ProtectedRoute>
+                    <FineCalculationEngine />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/fines/calculation-rules" 
+                element={
+                  <ProtectedRoute requiredRoles={['Supervisor', 'SectorChief', 'Director', 'Administrator']}>
+                    <FineCalculationRules />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/fines/calculation-history" 
+                element={
+                  <ProtectedRoute>
+                    <FineCalculationHistory />
                   </ProtectedRoute>
                 } 
               />
