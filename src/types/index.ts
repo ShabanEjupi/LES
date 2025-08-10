@@ -724,3 +724,6 @@ export interface KPIData {
   format?: 'number' | 'currency' | 'percentage';
   icon?: string;
 }
+
+// Export Document Templates types
+export * from './DocumentTemplates';

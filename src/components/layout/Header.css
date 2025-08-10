@@ -1,0 +1,265 @@
+/* Header.css - Official Albanian Government Header Styling */
+/* Classic Windows 98/XP style with Kosovo government branding */
+
+.classic-header {
+  background: linear-gradient(135deg, var(--government-blue) 0%, var(--customs-navy) 100%) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+  color: white !important;
+  border-bottom: 1px solid var(--classic-gray);
+  min-height: 64px !important;
+}
+
+.classic-toolbar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 0 16px !important;
+  min-height: 64px !important;
+}
+
+/* Left Section - Government Branding */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.classic-menu-button {
+  background: rgba(255,255,255,0.1) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+  border-radius: 2px !important;
+  margin-right: 8px !important;
+}
+
+.classic-menu-button:hover {
+  background: rgba(255,255,255,0.2) !important;
+}
+
+.government-branding {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kosovo-emblem {
+  font-size: 32px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.system-identity {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.republic-title {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  font-family: 'Times New Roman', serif !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+  color: var(--customs-gold) !important;
+  margin: 0 !important;
+}
+
+.ministry-title {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: rgba(255,255,255,0.9) !important;
+  margin: 0 !important;
+}
+
+.system-title {
+  font-size: 11px !important;
+  color: rgba(255,255,255,0.8) !important;
+  font-style: italic !important;
+  margin: 0 !important;
+}
+
+/* Center Section - Current Time */
+.header-center {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.current-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0,0,0,0.1);
+  padding: 8px 12px;
+  border: 1px inset var(--classic-silver);
+  border-radius: 2px;
+}
+
+.time-label {
+  font-size: 10px !important;
+  color: rgba(255,255,255,0.7) !important;
+  margin: 0 !important;
+}
+
+.time-display {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  font-family: 'Courier New', monospace !important;
+  color: var(--customs-gold) !important;
+  margin: 0 !important;
+}
+
+/* Right Section - User Info & Actions */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+}
+
+.user-greeting {
+  font-size: 10px !important;
+  color: rgba(255,255,255,0.7) !important;
+  margin: 0 !important;
+}
+
+.user-name {
+  font-size: 13px !important;
+  font-weight: bold !important;
+  color: var(--customs-gold) !important;
+  margin: 0 !important;
+}
+
+.user-role {
+  font-size: 10px !important;
+  color: rgba(255,255,255,0.8) !important;
+  margin: 0 !important;
+}
+
+.guest-info {
+  font-size: 12px !important;
+  color: rgba(255,255,255,0.8) !important;
+  font-style: italic !important;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.header-button {
+  font-size: 10px !important;
+  padding: 4px 8px !important;
+  min-width: auto !important;
+  height: 24px !important;
+}
+
+/* Kosovo Government Special Styling */
+.classic-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, 
+    var(--albanian-red) 0%, 
+    var(--albanian-red) 50%, 
+    var(--customs-gold) 50%, 
+    var(--customs-gold) 100%
+  );
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .header-center {
+    display: none;
+  }
+  
+  .system-identity {
+    display: none;
+  }
+  
+  .user-info {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .classic-toolbar {
+    padding: 0 8px !important;
+  }
+  
+  .government-branding {
+    gap: 8px;
+  }
+  
+  .kosovo-emblem {
+    font-size: 24px;
+  }
+  
+  .republic-title {
+    font-size: 14px !important;
+  }
+  
+  .ministry-title {
+    font-size: 11px !important;
+  }
+  
+  .header-actions {
+    gap: 4px;
+  }
+  
+  .header-button {
+    padding: 2px 6px !important;
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .republic-title,
+  .ministry-title {
+    display: none;
+  }
+  
+  .header-actions .header-button .MuiButton-startIcon {
+    margin: 0 !important;
+  }
+  
+  .header-button {
+    min-width: 20px !important;
+    padding: 2px !important;
+  }
+  
+  .header-button .MuiButton-label {
+    display: none;
+  }
+}
+
+/* Focus states for accessibility */
+.classic-menu-button:focus,
+.header-button:focus {
+  outline: 2px solid var(--customs-gold) !important;
+  outline-offset: 2px !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .classic-header {
+    background: var(--classic-black) !important;
+    border-bottom: 2px solid white !important;
+  }
+  
+  .republic-title,
+  .user-name,
+  .time-display {
+    color: white !important;
+  }
+}

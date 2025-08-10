@@ -1,0 +1,148 @@
+/* ClassicCard.css - Authentic Windows 98/XP Panel/Card Styling */
+/* Albanian Government themed classic panels */
+
+.classic-card {
+  border: 2px inset var(--classic-silver) !important;
+  background: var(--window-background) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  margin: 4px !important;
+}
+
+.classic-card__title {
+  background: linear-gradient(to right, var(--government-blue), var(--customs-navy));
+  color: white;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  border-bottom: 1px solid var(--classic-gray);
+  margin: -1px -1px 8px -1px;
+}
+
+.classic-card__content {
+  padding: 8px;
+  color: var(--classic-black);
+  font-size: 11px;
+}
+
+/* Card Variants */
+.classic-card--panel {
+  border: 2px outset var(--classic-silver) !important;
+  background: var(--classic-light-gray) !important;
+}
+
+.classic-card--inset {
+  border: 2px inset var(--classic-silver) !important;
+  background: white !important;
+}
+
+.classic-card--raised {
+  border: 2px outset var(--classic-silver) !important;
+  background: linear-gradient(to bottom, var(--classic-light-gray) 0%, var(--classic-silver) 100%) !important;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+/* Special Kosovo Customs Panel */
+.classic-card--kosovo-customs {
+  border: 2px solid var(--customs-navy) !important;
+  background: linear-gradient(to bottom, #f8f9ff 0%, #e8e9f8 100%) !important;
+}
+
+.classic-card--kosovo-customs .classic-card__title {
+  background: linear-gradient(to right, var(--customs-navy), var(--government-blue));
+  color: var(--customs-gold);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+/* Group Box Style */
+.classic-card--groupbox {
+  border: 2px groove var(--classic-silver) !important;
+  background: transparent !important;
+  margin: 8px 4px !important;
+  position: relative;
+}
+
+.classic-card--groupbox .classic-card__title {
+  background: var(--window-background);
+  color: var(--classic-black);
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: normal;
+  border: none;
+  margin: 0;
+}
+
+.classic-card--groupbox .classic-card__content {
+  margin-top: 8px;
+}
+
+/* Dialog Style Panel */
+.classic-card--dialog {
+  border: 2px outset var(--classic-silver) !important;
+  background: var(--window-background) !important;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+.classic-card--dialog .classic-card__title {
+  background: var(--window-titlebar);
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  padding: 6px 8px;
+  margin: -1px -1px 0 -1px;
+  border-bottom: 1px solid var(--classic-gray);
+}
+
+/* Status panels */
+.classic-card--status-active {
+  border-left: 4px solid var(--status-active) !important;
+}
+
+.classic-card--status-pending {
+  border-left: 4px solid var(--status-pending) !important;
+}
+
+.classic-card--status-closed {
+  border-left: 4px solid var(--status-closed) !important;
+}
+
+.classic-card--status-urgent {
+  border-left: 4px solid var(--albanian-red) !important;
+  background: linear-gradient(to right, #fff5f5 0%, white 100%) !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .classic-card {
+    margin: 2px !important;
+  }
+  
+  .classic-card__content {
+    padding: 6px;
+    font-size: 12px;
+  }
+  
+  .classic-card__title {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+}
+
+/* Hover effects for interactive cards */
+.classic-card.interactive:hover {
+  border-color: var(--government-blue) !important;
+}
+
+.classic-card.interactive:hover .classic-card__title {
+  background: linear-gradient(to right, var(--government-blue), var(--albanian-red));
+}
+
+/* Focus styles for accessibility */
+.classic-card:focus-within {
+  outline: 2px solid var(--government-blue);
+  outline-offset: 2px;
+}

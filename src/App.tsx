@@ -14,7 +14,6 @@ import Homepage from './pages/Homepage';
 import Dashboard from './pages/Dashboard';
 import ViolationManagement from './pages/violations/ViolationManagement';
 import ViolationsList from './pages/violations/ViolationsList';
-import ViolationCreateForm from './pages/violations/ViolationCreateForm';
 import SimpleViolationForm from './pages/violations/SimpleViolationForm';
 import ViolationTypeChange from './pages/violations/ViolationTypeChange';
 import ViolationProcess from './pages/violations/ViolationProcess';

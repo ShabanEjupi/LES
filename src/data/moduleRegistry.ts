@@ -68,7 +68,7 @@ export const moduleRegistry: ModuleDefinition[] = [
     description: 'Caktimi i rasteve te oficerëve...',
     category: 'CASES',
     priority: 'HIGH',
-    status: 'NOT_IMPLEMENTED',
+    status: 'IMPLEMENTED',
     route: '/cases/assignment',
     component: 'CaseAssignment',
     requiredRoles: ['Supervisor', 'Administrator'],
