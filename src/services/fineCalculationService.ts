@@ -153,6 +153,7 @@ class FineCalculationService {
     dateFrom?: Date;
     dateTo?: Date;
     caseId?: string;
+    limit?: number;
   }): Promise<FineCalculationHistory[]> {
     try {
       const queryParams = new URLSearchParams();
@@ -690,6 +691,9 @@ class FineCalculationService {
     return {
       totalCalculations: 156,
       calculationsToday: 8,
+      pendingApproval: 12,
+      approvedCalculations: 134,
+      totalFineAmount: 1245000,
       averageAmount: 7500,
       mostUsedRules: [
         { ruleId: 'FALSE_DECLARATION_001', violationType: 'FALSE_DECLARATION', count: 45 },

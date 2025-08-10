@@ -188,10 +188,15 @@ export interface CustomsDeclaration {
 export interface Company {
   id: string;
   name: string;
-  registrationNumber: string;
+  registrationNumber?: string;
   taxNumber: string;
   address: Address;
   contactPerson: string;
+  contactInfo?: {
+    email: string;
+    phone: string;
+    website: string;
+  };
   email: string;
   phone: string;
   type: 'IMPORTER' | 'EXPORTER' | 'BROKER' | 'CARRIER';
@@ -437,9 +442,11 @@ export interface CaseActivity {
   type: ActivityType;
   description: string;
   performedBy: string; // User ID
+  performedAt: Date; // Add performedAt property
   timestamp: Date;
   changes?: Record<string, unknown>;
   attachments?: string[]; // Document IDs
+  metadata?: Record<string, unknown>; // Add metadata property
 }
 
 export type ActivityType = 
@@ -450,13 +457,16 @@ export type ActivityType =
   | 'COMMENT_ADDED' 
   | 'DOCUMENT_UPLOADED' 
   | 'APPROVED' 
-  | 'REJECTED';
+  | 'REJECTED'
+  | 'CASE_CREATED'
+  | 'CASE_REASSIGNED';
 
 export interface WorkflowStatus {
   currentStep: string;
   steps: WorkflowStep[];
   isCompleted: boolean;
   completedAt?: Date;
+  lastUpdated: Date; // Add lastUpdated property
 }
 
 export interface WorkflowStep {
@@ -467,6 +477,7 @@ export interface WorkflowStep {
   status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'SKIPPED';
   completedBy?: string; // User ID
   completedAt?: Date;
+  startedAt?: Date; // Add startedAt property
   comments?: string;
   requiredDocuments: string[];
   nextSteps: string[];

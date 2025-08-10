@@ -173,10 +173,40 @@ export class CaseService {
         workflow: {
           currentStep: 'INVESTIGATION',
           steps: [
-            { name: 'CREATED', status: 'COMPLETED', completedAt: new Date('2025-01-18T10:15:00') },
-            { name: 'INVESTIGATION', status: 'IN_PROGRESS', startedAt: new Date('2025-01-18T11:00:00') },
-            { name: 'REVIEW', status: 'PENDING' },
-            { name: 'DECISION', status: 'PENDING' }
+            { 
+              id: 'step-1',
+              name: 'CREATED', 
+              description: 'Case creation step',
+              status: 'COMPLETED', 
+              completedAt: new Date('2025-01-18T10:15:00'),
+              requiredDocuments: [],
+              nextSteps: ['step-2']
+            },
+            { 
+              id: 'step-2',
+              name: 'INVESTIGATION', 
+              description: 'Investigation phase',
+              status: 'IN_PROGRESS', 
+              startedAt: new Date('2025-01-18T11:00:00'),
+              requiredDocuments: [],
+              nextSteps: ['step-3']
+            },
+            { 
+              id: 'step-3',
+              name: 'REVIEW', 
+              description: 'Review phase',
+              status: 'PENDING',
+              requiredDocuments: [],
+              nextSteps: ['step-4']
+            },
+            { 
+              id: 'step-4',
+              name: 'DECISION', 
+              description: 'Decision phase',
+              status: 'PENDING',
+              requiredDocuments: [],
+              nextSteps: []
+            }
           ],
           lastUpdated: new Date('2025-01-18T11:00:00')
         },
