@@ -83,7 +83,7 @@ export const moduleRegistry: ModuleDefinition[] = [
     description: 'Menaxhimi i shablloneve të dokumenteve...',
     category: 'DOCUMENTS',
     priority: 'HIGH',
-    status: 'NOT_IMPLEMENTED',
+    status: 'IMPLEMENTED',
     route: '/documents/templates',
     component: 'DocumentTemplates',
     requiredRoles: ['Officer', 'Supervisor'],

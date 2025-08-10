@@ -9,6 +9,8 @@ interface ClassicButtonProps {
   children: React.ReactNode;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
+  startIcon?: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
 export const ClassicButton: React.FC<ClassicButtonProps> = ({
@@ -18,7 +20,9 @@ export const ClassicButton: React.FC<ClassicButtonProps> = ({
   onClick,
   children,
   className = '',
-  type = 'button'
+  type = 'button',
+  startIcon,
+  style
 }) => {
   const buttonClass = `classic-button classic-button--${variant} classic-button--${size} ${className}`;
   
@@ -28,7 +32,9 @@ export const ClassicButton: React.FC<ClassicButtonProps> = ({
       className={buttonClass}
       disabled={disabled}
       onClick={onClick}
+      style={style}
     >
+      {startIcon && <span className="classic-button-icon">{startIcon}</span>}
       {children}
     </button>
   );

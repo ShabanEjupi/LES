@@ -551,10 +551,32 @@ export const DocumentTemplates: React.FC = () => {
                 template={dialogType === 'edit' ? selectedTemplate || undefined : undefined}
                 onSave={async (templateData) => {
                   try {
+                    // Ensure required fields are set with proper enum values
+                    const completeTemplateData = {
+                      ...templateData,
+                      status: (templateData.status || 'DRAFT') as TemplateStatus,
+                      category: (templateData.category || 'ADMINISTRATIVE_FORMS') as TemplateCategory,
+                      priority: (templateData.priority || 'MEDIUM') as TemplatePriority,
+                      type: (templateData.type || 'ADMINISTRATIVE_DECISION') as TemplateType,
+                      templateNumber: templateData.templateNumber || `TMP-${Date.now()}`,
+                      name: templateData.name || 'Shabllon i Ri',
+                      description: templateData.description || 'Përshkrim shablloni',
+                      sections: templateData.sections || [],
+                      htmlTemplate: templateData.htmlTemplate || '<p>Template content</p>',
+                      version: templateData.version || '1.0',
+                      versions: templateData.versions || [],
+                      requiresApproval: templateData.requiresApproval || false,
+                      approvalSteps: templateData.approvalSteps || [],
+                      allowedRoles: templateData.allowedRoles || ['Officer'],
+                      tags: templateData.tags || [],
+                      keywords: templateData.keywords || [],
+                      createdBy: templateData.createdBy || 'current-user'
+                    };
+                    
                     if (dialogType === 'edit' && selectedTemplate) {
-                      await documentTemplateService.updateTemplate(selectedTemplate.id, templateData);
+                      await documentTemplateService.updateTemplate(selectedTemplate.id, completeTemplateData);
                     } else {
-                      await documentTemplateService.createTemplate(templateData);
+                      await documentTemplateService.createTemplate(completeTemplateData);
                     }
                     await loadTemplates();
                     setDialogOpen(false);

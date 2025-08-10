@@ -11,7 +11,6 @@ import {
   Card,
   CardContent,
   Chip,
-  Grid,
   List,
   ListItem,
   ListItemText,
@@ -154,8 +153,8 @@ const TemplatePreviewDialog: React.FC<TemplatePreviewDialogProps> = ({
 
   // Template Information Tab
   const InformationTab = () => (
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={6}>
+    <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, 1fr)' } }}>
+      <Box>
         <Card className="classic-card">
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -199,9 +198,9 @@ const TemplatePreviewDialog: React.FC<TemplatePreviewDialogProps> = ({
             </Box>
           </CardContent>
         </Card>
-      </Grid>
+      </Box>
 
-      <Grid item xs={12} md={6}>
+      <Box>
         <Card className="classic-card">
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -247,9 +246,9 @@ const TemplatePreviewDialog: React.FC<TemplatePreviewDialogProps> = ({
             </Box>
           </CardContent>
         </Card>
-      </Grid>
+      </Box>
 
-      <Grid item xs={12} md={6}>
+      <Box>
         <Card className="classic-card">
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -298,9 +297,9 @@ const TemplatePreviewDialog: React.FC<TemplatePreviewDialogProps> = ({
             </Box>
           </CardContent>
         </Card>
-      </Grid>
+      </Box>
 
-      <Grid item xs={12} md={6}>
+      <Box>
         <Card className="classic-card">
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -340,10 +339,10 @@ const TemplatePreviewDialog: React.FC<TemplatePreviewDialogProps> = ({
             </Box>
           </CardContent>
         </Card>
-      </Grid>
+      </Box>
 
       {(template.tags.length > 0 || template.keywords.length > 0) && (
-        <Grid item xs={12}>
+        <Box sx={{ gridColumn: { lg: '1 / -1' } }}>
           <Card className="classic-card">
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -375,9 +374,9 @@ const TemplatePreviewDialog: React.FC<TemplatePreviewDialogProps> = ({
               )}
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
       )}
-    </Grid>
+    </Box>
   );
 
   // Template Structure Tab

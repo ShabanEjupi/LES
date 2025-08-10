@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MainLayout } from '../../components/layout/MainLayout';
+import MainLayout from '../../components/layout/MainLayout';
 import { ClassicCard } from '../../components/common/ClassicCard';
 import { ClassicButton } from '../../components/common/ClassicButton';
 import type {
@@ -223,7 +223,7 @@ const FineCalculationTemplateSelector: React.FC = () => {
   const navigate = useNavigate();
   
   return (
-    <MainLayout title="Zgjidhni Shabllon për Llogaritje Gjobe">
+    <MainLayout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         {/* Header */}

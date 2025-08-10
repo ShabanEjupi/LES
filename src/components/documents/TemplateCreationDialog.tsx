@@ -240,8 +240,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
 
 // Basic Information Tab
   const BasicInformationTab = () => (
-    <Box container spacing={3}>
-      <Box xs={12} md={6}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2 }}>
         <TextField
           fullWidth
           label="Emri i Shabllonit *"
@@ -250,7 +250,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           className="classic-textfield"
         />
       </Box>
-      <Box xs={12} md={6}>
+      <Box>
         <TextField
           fullWidth
           label="Emri në Anglisht"
@@ -259,7 +259,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           className="classic-textfield"
         />
       </Box>
-      <Box xs={12}>
+      <Box>
         <TextField
           fullWidth
           multiline
@@ -270,7 +270,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           className="classic-textfield"
         />
       </Box>
-      <Box xs={12} md={4}>
+      <Box>
         <FormControl fullWidth>
           <InputLabel>Lloji i Shabllonit</InputLabel>
           <Select
@@ -292,7 +292,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           </Select>
         </FormControl>
       </Box>
-      <Box xs={12} md={4}>
+      <Box>
         <FormControl fullWidth>
           <InputLabel>Kategoria</InputLabel>
           <Select
@@ -312,7 +312,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           </Select>
         </FormControl>
       </Box>
-      <Box xs={12} md={4}>
+      <Box>
         <FormControl fullWidth>
           <InputLabel>Prioriteti</InputLabel>
           <Select
@@ -329,7 +329,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           </Select>
         </FormControl>
       </Box>
-      <Box xs={12} md={6}>
+      <Box>
         <TextField
           fullWidth
           label="Etiketat (ndarë me presje)"
@@ -339,7 +339,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           className="classic-textfield"
         />
       </Box>
-      <Box xs={12} md={6}>
+      <Box>
         <TextField
           fullWidth
           label="Fjalët kyçe (ndarë me presje)"
@@ -349,7 +349,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           className="classic-textfield"
         />
       </Box>
-      <Box xs={12} md={6}>
+      <Box>
         <TextField
           fullWidth
           label="Baza Ligjore"
@@ -358,7 +358,7 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           className="classic-textfield"
         />
       </Box>
-      <Box xs={12} md={6}>
+      <Box>
         <FormControlLabel
           control={
             <Switch
@@ -374,8 +374,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
 
   // Template Content Tab
   const TemplateContentTab = () => (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
+    <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: '1fr' }}>
+      <Box>
         <TextField
           fullWidth
           multiline
@@ -386,8 +386,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           placeholder="HTML për kreun e dokumentit..."
           className="classic-textfield"
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Box>
+      <Box>
         <TextField
           fullWidth
           multiline
@@ -398,8 +398,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           placeholder="Shkruani përmbajtjen HTML të shabllonit këtu..."
           className="classic-textfield"
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Box>
+      <Box>
         <TextField
           fullWidth
           multiline
@@ -410,8 +410,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           placeholder="HTML për fundin e dokumentit..."
           className="classic-textfield"
         />
-      </Grid>
-      <Grid item xs={12}>
+      </Box>
+      <Box>
         <TextField
           fullWidth
           multiline
@@ -422,8 +422,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
           placeholder="CSS stilet e personalizuara për shabllonin..."
           className="classic-textfield"
         />
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 
   // Fields and Sections Tab
@@ -465,8 +465,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
               </Box>
             </Box>
 
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+            <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' } }}>
+              <Box>
                 <TextField
                   fullWidth
                   size="small"
@@ -475,8 +475,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                   onChange={(e) => updateSection(section.id, { title: e.target.value })}
                   className="classic-textfield"
                 />
-              </Grid>
-              <Grid item xs={12} md={6}>
+              </Box>
+              <Box>
                 <TextField
                   fullWidth
                   size="small"
@@ -485,8 +485,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                   onChange={(e) => updateSection(section.id, { titleEn: e.target.value })}
                   className="classic-textfield"
                 />
-              </Grid>
-              <Grid item xs={12}>
+              </Box>
+              <Box sx={{ gridColumn: '1 / -1' }}>
                 <TextField
                   fullWidth
                   size="small"
@@ -495,8 +495,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                   onChange={(e) => updateSection(section.id, { description: e.target.value })}
                   className="classic-textfield"
                 />
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
 
             {/* Fields in this section */}
             {section.fields.map((field, fieldIndex) => (
@@ -512,8 +512,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                       <DeleteIcon />
                     </IconButton>
                   </Box>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={3}>
+                  <Box sx={{ display: 'grid', gap: 1, gridTemplateColumns: { xs: '1fr', md: 'repeat(4, 1fr)' } }}>
+                    <Box>
                       <TextField
                         fullWidth
                         size="small"
@@ -522,8 +522,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                         onChange={(e) => updateField(section.id, field.id, { name: e.target.value })}
                         className="classic-textfield"
                       />
-                    </Grid>
-                    <Grid item xs={12} md={3}>
+                    </Box>
+                    <Box>
                       <FormControl fullWidth size="small">
                         <InputLabel>Lloji</InputLabel>
                         <Select
@@ -543,8 +543,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                           <MenuItem value="TEXTAREA">Zona Teksti</MenuItem>
                         </Select>
                       </FormControl>
-                    </Grid>
-                    <Grid item xs={12} md={3}>
+                    </Box>
+                    <Box>
                       <TextField
                         fullWidth
                         size="small"
@@ -553,8 +553,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                         onChange={(e) => updateField(section.id, field.id, { placeholder: e.target.value })}
                         className="classic-textfield"
                       />
-                    </Grid>
-                    <Grid item xs={12} md={3}>
+                    </Box>
+                    <Box>
                       <FormControlLabel
                         control={
                           <Switch
@@ -565,8 +565,8 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
                         }
                         label="I detyrueshëm"
                       />
-                    </Grid>
-                  </Grid>
+                    </Box>
+                  </Box>
                 </CardContent>
               </Card>
             ))}
@@ -578,58 +578,60 @@ const TemplateCreationDialog: React.FC<TemplateCreationDialogProps> = ({
 
   // Compliance and Security Tab
   const ComplianceTab = () => (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
+    <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: '1fr' }}>
+      <Box>
         <Typography variant="h6" gutterBottom>
           Përputhshmëria Ligjore dhe Siguria
         </Typography>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          label="Shënimet e Përputhshmërisë"
-          value={templateData.complianceNotes || ''}
-          onChange={(e) => handleInputChange('complianceNotes', e.target.value)}
-          placeholder="Shënimet dhe kërkesat për përputhshmëri..."
-          className="classic-textfield"
-        />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <FormControl fullWidth>
-          <InputLabel>Rolet e Lejuara</InputLabel>
-          <Select
-            multiple
-            value={templateData.allowedRoles || []}
-            label="Rolet e Lejuara"
-            onChange={(e) => handleInputChange('allowedRoles', e.target.value)}
-            className="classic-select"
-            renderValue={(selected) => (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {(selected as string[]).map((value) => (
-                  <Chip key={value} label={value} size="small" />
-                ))}
-              </Box>
-            )}
-          >
-            <MenuItem value="Officer">Zyrtar</MenuItem>
-            <MenuItem value="Supervisor">Mbikëqyrës</MenuItem>
-            <MenuItem value="Inspector">Inspektor</MenuItem>
-            <MenuItem value="Administrator">Administrator</MenuItem>
-            <MenuItem value="Auditor">Auditor</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12}>
+      </Box>
+      <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' } }}>
+        <Box>
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            label="Shënimet e Përputhshmërisë"
+            value={templateData.complianceNotes || ''}
+            onChange={(e) => handleInputChange('complianceNotes', e.target.value)}
+            placeholder="Shënimet dhe kërkesat për përputhshmëri..."
+            className="classic-textfield"
+          />
+        </Box>
+        <Box>
+          <FormControl fullWidth>
+            <InputLabel>Rolet e Lejuara</InputLabel>
+            <Select
+              multiple
+              value={templateData.allowedRoles || []}
+              label="Rolet e Lejuara"
+              onChange={(e) => handleInputChange('allowedRoles', e.target.value)}
+              className="classic-select"
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {(selected as string[]).map((value) => (
+                    <Chip key={value} label={value} size="small" />
+                  ))}
+                </Box>
+              )}
+            >
+              <MenuItem value="Officer">Zyrtar</MenuItem>
+              <MenuItem value="Supervisor">Mbikëqyrës</MenuItem>
+              <MenuItem value="Inspector">Inspektor</MenuItem>
+              <MenuItem value="Administrator">Administrator</MenuItem>
+              <MenuItem value="Auditor">Auditor</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Box>
+      <Box>
         <Alert severity="info">
           <Typography variant="body2">
             Ky shablloni do të jetë i disponueshëm vetëm për rolet e zgjedhura.
             Sigurohuni që të specifikoni rolet e duhura sipas politikave të sigurisë.
           </Typography>
         </Alert>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 
   return (

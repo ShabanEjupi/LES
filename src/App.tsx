@@ -51,10 +51,14 @@ import VehicleDetails from './pages/vehicles/VehicleDetails';
 
 // Search
 import AdvancedSearch from './pages/search/AdvancedSearch';
+import IntelligentSearch from './pages/search/IntelligentSearch';
 
 // Documents
 import DocumentUpload from './pages/documents/DocumentUpload';
 import DocumentTemplates from './pages/documents/DocumentTemplates';
+
+// Reports
+import ViolationReports from './pages/reports/ViolationReports';
 
 // Notifications
 import AutomatedNotifications from './pages/notifications/AutomatedNotifications';
@@ -446,6 +450,24 @@ const App: React.FC = () => {
               />
               
               <Route 
+                path="/search/advanced" 
+                element={
+                  <ProtectedRoute>
+                    <AdvancedSearch />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/search/intelligent" 
+                element={
+                  <ProtectedRoute>
+                    <IntelligentSearch />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
                 path="/search/filters-1" 
                 element={
                   <ProtectedRoute>
@@ -506,7 +528,16 @@ const App: React.FC = () => {
                 path="/reports" 
                 element={
                   <ProtectedRoute requiredRoles={['Supervisor', 'Administrator']}>
-                    <div className="page-content">Reports Dashboard - Coming Soon</div>
+                    <ViolationReports />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/reports/violations" 
+                element={
+                  <ProtectedRoute requiredRoles={['Supervisor', 'Administrator']}>
+                    <ViolationReports />
                   </ProtectedRoute>
                 } 
               />

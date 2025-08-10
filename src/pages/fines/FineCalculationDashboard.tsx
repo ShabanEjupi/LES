@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MainLayout } from '../../components/layout/MainLayout';
+import MainLayout from '../../components/layout/MainLayout';
 import { ClassicCard } from '../../components/common/ClassicCard';
 import { ClassicButton } from '../../components/common/ClassicButton';
 import type { 
@@ -110,7 +110,7 @@ const FineCalculationDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <MainLayout title="Panel i Gjobave - Duke u ngarkuar...">
+      <MainLayout>
         <div style={{ textAlign: 'center', padding: '40px' }}>
           <div style={{ fontSize: '16px', color: '#666' }}>
             🔄 Duke ngarkuar të dhënat e panelit...
@@ -121,7 +121,7 @@ const FineCalculationDashboard: React.FC = () => {
   }
 
   return (
-    <MainLayout title="Panel i Gjobave Administrative">
+    <MainLayout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
         {/* Header with Quick Actions */}
